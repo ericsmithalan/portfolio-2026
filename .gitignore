@@ -25,3 +25,4 @@ yarn.lock
 .turbo/
 dist/
 node_modules/
+.tsup/

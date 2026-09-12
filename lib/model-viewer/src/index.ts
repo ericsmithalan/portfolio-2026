@@ -1,1 +1,1 @@
-export const COOL = 'COOL';
+export * from './viewer';

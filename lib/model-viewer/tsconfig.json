@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
+        "module": "ESNext",
+        "moduleResolution": "bundler",
         /* Target & Environment */
         "target": "ES2022",
-        "module": "NodeNext",
-        "moduleResolution": "NodeNext",
         "lib": ["DOM", "DOM.Iterable", "ES2022"],
 
         /* JSX Support (For React components) */
@@ -32,9 +32,13 @@
         "noEmit": true,
         "ignoreDeprecations": "6.0",
         "paths": {
-            "@/*": ["./src/*"]
+            "@/*": ["./src/*"],
+            "@/lib": ["./src/viewer/lib/index.ts"],
+            "@/utils": ["./src/viewer/utils/index.ts"],
+            "@/interface": ["./src/interface/index.ts"],
+            "@/data": ["./src/data/index.ts"]
         }
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "default.d.ts"],
     "exclude": ["node_modules", "dist"]
 }

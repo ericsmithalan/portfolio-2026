@@ -2,7 +2,7 @@ import { Provider, useCreateStore } from 'tinybase/ui-react';
 import './style.scss';
 import { createStore } from 'tinybase';
 import { Inspector } from 'tinybase/ui-react-inspector';
-import { COOL } from '@portfolio/model-viewer';
+import { Viewer } from '@portfolio/model-viewer';
 
 function App() {
     const store = useCreateStore(() => {
@@ -15,7 +15,7 @@ function App() {
 
     return (
         <Provider store={store}>
-            <div>{COOL}</div>
+            <Viewer />
             <Inspector />
         </Provider>
     );

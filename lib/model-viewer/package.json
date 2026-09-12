@@ -7,15 +7,16 @@
     "types": "./dist/index.d.ts",
     "private": "true",
     "scripts": {
-        "build": "tsup",
-        "dev": "tsup src/index.ts --format cjs,esm --dts --watch --external react",
-        "format": "prettier --cache --write \"src/**/*.{ts,tsx,css,json,md}\"",
+        "build": "tsup --tsconfig tsconfig.build.json",
+        "dev": "tsup --tsconfig tsconfig.build.json --watch",
+        "format": "prettier --cache --write \"src/**/*.{ts,tsx,css,scss,json,md}\"",
         "typecheck": "tsc --noEmit"
     },
     "files": [
         "dist"
     ],
     "exports": {
+        "./styles.css": "./dist/index.css",
         ".": {
             "import": {
                 "types": "./dist/index.d.ts",
@@ -29,10 +30,11 @@
     },
     "dependencies": {
         "@tweenjs/tween.js": "^25.0.0",
+        "react-router-dom": "^7.18.3",
         "three": "^0.186.0",
         "three-viewport-gizmo": "^2.2.0",
-        "tsx": "^4.23.13",
-        "tsup": "^8.5.1"
+        "tsup": "^8.5.1",
+        "tsx": "^4.23.13"
     },
     "peerDependencies": {
         "@types/node": "^22.20.2",
@@ -56,5 +58,11 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "@microsoft/api-extractor": "^7.59.1",
+        "@types/three": "^0.186.0",
+        "esbuild-sass-plugin": "^3.7.0",
+        "sass": "^1.104.0"
     }
 }
