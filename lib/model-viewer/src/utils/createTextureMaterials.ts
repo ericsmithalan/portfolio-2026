@@ -1,11 +1,17 @@
 import { Material, MeshStandardMaterial, Texture } from 'three';
 import { ITexture } from '@/interface';
-import { AppCache } from '../lib';
+import { AppCache } from '@/lib';
 import { TextureResolution } from '@/types';
 import { formatTextureUrl } from './formatTextureUrl';
 import { loadTexture } from './loadTexture';
 
-const cached = new AppCache<number, Material>();
+let cachedInstance: AppCache<number, Material> | null = null;
+const getCache = () => {
+    if (!cachedInstance) {
+        cachedInstance = new AppCache<number, Material>();
+    }
+    return cachedInstance;
+};
 
 export const createTextureMaterials = async (
     texture: ITexture,
@@ -15,10 +21,11 @@ export const createTextureMaterials = async (
     return new Promise(async (resolve) => {
         let material: Material;
 
-        const cache = cached.get(texture.id);
+        const cache = getCache();
+        const cacheItem = cache.get(texture.id);
 
-        if (cache) {
-            return resolve(cache);
+        if (cacheItem) {
+            return resolve(cacheItem);
         } else {
             const url = formatTextureUrl(texture.basic.url, resolution);
             const textr = await loadTexture(url);
@@ -41,7 +48,7 @@ export const createTextureMaterials = async (
                 textr.dispose();
             }
 
-            cached.set(texture.id, material);
+            cache.set(texture.id, material);
 
             resolve(material);
         }
