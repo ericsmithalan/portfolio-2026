@@ -1,44 +1,65 @@
 {
-  "name": "portfolio-2026",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/dom": "^10.4.1",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.3",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.126",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+    "name": "portfolio-2026",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "dependencies": {
+        "@tailwindcss/vite": "^4.3.3",
+        "clsx": "^2.1.1",
+        "react": "^19.3.0",
+        "react-dom": "^19.3.0",
+        "tailwind": "^4.0.0",
+        "tinybase": "^9.7.1",
+        "turbo": "^2.10.12",
+        "typescript": "6.0.3",
+        "zod": "^4.6.2"
+    },
+    "devDependencies": {
+        "@types/node": "^22.20.2",
+        "@types/react": "^19.3.0",
+        "@types/react-dom": "^19.3.0",
+        "@vitejs/plugin-react": "^6.1.1",
+        "prettier": "^3.9.6",
+        "sass": "^1.104.0",
+        "vite": "^8.3.0"
+    },
+    "packageManager": "pnpm@10.33.4",
+    "workspaces": [
+        "packages/*"
     ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "scripts": {
+        "start": "turbo run start",
+        "dev": "turbo run dev",
+        "build": "turbo run build",
+        "format": "turbo run format"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "pnpm": {
+        "overrides": {
+            "@types/react": "19.3.0",
+            "@types/react-dom": "19.3.0"
+        },
+        "packageExtensions": {
+            "@hookform/resolvers": {
+                "peerDependencies": {
+                    "zod": "^4"
+                }
+            }
+        },
+        "onlyBuiltDependencies": [
+            "@parcel/watcher",
+            "core-js"
+        ]
+    }
 }

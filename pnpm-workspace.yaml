@@ -1,0 +1,7 @@
+packages:
+    - 'packages/**'
+allowBuilds:
+    '@parcel/watcher': true
+minimumReleaseAgeExclude:
+    - '@types/three@0.186.0'
+    - tinybase@9.7.1
