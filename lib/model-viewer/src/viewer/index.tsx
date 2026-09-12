@@ -1,5 +1,5 @@
 import { Viewport } from '@/lib';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import './style.scss';
 
@@ -9,6 +9,13 @@ export interface IOutletContenxt {
 
 export const Viewer = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+
+    useEffect(() => {
+        const canvas = canvasRef?.current;
+
+        if (canvas) {
+        }
+    }, []);
 
     return (
         <div className={clsx('viewer')}>

@@ -9,7 +9,7 @@ import {
 } from 'three';
 
 import { SelectMode } from '@/types';
-import { ObjectUserData, OutlineEffect } from './';
+import { ObjectUserData, OutlineEffect } from '.';
 
 export interface ISelectionEvent {
     change: {

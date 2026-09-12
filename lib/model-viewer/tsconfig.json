@@ -33,8 +33,8 @@
         "ignoreDeprecations": "6.0",
         "paths": {
             "@/*": ["./src/*"],
-            "@/lib": ["./src/viewer/lib/index.ts"],
-            "@/utils": ["./src/viewer/utils/index.ts"],
+            "@/lib": ["./src/lib/index.ts"],
+            "@/utils": ["./src/utils/index.ts"],
             "@/interface": ["./src/interface/index.ts"],
             "@/data": ["./src/data/index.ts"]
         }
