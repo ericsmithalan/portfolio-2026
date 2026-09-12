@@ -1,0 +1,40 @@
+{
+    "compilerOptions": {
+        /* Target & Environment */
+        "target": "ES2022",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "lib": ["DOM", "DOM.Iterable", "ES2022"],
+
+        /* JSX Support (For React components) */
+        "jsx": "react-jsx",
+
+        /* Strictness & Safety */
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+
+        /* Interop & Bundling Optimization */
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+
+        /* Output Configuration (Handled by tsup, but keeps editor happy) */
+        "declaration": true,
+        "declarationMap": true,
+        "emitDeclarationOnly": false,
+        "noEmit": true,
+        "ignoreDeprecations": "6.0",
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist"]
+}

@@ -16,10 +16,8 @@
         "noEmit": true,
         "jsx": "react-jsx",
         "baseUrl": ".",
-        "ignoreDeprecations": "6.0",
-        "paths": {
-            "@/*": ["./*"]
-        }
+        "ignoreDeprecations": "6.0"
     },
+    "include": ["www/src"],
     "exclude": ["node_modules"]
 }
