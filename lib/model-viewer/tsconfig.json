@@ -27,7 +27,8 @@
             "@/utils": ["./src/utils/index.ts"],
             "@/interface": ["./src/interface/index.ts"],
             "@/data": ["./src/data/index.ts"],
-            "@/assets": ["./src/assets/*"]
+            "@/assets": ["./src/assets/*"],
+            "@/models": ["./src/models/*"]
         }
     },
     "include": ["src/**/*", "default.d.ts"],

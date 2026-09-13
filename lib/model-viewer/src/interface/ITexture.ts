@@ -23,7 +23,6 @@ export interface ITexture {
     type: TextureType;
     name: string;
     thumbnail: string;
-    displayName: string;
     pbr: IPBRTexture;
     basic: IBasicTexture;
 }

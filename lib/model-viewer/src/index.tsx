@@ -1,20 +1,14 @@
 import { IViewportEvent, Viewport } from '@/lib';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import { isMobile } from 'react-device-detect';
 import './style.scss';
 
 export interface ViewerProps {
     children?: React.ReactNode;
-    modelUrl: string;
     onLoaded?: (viewport: Viewport) => void;
 }
-
-export const Viewer: FC<ViewerProps> = ({
-    children,
-    modelUrl,
-    onLoaded,
-}: ViewerProps) => {
+export const Viewer: FC<ViewerProps> = ({ onLoaded }: ViewerProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
@@ -22,7 +16,7 @@ export const Viewer: FC<ViewerProps> = ({
         let vp: Viewport;
 
         const callasync = async () => {
-            await vp.loadModel(modelUrl).catch((e) => {
+            await vp.loadModel('./models/desk/desk1.glb').catch((e) => {
                 console.log(e);
             });
 
@@ -44,13 +38,12 @@ export const Viewer: FC<ViewerProps> = ({
         return () => {
             vp?.dispose();
         };
-    }, [modelUrl]);
+    }, []);
 
     return (
         <>
             <div className={clsx('viewer')}>
                 <div className="content">
-                    {children}
                     <canvas className="canvas" ref={canvasRef} />
                 </div>
             </div>

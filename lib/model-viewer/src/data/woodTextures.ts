@@ -1,5 +1,5 @@
-import { ITexture } from "../interface/ITexture";
-import { createTextureData } from "./createTexture";
+import { ITexture } from '@/interface';
+import { createTextureData } from './createTexture';
 
 export const getAllWoodTextures = (): Array<ITexture> => {
     const settings = {
@@ -15,38 +15,38 @@ export const getAllWoodTextures = (): Array<ITexture> => {
         specular: false,
     };
 
-    const URL = "/textures/wood";
+    const URL = '../textures/wood';
 
     return [
-        createTextureData(138, "wood", "none", "None", 1, URL, {
+        createTextureData(138, 'wood', 'none', 1, URL, {
             ...settings,
             diffuse: true,
         }),
-        createTextureData(299, "wood", "ash", "Ash", 1, URL, {
+        createTextureData(299, 'wood', 'ash', 1, URL, {
             ...settings,
             diffuse: true,
         }),
-        createTextureData(390, "wood", "birch", "Birch", 1, URL, {
+        createTextureData(390, 'wood', 'birch', 1, URL, {
             ...settings,
             diffuse: true,
         }),
-        createTextureData(745, "wood", "cherry", "Cherry", 1, URL, {
+        createTextureData(745, 'wood', 'cherry', 1, URL, {
             ...settings,
             diffuse: true,
         }),
-        createTextureData(464, "wood", "hickory", "Hickory", 1, URL, {
+        createTextureData(464, 'wood', 'hickory', 1, URL, {
             ...settings,
             diffuse: true,
         }),
-        createTextureData(584, "wood", "maple", "Maple", 1, URL, {
+        createTextureData(584, 'wood', 'maple', 1, URL, {
             ...settings,
             diffuse: true,
         }),
-        createTextureData(2292, "wood", "oak", "Oak", 1, URL, {
+        createTextureData(2292, 'wood', 'oak', 1, URL, {
             ...settings,
             diffuse: true,
         }),
-        createTextureData(888, "wood", "walnut", "Walnut", 1, URL, {
+        createTextureData(888, 'wood', 'walnut', 1, URL, {
             ...settings,
             diffuse: true,
         }),

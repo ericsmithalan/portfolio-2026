@@ -3,15 +3,17 @@ import { sassPlugin } from 'esbuild-sass-plugin'; // <-- Import the plugin
 
 export default defineConfig({
     entry: ['src/index.tsx'],
-    publicDir: true,
+    publicDir: 'public',
     format: ['cjs', 'esm'], // Emits both formats
-    clean: true, // Cleans dist before building
+    clean: false, // Cleans dist before building
     esbuildPlugins: [sassPlugin({ type: 'style' })],
     splitting: false,
     sourcemap: false,
     injectStyle: true,
+
     loader: {
-        '.hdr': 'dataurl', // Copies the file to 'dist' and updates the import to point to it
+        '.glb': 'file',
+        '.hdr': 'dataurl',
     },
     outExtension({ format }) {
         return {
@@ -21,7 +23,5 @@ export default defineConfig({
     // onSuccess: 'mkdir -p dist/assets && cp -r src/assets/* dist/assets',
     dts: true,
     experimentalDts: false,
-    // Explicitly tell tsup's general bundle configuration to treat scss as external
-    // so the bundlers don't try to look for TypeScript structures inside your styles.
     external: ['react', /^\/.*/],
 });

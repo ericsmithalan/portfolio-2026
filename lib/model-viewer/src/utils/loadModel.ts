@@ -1,6 +1,6 @@
 import { Mesh, Object3D } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
-import { IObjectMaterial, IOutliner, IModel, IStat } from '@/interface';
+import { IObjectMaterial, IModel, IStat } from '@/interface';
 import { Edges, ObjectUserData, Viewport } from '@/lib';
 import { getObjectDimensions } from './getObjectDimensions';
 import { getTextureFromBlenderMaterial } from './getTextureFromBlenderMaterial';
@@ -11,9 +11,11 @@ export const loadModel = (
     modelUrl: string,
     viewport: Viewport,
 ): Promise<IModel> => {
-    return new Promise((resolve) => {
+    return new Promise(async (resolve) => {
+        const modelModule = await import(modelUrl);
+
         if (modelUrl) {
-            loader.load(modelUrl, (gltf) => {
+            loader.load(modelModule.default as string, (gltf) => {
                 const model = gltf.scene;
                 const edges = new Edges();
                 const materials: Map<string, IObjectMaterial> = new Map();
