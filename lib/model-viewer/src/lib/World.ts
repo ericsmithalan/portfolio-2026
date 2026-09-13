@@ -13,7 +13,7 @@ import {
 import { ViewportGizmo } from 'three-viewport-gizmo';
 import { OrbitControls, RGBELoader } from 'three/examples/jsm/Addons.js';
 //8
-import hdr from '@/assets/env/1a.hdr';
+import hdr from '../../public/env/1a.hdr';
 
 import { IScreenSize } from '@/interface';
 import { disposeObject } from '@/utils';

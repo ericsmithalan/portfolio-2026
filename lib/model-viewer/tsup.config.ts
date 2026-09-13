@@ -8,7 +8,7 @@ export default defineConfig({
     clean: true, // Cleans dist before building
     esbuildPlugins: [sassPlugin({ type: 'style' })],
     splitting: false,
-    sourcemap: true,
+    sourcemap: false,
     injectStyle: true,
     loader: {
         '.hdr': 'dataurl', // Copies the file to 'dist' and updates the import to point to it
@@ -18,7 +18,7 @@ export default defineConfig({
             js: format === 'esm' ? '.mjs' : '.js', // esm -> .mjs, cjs -> .js
         };
     },
-    onSuccess: 'mkdir -p dist/assets && cp -r src/assets/* dist/assets',
+    // onSuccess: 'mkdir -p dist/assets && cp -r src/assets/* dist/assets',
     dts: true,
     experimentalDts: false,
     // Explicitly tell tsup's general bundle configuration to treat scss as external

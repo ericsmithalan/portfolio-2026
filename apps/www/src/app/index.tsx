@@ -1,23 +1,13 @@
-import { Provider, useCreateStore } from 'tinybase/ui-react';
 import './style.scss';
-import { createStore } from 'tinybase';
-import { Inspector } from 'tinybase/ui-react-inspector';
-import { Viewer } from '@portfolio/model-viewer';
+import { Routes, Route } from 'react-router-dom';
+import { WoodworkingPage } from '../pages';
 
 function App() {
-    const store = useCreateStore(() => {
-        return createStore()
-            .setValue('theme', 'dark')
-            .setValue('baseWood', 'maple')
-            .setValue('altWood', 'cherry')
-            .setValue('baseMetal', 'black');
-    });
-
     return (
-        <Provider store={store}>
-            <Viewer />
-            <Inspector />
-        </Provider>
+        <Routes>
+            {/* <Route path="/" element={<HomePage />}></Route> */}
+            <Route path="/" element={<WoodworkingPage />}></Route>
+        </Routes>
     );
 }
 

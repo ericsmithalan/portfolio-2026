@@ -4,13 +4,12 @@ import clsx from 'clsx';
 import { isMobile } from 'react-device-detect';
 import './style.scss';
 
-export interface IOutletContenxt {
-    viewport: Viewport;
+export interface ViewerProps {
+    children?: React.ReactNode;
 }
 
-export const Viewer = () => {
+export const Viewer = ({ children }: ViewerProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [viewport, setViewport] = useState<Viewport>();
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -24,7 +23,6 @@ export const Viewer = () => {
         if (canvas) {
             vp = new Viewport(canvas, isMobile);
             vp.addEventListener('loading', loading);
-            setViewport(vp);
         }
     }, []);
 
@@ -32,7 +30,10 @@ export const Viewer = () => {
         <>
             {!loading && (
                 <div className={clsx('viewer')}>
-                    <canvas className="canvas" ref={canvasRef} />
+                    <div className="content">
+                        {children}
+                        <canvas className="canvas" ref={canvasRef} />
+                    </div>
                 </div>
             )}
         </>

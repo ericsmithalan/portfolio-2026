@@ -12,12 +12,12 @@ export default defineConfig({
                 {
                     // Path to your library's public folder
                     src: new URL(
-                        '../../lib/model-viewer/dist/assets/**/*',
+                        '../../lib/model-viewer/public/**/*',
                         import.meta.url,
                     ).pathname,
                     onlyTransformIfNeeded: true,
                     // Where it should land in the server root / output dist
-                    dest: 'assets',
+                    dest: 'public',
                 },
             ],
             watch: {
