@@ -1,14 +1,10 @@
-import { Vector3 } from "three";
-
-export interface IStats {
-    size: Vector3;
-    peices: number;
-}
+import { Vector3 } from 'three';
+import { IStat } from '.';
 
 export interface IProjectContent {
     id: string;
     description: string;
     startDate: Date;
     endDate: Date;
-    stats: IStats;
+    stats: IStat;
 }

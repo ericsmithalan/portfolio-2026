@@ -1,6 +1,5 @@
 import { Material } from 'three';
-import { TextureType } from '@/types';
-import { ITexture } from './ITexture';
+import { ITexture, TextureType } from './ITexture';
 
 export interface IObjectMaterial {
     type: TextureType;

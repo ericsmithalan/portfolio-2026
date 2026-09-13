@@ -1,4 +1,4 @@
-import { TextureResolution } from '@/types';
+import { TextureResolution } from '@/interface';
 
 export const formatTextureUrl = (
     url: string,

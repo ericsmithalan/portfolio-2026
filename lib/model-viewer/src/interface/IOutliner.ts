@@ -1,5 +1,4 @@
-import { IImageResource } from "./IImageResource";
-import { IStat } from "./IStats";
+import { IImageResource } from './IImageResource';
 
 export interface IOutliner {
     id: number;
@@ -7,5 +6,4 @@ export interface IOutliner {
     modelUrl?: string;
     imageResouce?: IImageResource;
     children?: Array<IOutliner>;
-    stats?: Array<IStat>;
 }

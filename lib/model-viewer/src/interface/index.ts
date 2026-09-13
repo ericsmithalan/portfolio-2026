@@ -5,5 +5,6 @@ export * from './IObjectMaterial';
 export * from './IOutliner';
 export * from './IProjectContent';
 export * from './IScreenSize';
-export * from './IStats';
+export * from './IStat';
 export * from './ITexture';
+export * from './IObjectUserData';

@@ -3,6 +3,11 @@ declare module '*.hdr' {
     export default src;
 }
 
+declare module '*.glb' {
+    const value: string;
+    export default value;
+}
+
 declare module '*.png' {
     const value: string;
     export default value;

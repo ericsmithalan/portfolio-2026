@@ -1,7 +1,6 @@
 import { Material, MeshStandardMaterial, Texture } from 'three';
-import { ITexture } from '@/interface';
+import { ITexture, TextureResolution } from '@/interface';
 import { AppCache } from '@/lib';
-import { TextureResolution } from '@/types';
 import { formatTextureUrl } from './formatTextureUrl';
 import { loadTexture } from './loadTexture';
 

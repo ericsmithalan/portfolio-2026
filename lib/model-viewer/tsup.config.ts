@@ -2,7 +2,7 @@ import { defineConfig } from 'tsup';
 import { sassPlugin } from 'esbuild-sass-plugin'; // <-- Import the plugin
 
 export default defineConfig({
-    entry: ['src/index.ts'],
+    entry: ['src/index.tsx'],
     publicDir: true,
     format: ['cjs', 'esm'], // Emits both formats
     clean: true, // Cleans dist before building

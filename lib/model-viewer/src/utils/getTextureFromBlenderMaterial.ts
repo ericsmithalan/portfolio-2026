@@ -1,7 +1,6 @@
 import { MeshStandardMaterial } from 'three';
 import { DATA } from '@/data';
-import { ITexture } from '@/interface';
-import { TextureType } from '@/types';
+import { ITexture, TextureType } from '@/interface';
 
 export const getTextureFromBlenderMaterial = (
     material: MeshStandardMaterial,

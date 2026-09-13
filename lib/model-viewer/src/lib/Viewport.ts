@@ -216,10 +216,10 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         this.mixer = null;
     }
 
-    async loadModel(outliner: IOutliner) {
+    async loadModel(modelUrl: string) {
         this.dispatchEvent({ type: 'loading', value: true });
 
-        const model = await loadModel(outliner, this, this.isMobile);
+        const model = await loadModel(modelUrl, this);
 
         if (model.object) {
             fitCameraToObject(

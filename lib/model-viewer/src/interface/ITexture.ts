@@ -1,4 +1,5 @@
-import { TextureType } from '@/types';
+export type TextureType = 'wood' | 'fabric' | 'metal' | 'hardware';
+export type TextureResolution = '1k' | '2k' | '3k' | '4k';
 
 export interface IPBRTexture {
     diffuse: string | null;

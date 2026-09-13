@@ -1,6 +1,6 @@
 import { Mesh, Object3D } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
-import { IObjectMaterial, IOutliner, IModel } from '@/interface';
+import { IObjectMaterial, IOutliner, IModel, IStat } from '@/interface';
 import { Edges, ObjectUserData, Viewport } from '@/lib';
 import { getObjectDimensions } from './getObjectDimensions';
 import { getTextureFromBlenderMaterial } from './getTextureFromBlenderMaterial';
@@ -8,18 +8,16 @@ import { getTextureFromBlenderMaterial } from './getTextureFromBlenderMaterial';
 const loader: GLTFLoader = new GLTFLoader();
 
 export const loadModel = (
-    outliner: IOutliner,
+    modelUrl: string,
     viewport: Viewport,
-    isMobile: boolean = false,
 ): Promise<IModel> => {
     return new Promise((resolve) => {
-        const modelChildrenOutliner: Array<IOutliner> = [];
-
-        if (outliner.modelUrl) {
-            loader.load(outliner.modelUrl, (gltf) => {
+        if (modelUrl) {
+            loader.load(modelUrl, (gltf) => {
                 const model = gltf.scene;
                 const edges = new Edges();
                 const materials: Map<string, IObjectMaterial> = new Map();
+                const children: Array<Object3D> = [];
 
                 model.castShadow = true;
                 model.receiveShadow = true;
@@ -52,19 +50,11 @@ export const loadModel = (
                             }
                         }
 
-                        const outlinerUD: IOutliner = {
-                            id: object.id,
-                            name: object.name,
-                        };
-
-                        object.userData = new ObjectUserData(outlinerUD, {
+                        object.userData = new ObjectUserData({
                             selectable: true,
                         });
 
-                        if (!isMobile) {
-                            modelChildrenOutliner.push(outlinerUD);
-                        }
-
+                        children.push(object);
                         edges.add(object);
                     } else {
                         object.layers.disableAll();
@@ -79,45 +69,48 @@ export const loadModel = (
                     materials.set(keyToMove, value); // 2. Re-insert it at the end
                 }
 
-                outliner.children = modelChildrenOutliner;
-
                 const size = getObjectDimensions(viewport, model, true);
 
-                outliner.stats = [
-                    {
-                        name: 'parts',
-                        value: String(modelChildrenOutliner.length),
-                    },
-                    {
-                        name: 'Width',
-                        value: String(size?.x || 0),
-                        unit: 'in',
-                    },
-                    {
-                        name: 'Length',
-                        unit: 'in',
-                        value: String(size?.z || 0),
-                    },
-                    {
-                        name: 'Height',
-                        value: String(size?.y || 0),
-                        unit: 'in',
-                    },
-                ];
+                const getStats = (): Array<IStat> => {
+                    return [
+                        {
+                            name: 'parts',
+                            value: String(children.length),
+                        },
+                        {
+                            name: 'Width',
+                            value: String(size?.x || 0),
+                            unit: 'in',
+                        },
+                        {
+                            name: 'Length',
+                            unit: 'in',
+                            value: String(size?.z || 0),
+                        },
+                        {
+                            name: 'Height',
+                            value: String(size?.y || 0),
+                            unit: 'in',
+                        },
+                    ];
+                };
 
                 model.userData = new ObjectUserData(
-                    outliner,
                     { selectable: true },
                     null,
                     null,
                 );
+
                 edges.edgeGroup.updateMatrixWorld();
                 model.updateMatrixWorld();
+
                 resolve({
                     object: model,
-                    outliner: outliner,
+                    // outliner: outliner,
                     edges: edges,
                     materials: materials,
+                    children: children,
+                    stats: getStats(),
                     animations:
                         gltf.animations?.length > 0 ? gltf.animations : null,
                 });
