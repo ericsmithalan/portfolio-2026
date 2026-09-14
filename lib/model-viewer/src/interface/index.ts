@@ -3,7 +3,6 @@ export * from './IMenu';
 export * from './IModel';
 export * from './IObjectMaterial';
 export * from './IOutliner';
-export * from './IProjectContent';
 export * from './IScreenSize';
 export * from './IStat';
 export * from './ITexture';

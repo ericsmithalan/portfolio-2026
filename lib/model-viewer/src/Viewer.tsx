@@ -27,7 +27,7 @@ export const Viewer: FC<ViewerProps> = ({ onLoaded }: ViewerProps) => {
         };
 
         const load = (e: IViewportEvent['loading']) => {
-            console.log('SDFJLJSDKLFKJSD', 'loaded', e.value);
+            // console.log('SDFJLJSDKLFKJSD', 'loaded', e.value);
         };
 
         if (canvas) {

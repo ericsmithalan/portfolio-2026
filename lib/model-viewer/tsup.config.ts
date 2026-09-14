@@ -3,7 +3,7 @@ import { sassPlugin } from 'esbuild-sass-plugin'; // <-- Import the plugin
 
 export default defineConfig({
     entry: ['src/index.ts'],
-    publicDir: 'public',
+    publicDir: false,
     format: ['cjs', 'esm'], // Emits both formats
     clean: true, // Cleans dist before building
     esbuildPlugins: [sassPlugin({ type: 'style' })],
