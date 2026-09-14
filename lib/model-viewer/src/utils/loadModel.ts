@@ -12,11 +12,8 @@ export const loadModel = (
     viewport: Viewport,
 ): Promise<IModel> => {
     return new Promise(async (resolve) => {
-        const modelModule = await import(modelUrl);
-        console.log(modelModule.default);
-
         if (modelUrl) {
-            loader.load(`${modelModule.default}`, (gltf) => {
+            loader.load(`${modelUrl}`, (gltf) => {
                 const model = gltf.scene;
                 const edges = new Edges();
                 const materials: Map<string, IObjectMaterial> = new Map();
