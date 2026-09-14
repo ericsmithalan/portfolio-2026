@@ -1,5 +1,4 @@
 {
-    "cleanUrls": true,
     "headers": [
         {
             "source": "/models/(.*)",
@@ -7,10 +6,6 @@
                 {
                     "key": "Content-Type",
                     "value": "model/gltf-binary"
-                },
-                {
-                    "key": "Access-Control-Allow-Origin",
-                    "value": "*"
                 }
             ]
         }
