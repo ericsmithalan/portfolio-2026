@@ -5,35 +5,32 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 import path from 'path';
 
 export default defineConfig({
+    publicDir: './public',
     plugins: [
         react(),
         tailwindcss(),
-        viteStaticCopy({
-            targets: [
-                {
-                    // Path to your library's public folder
-                    src: new URL(
-                        '../../lib/model-viewer/dist/**/*',
-                        import.meta.url,
-                    ).pathname,
-                    onlyTransformIfNeeded: true,
-                    // Where it should land in the server root / output dist
-                    dest: 'dist',
-                },
-            ],
-            watch: {
-                reloadOnEmpty: false,
-            },
-        }),
+        // viteStaticCopy({
+        //     targets: [
+        //         {
+        //             // Path to your library's public folder
+        //             src: URL('./public', import.meta.url),
+        //             onlyTransformIfNeeded: true,
+        //             // Where it should land in the server root / output dist
+        //             dest: 'public',
+        //         },
+        //     ],
+        //     watch: {
+        //         reloadOnEmpty: false,
+        //     },
+        // }),
     ],
-    assetsInclude: ['**/*.glb', '**/*.gltf'],
-
-    fs: {
-        allow: [
-            // Allow Vite to serve files from your project root
-            '.',
-            // Explicitly allow it to read from your local component library path
-            path.resolve(__dirname, '../../lib/model-viewer'),
-        ],
-    },
+    assetsInclude: ['**/*.glb', '**/*.png', '**/*.hri'],
+    // fs: {
+    //     allow: [
+    //         // Allow Vite to serve files from your project root
+    //         '.',
+    //         // Explicitly allow it to read from your local component library path
+    //         // path.resolve(__dirname, '../../public'),
+    //     ],
+    // },
 });

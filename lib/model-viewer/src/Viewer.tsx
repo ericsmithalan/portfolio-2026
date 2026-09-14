@@ -8,6 +8,7 @@ export interface ViewerProps {
     children?: React.ReactNode;
     onLoaded?: (viewport: Viewport) => void;
 }
+
 export const Viewer: FC<ViewerProps> = ({ onLoaded }: ViewerProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -16,7 +17,7 @@ export const Viewer: FC<ViewerProps> = ({ onLoaded }: ViewerProps) => {
         let vp: Viewport;
 
         const callasync = async () => {
-            await vp.loadModel('./assets/models/desk/desk1.glb').catch((e) => {
+            await vp.loadModel('/models/desk/desk1.glb').catch((e) => {
                 console.log(e);
             });
 
