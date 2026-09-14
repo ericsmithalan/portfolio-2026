@@ -20,10 +20,6 @@
         "baseUrl": ".",
         "ignoreDeprecations": "6.0"
     },
-    "include": [
-        "src/**/*",
-        "../../lib/model-viewer/src/interface/IImageResource.ts",
-        "../../lib/model-viewer/src/interface/IOutliner.ts"
-    ],
-    "exclude": ["node_modules", "dist"]
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist", ".turbo"]
 }

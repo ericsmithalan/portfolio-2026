@@ -13,10 +13,10 @@ export const loadModel = (
 ): Promise<IModel> => {
     return new Promise(async (resolve) => {
         const modelModule = await import(modelUrl);
-        console.log(modelModule);
+        console.log(modelModule.default);
 
         if (modelUrl) {
-            loader.load(modelModule.default as string, (gltf) => {
+            loader.load(`${modelModule.default}`, (gltf) => {
                 const model = gltf.scene;
                 const edges = new Edges();
                 const materials: Map<string, IObjectMaterial> = new Map();
