@@ -12,7 +12,7 @@ export default defineConfig({
     injectStyle: true,
 
     loader: {
-        '.glb': 'file',
+        '.glb': 'copy',
         '.hdr': 'dataurl',
     },
     outExtension({ format }) {
