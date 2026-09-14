@@ -20,7 +20,7 @@ export default defineConfig({
             js: format === 'esm' ? '.mjs' : '.js', // esm -> .mjs, cjs -> .js
         };
     },
-    // onSuccess: 'mkdir -p dist/assets && cp -r src/assets/* dist/assets',
+    onSuccess: 'mkdir -p dist/assets && cp -r src/assets/* dist/assets',
     dts: true,
     experimentalDts: false,
     external: ['react', /^\/.*/],

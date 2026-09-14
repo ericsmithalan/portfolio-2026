@@ -16,7 +16,7 @@ export const Viewer: FC<ViewerProps> = ({ onLoaded }: ViewerProps) => {
         let vp: Viewport;
 
         const callasync = async () => {
-            await vp.loadModel('./models/desk/desk1.glb').catch((e) => {
+            await vp.loadModel('./assets/models/desk/desk1.glb').catch((e) => {
                 console.log(e);
             });
 

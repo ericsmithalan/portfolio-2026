@@ -13,6 +13,7 @@ export const loadModel = (
 ): Promise<IModel> => {
     return new Promise(async (resolve) => {
         const modelModule = await import(modelUrl);
+        console.log(modelModule);
 
         if (modelUrl) {
             loader.load(modelModule.default as string, (gltf) => {
