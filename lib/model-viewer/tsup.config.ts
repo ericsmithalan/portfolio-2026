@@ -8,7 +8,7 @@ export default defineConfig({
     clean: true, // Cleans dist before building
     esbuildPlugins: [sassPlugin({ type: 'style' })],
     splitting: false,
-    sourcemap: false,
+    sourcemap: true,
     injectStyle: true,
 
     loader: {
