@@ -5,7 +5,7 @@ export default defineConfig({
     entry: ['src/index.ts'],
     publicDir: 'public',
     format: ['cjs', 'esm'], // Emits both formats
-    clean: false, // Cleans dist before building
+    clean: true, // Cleans dist before building
     esbuildPlugins: [sassPlugin({ type: 'style' })],
     splitting: false,
     sourcemap: false,
