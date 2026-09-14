@@ -24,6 +24,20 @@ export default defineConfig({
         //     },
         // }),
     ],
+
+    server: {
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+        },
+        configureServer(server) {
+            server.middlewares.use((req, res, next) => {
+                if (req.url?.endsWith('.glb')) {
+                    res.setHeader('Content-Type', 'model/gltf-binary');
+                }
+                next();
+            });
+        },
+    },
     assetsInclude: ['**/*.glb', '**/*.png', '**/*.hri'],
     // fs: {
     //     allow: [
