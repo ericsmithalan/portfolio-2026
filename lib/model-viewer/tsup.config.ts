@@ -23,5 +23,5 @@ export default defineConfig({
     // onSuccess: 'mkdir -p dist/assets && cp -r src/assets/* dist/assets',
     dts: true,
     experimentalDts: false,
-    external: ['react', /^\/.*/, '/*.glb'],
+    external: ['react', '/*.glb'],
 });

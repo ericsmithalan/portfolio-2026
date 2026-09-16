@@ -55,6 +55,7 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
                   this.world.scene,
                   this.world.camera,
                   this.world.renderer,
+                  theme,
               );
         this.setEvents();
         this.init();
@@ -226,10 +227,10 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         this.mixer = null;
     }
 
-    async loadModel(modelUrl: string) {
+    async loadModel(modelUrl: string, theme: ITheme) {
         this.dispatchEvent({ type: 'loading', value: true });
 
-        const model = await loadModel(modelUrl, this, this.isMobile);
+        const model = await loadModel(modelUrl, this, theme);
 
         if (model.object) {
             fitCameraToObject(

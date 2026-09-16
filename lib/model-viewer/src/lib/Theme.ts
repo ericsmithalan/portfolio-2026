@@ -1,18 +1,5 @@
 import { ITheme } from '@/interface';
 
-export const ThemeLight: ITheme = {
-    world: {
-        backgroundColor: '#F8F8FF',
-        fogColor: '#F8F8FF',
-        fogDensity: 0.08,
-    },
-    grid: {
-        lineColor: '#999999',
-        opacity: 0.2,
-        size: 100,
-        divisions: 100,
-    },
-};
 export const ThemeDark: ITheme = {
     world: {
         backgroundColor: '#222222',
@@ -24,5 +11,14 @@ export const ThemeDark: ITheme = {
         opacity: 0.2,
         size: 100,
         divisions: 100,
+    },
+    outlineEffect: {
+        clearColor: '#000000',
+        visibleEdgeColor: 0xc2883d,
+        hiddenEdgeColor: 0xc2883d,
+    },
+    edges: {
+        color: 'black',
+        lineWidth: 3,
     },
 };

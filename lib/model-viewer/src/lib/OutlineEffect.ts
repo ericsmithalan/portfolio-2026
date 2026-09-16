@@ -19,6 +19,7 @@ import {
     ShaderPass,
 } from 'three/examples/jsm/Addons.js';
 import { disposeObject } from '@/utils';
+import { ITheme } from '@/interface';
 
 export class OutlineEffect {
     private target: WebGLRenderTarget;
@@ -30,7 +31,12 @@ export class OutlineEffect {
 
     enabled: boolean = true;
 
-    constructor(scene: Scene, renderer: WebGLRenderer, camera: Camera) {
+    constructor(
+        scene: Scene,
+        renderer: WebGLRenderer,
+        camera: Camera,
+        theme: ITheme,
+    ) {
         this.target = new WebGLRenderTarget(
             window.innerWidth,
             window.innerHeight,
@@ -52,7 +58,7 @@ export class OutlineEffect {
         const effectScene = new Scene();
         const renderPass = new RenderPass(effectScene, camera);
 
-        renderPass.clearColor = new Color(0, 0, 0);
+        renderPass.clearColor = new Color(theme.outlineEffect.clearColor);
         renderPass.clearAlpha = 0;
         this.composer.addPass(renderPass);
 
@@ -67,8 +73,12 @@ export class OutlineEffect {
         this.outlinePass.edgeStrength = 10;
         this.outlinePass.pulsePeriod = 0;
 
-        this.outlinePass.visibleEdgeColor.set(new Color(0xc2883d));
-        this.outlinePass.hiddenEdgeColor.set(new Color(0xc2883d));
+        this.outlinePass.visibleEdgeColor.set(
+            new Color(theme.outlineEffect.visibleEdgeColor),
+        );
+        this.outlinePass.hiddenEdgeColor.set(
+            new Color(theme.outlineEffect.hiddenEdgeColor),
+        );
         this.composer.addPass(this.outlinePass);
 
         const outputPass = new OutputPass();

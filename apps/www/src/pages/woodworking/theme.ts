@@ -12,6 +12,15 @@ export const ThemeLight: ITheme = {
         size: 100,
         divisions: 100,
     },
+    outlineEffect: {
+        clearColor: '#000000',
+        visibleEdgeColor: 0xc2883d,
+        hiddenEdgeColor: 0xc2883d,
+    },
+    edges: {
+        color: '#222222',
+        lineWidth: 3,
+    },
 };
 export const ThemeDark: ITheme = {
     world: {
@@ -24,6 +33,15 @@ export const ThemeDark: ITheme = {
         opacity: 0.2,
         size: 100,
         divisions: 100,
+    },
+    outlineEffect: {
+        clearColor: '#000000',
+        visibleEdgeColor: 0xc2883d,
+        hiddenEdgeColor: 0xc2883d,
+    },
+    edges: {
+        color: '#222222',
+        lineWidth: 3,
     },
 };
 

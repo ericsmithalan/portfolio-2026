@@ -10,6 +10,7 @@ import {
 } from 'three';
 import { disposeGeometry, disposeObject } from '@/utils';
 import { ObjectUserData } from './ObjectUserData';
+import { ITheme } from '@/interface';
 
 export class Edges {
     edgeGroup: Group;
@@ -27,7 +28,7 @@ export class Edges {
         return edge;
     }
 
-    add(mesh: Mesh) {
+    add(mesh: Mesh, theme: ITheme) {
         mesh.updateMatrixWorld();
         let line: LineSegments;
 
@@ -41,17 +42,28 @@ export class Edges {
 
         line = new LineSegments(
             edges,
-            new LineBasicMaterial({ color: 'black', linewidth: 3 }),
+            new LineBasicMaterial({
+                color: theme.edges.color,
+                linewidth: theme.edges.lineWidth,
+            }),
         );
         line.name = `${mesh.name}__edge`;
-        line.userData = new ObjectUserData(null, null, {
-            objectId: mesh.id,
-            edgeId: line.id,
-        });
-        mesh.userData = new ObjectUserData(null, null, {
-            objectId: mesh.id,
-            edgeId: line.id,
-        });
+        line.userData = new ObjectUserData(
+            null,
+            {
+                objectId: mesh.id,
+                edgeId: line.id,
+            },
+            null,
+        );
+        mesh.userData = new ObjectUserData(
+            null,
+            {
+                objectId: mesh.id,
+                edgeId: line.id,
+            },
+            null,
+        );
 
         // line.position.x = wp.x;
         // line.position.y = wp.y;

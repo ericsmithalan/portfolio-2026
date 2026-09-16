@@ -13,7 +13,6 @@ export interface ITransformEvent {
 export class Transform extends EventDispatcher<ITransformEvent> {
     private readonly controls: TransformControls;
     private readonly scene: Scene;
-    private readonly camera: Camera;
 
     private enabled: boolean = false;
     private _mode: TransformMode = 'translate';
@@ -25,7 +24,6 @@ export class Transform extends EventDispatcher<ITransformEvent> {
         super();
 
         this.scene = scene;
-        this.camera = camera;
 
         this.controls = new TransformControls(camera, domElement);
         this.helper = this.controls.getHelper();
@@ -35,7 +33,7 @@ export class Transform extends EventDispatcher<ITransformEvent> {
 
     private init() {
         this.helper.name = 'Transform Helper';
-        this.helper.userData = new ObjectUserData(null, { selectable: true });
+        this.helper.userData = new ObjectUserData({ selectable: true });
 
         this.scene.add(this.helper);
 

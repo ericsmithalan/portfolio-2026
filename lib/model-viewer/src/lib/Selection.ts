@@ -10,6 +10,7 @@ import {
 
 import { SelectMode } from '@/types';
 import { ObjectUserData, OutlineEffect } from '.';
+import { ITheme } from '@/interface';
 
 export interface ISelectionEvent {
     change: {
@@ -40,6 +41,7 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
         scene: Scene,
         camera: Camera,
         renderer: WebGLRenderer,
+        theme: ITheme,
     ) {
         super();
 
@@ -51,7 +53,7 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
         this.raycaster.setFromCamera(this.mouse, this.camera);
 
         this.registerEvents();
-        this.borderEffect = new OutlineEffect(scene, renderer, camera);
+        this.borderEffect = new OutlineEffect(scene, renderer, camera, theme);
     }
 
     get mode() {

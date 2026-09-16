@@ -30,9 +30,13 @@ export const Viewer: FC<ViewerProps> = ({
         const canvas = canvasRef?.current;
         let vp: Viewport;
 
-        const callasync = async () => {
+        if (!theme) {
+            theme = ThemeDark;
+        }
+
+        const callasync = async (theme: ITheme) => {
             if (modelUrl) {
-                await vp.loadModel(modelUrl).catch((e) => {
+                await vp.loadModel(modelUrl, theme).catch((e) => {
                     console.log(e);
                 });
             }
@@ -57,15 +61,11 @@ export const Viewer: FC<ViewerProps> = ({
         };
 
         if (canvas) {
-            if (!theme) {
-                theme = ThemeDark;
-            }
-
             vp = new Viewport(canvas, isMobile, theme, envUrl);
             vp.addEventListener('loading', load);
             vp.addEventListener('modelChanged', changed);
             vp.addEventListener('selectionChanged', selectionChanve);
-            callasync();
+            callasync(theme);
         }
         return () => {
             vp.removeEventListener('loading', load);
