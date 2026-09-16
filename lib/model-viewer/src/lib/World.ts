@@ -48,6 +48,7 @@ export class World extends EventDispatcher<IWorldEvent> {
         canvas: HTMLCanvasElement,
         isMobile: boolean,
         showStats: boolean,
+        envUrl?: string,
     ) {
         super();
 
@@ -99,7 +100,7 @@ export class World extends EventDispatcher<IWorldEvent> {
             this.gizmo.attachControls(this.orbitControls);
         }
 
-        this.lights = new Lights(this.scene);
+        this.lights = new Lights(this.scene, envUrl);
         this.floor = new Floor(this.scene);
         this.grid = new Grid(this.scene);
 

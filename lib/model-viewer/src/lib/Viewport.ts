@@ -38,11 +38,11 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     clock = new Clock();
     animating: boolean = false;
 
-    constructor(canvas: HTMLCanvasElement, isMobile: boolean) {
+    constructor(canvas: HTMLCanvasElement, isMobile: boolean, envUrl?: string) {
         super();
 
         this.isMobile = isMobile;
-        this.world = new World(canvas, isMobile, false);
+        this.world = new World(canvas, isMobile, false, envUrl);
         this.selection = isMobile
             ? null
             : new Selection(
@@ -224,7 +224,7 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     async loadModel(modelUrl: string) {
         this.dispatchEvent({ type: 'loading', value: true });
 
-        const model = await loadModel(modelUrl, this);
+        const model = await loadModel(modelUrl, this, this.isMobile);
 
         if (model.object) {
             fitCameraToObject(

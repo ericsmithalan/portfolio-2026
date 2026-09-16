@@ -1,42 +1,12 @@
 import {
-    AmbientLight,
     DirectionalLight,
     DirectionalLightHelper,
-    PMREMGenerator,
     Scene,
-    WebGLRenderer,
     EquirectangularReflectionMapping,
     Vector3,
     Object3D,
 } from 'three';
 import { HDRLoader } from 'three/examples/jsm/Addons.js';
-
-// ref for lumens: http://www.power-sure.com/lumens.htm
-const bulbLuminousPowers: Record<string, number> = {
-    '110000 lm (1000W)': 110000,
-    '3500 lm (300W)': 3500,
-    '1700 lm (100W)': 1700,
-    '800 lm (60W)': 800,
-    '400 lm (40W)': 400,
-    '180 lm (25W)': 180,
-    '20 lm (4W)': 20,
-    Off: 0,
-};
-
-// ref for solar irradiances: https://en.wikipedia.org/wiki/Lux
-const hemiLuminousIrradiances: Record<string, number> = {
-    '0.0001 lx (Moonless Night)': 0.0001,
-    '0.002 lx (Night Airglow)': 0.002,
-    '0.5 lx (Full Moon)': 0.5,
-    '3.4 lx (City Twilight)': 3.4,
-    '50 lx (Living Room)': 50,
-    '100 lx (Very Overcast)': 100,
-    '350 lx (Office Room)': 350,
-    '400 lx (Sunrise/Sunset)': 400,
-    '1000 lx (Overcast)': 1000,
-    '18000 lx (Daylight)': 18000,
-    '50000 lx (Direct Sun)': 50000,
-};
 
 export class Lights {
     public key: DirectionalLight;
@@ -47,7 +17,7 @@ export class Lights {
     helperRim: DirectionalLightHelper;
     helperFill: DirectionalLightHelper;
 
-    constructor(scene: Scene) {
+    constructor(scene: Scene, envUrl?: string) {
         this.key = new DirectionalLight(0xffeedd, 1.5);
         this.key.position.set(5, 8, 5);
         this.key.castShadow = true;
@@ -76,8 +46,8 @@ export class Lights {
         this.helperRim = new DirectionalLightHelper(this.rim, size, 0x70a0ff); //blue
         this.helperKey = new DirectionalLightHelper(this.key, size, 0xff6b6b); // red
 
-        scene.add(this.helperFill, this.helperRim, this.helperKey);
-        this.loadEnvironment(scene);
+        // scene.add(this.helperFill, this.helperRim, this.helperKey);
+        this.loadEnvironment(scene, envUrl);
     }
 
     public alignToModel(model: Object3D) {
@@ -93,14 +63,16 @@ export class Lights {
         this.helperRim.update();
     }
 
-    loadEnvironment(scene: Scene) {
-        const hdriLoader = new HDRLoader();
+    loadEnvironment(scene: Scene, envUrl?: string) {
+        if (envUrl) {
+            const hdriLoader = new HDRLoader();
 
-        hdriLoader.load('/env/studio1k.hdr', (texture) => {
-            texture.mapping = EquirectangularReflectionMapping;
-            scene.environment = texture;
-            scene.environmentIntensity = 0.4; // Keeps it subtle
-        });
+            hdriLoader.load(envUrl, (texture) => {
+                texture.mapping = EquirectangularReflectionMapping;
+                scene.environment = texture;
+                scene.environmentIntensity = 0.4; // Keeps it subtle
+            });
+        }
     }
 
     dispose() {

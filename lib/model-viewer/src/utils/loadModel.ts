@@ -10,6 +10,7 @@ const loader: GLTFLoader = new GLTFLoader();
 export const loadModel = (
     modelUrl: string,
     viewport: Viewport,
+    isMobile: boolean,
 ): Promise<IModel> => {
     return new Promise(async (resolve) => {
         if (modelUrl) {
