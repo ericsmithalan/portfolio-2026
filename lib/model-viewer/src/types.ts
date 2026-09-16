@@ -1,3 +1,5 @@
+export type ModelName =
+    'bunk' | 'case' | 'chair' | 'desk' | 'table' | 'toolbox' | 'twin';
 export type TransformMode = 'translate' | 'rotate' | 'scale';
 export type SelectMode = 'select' | 'edit';
 export type AnimationState = 'opened' | 'closed';

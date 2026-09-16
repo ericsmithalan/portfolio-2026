@@ -4,6 +4,7 @@ import {
     EventDispatcher,
     LoopOnce,
     Object3D,
+    Vector3,
 } from 'three';
 import { IModel } from '@/interface';
 import { AnimationState } from '@/types';
@@ -80,9 +81,12 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         if (value) {
             this.world.scene.add(value.object);
             this.world.scene.add(value.edges.edgeGroup);
+            this.world.lights.alignToModel(value.object);
+
             // value.edges.edgeGroup.position.copy(value.object.position);
             value.edges.edgeGroup.visible = this.edges;
             this.setupExploder(value);
+
             if (value.animations) {
                 this.setupModelAnimations(value.object);
             } else {
@@ -232,6 +236,7 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         }
 
         this.model = model;
+
         this.dispatchEvent({ type: 'loading', value: false });
     }
 

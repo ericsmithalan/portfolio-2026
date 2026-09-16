@@ -5,9 +5,11 @@ import { isMobile } from 'react-device-detect';
 import './style.scss';
 import { IModel } from '@/interface';
 import { Object3D } from 'three';
+import { ModelName } from './types';
 
 export interface ViewerProps {
     children?: React.ReactNode;
+    modelName?: ModelName;
     onLoaded?: (type: string, value: boolean) => void;
     onModelChange?: (type: string, model: IModel | null) => void;
     onPartSelectionChange?: (type: string, selection: Object3D | null) => void;
@@ -17,6 +19,7 @@ export const Viewer: FC<ViewerProps> = ({
     onLoaded,
     onModelChange,
     onPartSelectionChange,
+    modelName,
 }: ViewerProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -25,9 +28,13 @@ export const Viewer: FC<ViewerProps> = ({
         let vp: Viewport;
 
         const callasync = async () => {
-            await vp.loadModel('/models/desk/desk1.glb').catch((e) => {
-                console.log(e);
-            });
+            if (modelName) {
+                await vp
+                    .loadModel(`/models/${modelName}/model.glb`)
+                    .catch((e) => {
+                        console.log(e);
+                    });
+            }
         };
 
         const selectionChanve = (e: IViewportEvent['selectionChanged']) => {

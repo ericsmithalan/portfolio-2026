@@ -5,5 +5,5 @@ export {
     type IImageResource,
     type IModel,
 } from '@/interface';
-export { type IconName } from '@/types';
+export { type IconName, type ModelName } from '@/types';
 export { Viewport, type IViewportEvent } from '@/lib';

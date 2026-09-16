@@ -5,6 +5,7 @@ export const WoodworkingPage = () => {
     return (
         <div className="viewer-page">
             <Viewer
+                modelName="case"
                 onModelChanged={(type: string, value: boolean) => {
                     console.log('CHANCED', type, value);
                 }}
