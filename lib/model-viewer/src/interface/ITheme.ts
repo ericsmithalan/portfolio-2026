@@ -18,6 +18,10 @@ export interface ITheme {
         clearColor: ColorRepresentation;
         visibleEdgeColor: ColorRepresentation;
         hiddenEdgeColor: ColorRepresentation;
+        edgeGlow: number;
+        edgeThickness: number;
+        edgeStrength: number;
+        pulsePeriod: number;
     };
     edges: {
         color: ColorRepresentation;

@@ -48,22 +48,19 @@ export class Edges {
             }),
         );
         line.name = `${mesh.name}__edge`;
-        line.userData = new ObjectUserData(
-            null,
-            {
+        line.userData = new ObjectUserData({
+            edgeInfo: {
                 objectId: mesh.id,
                 edgeId: line.id,
             },
-            null,
-        );
-        mesh.userData = new ObjectUserData(
-            null,
-            {
+        });
+
+        mesh.userData = new ObjectUserData({
+            edgeInfo: {
                 objectId: mesh.id,
                 edgeId: line.id,
             },
-            null,
-        );
+        });
 
         // line.position.x = wp.x;
         // line.position.y = wp.y;

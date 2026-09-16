@@ -52,7 +52,9 @@ export const loadModel = (
                         }
 
                         object.userData = new ObjectUserData({
-                            selectable: true,
+                            viewportInfo: {
+                                selectable: true,
+                            },
                         });
 
                         children.push(object);
@@ -96,11 +98,9 @@ export const loadModel = (
                     ];
                 };
 
-                model.userData = new ObjectUserData(
-                    { selectable: true },
-                    null,
-                    null,
-                );
+                model.userData = new ObjectUserData({
+                    viewportInfo: { selectable: true },
+                });
 
                 edges.edgeGroup.updateMatrixWorld();
                 model.updateMatrixWorld();

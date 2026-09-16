@@ -1,22 +1,21 @@
 import {
-    IEdgeInfo,
+    IUserDataEdgeInfo,
     IObjectUserData,
-    ITextureInfo,
-    IViewportInfo,
+    IUserDataTextureInfo,
+    IUserDataViewportInfo,
+    IOutliner,
 } from '@/interface';
 
 export class ObjectUserData implements IObjectUserData {
-    edgeInfo: IEdgeInfo | null;
-    textureInfo: ITextureInfo | null;
-    viewportInfo: IViewportInfo | null;
+    edgeInfo: IUserDataEdgeInfo | null;
+    textureInfo: IUserDataTextureInfo | null;
+    viewportInfo: IUserDataViewportInfo | null;
+    outlinerInfo: IOutliner | null;
 
-    constructor(
-        viewportInfo: IViewportInfo | null,
-        edgeInfo: IEdgeInfo | null = null,
-        textureInfo: ITextureInfo | null = null,
-    ) {
-        this.edgeInfo = edgeInfo;
-        this.textureInfo = textureInfo;
-        this.viewportInfo = viewportInfo;
+    constructor(data: Partial<IObjectUserData>) {
+        this.edgeInfo = data.edgeInfo || null;
+        this.textureInfo = data.textureInfo || null;
+        this.viewportInfo = data.viewportInfo || null;
+        this.outlinerInfo = data.outlinerInfo || null;
     }
 }

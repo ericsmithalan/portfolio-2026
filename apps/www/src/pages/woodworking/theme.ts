@@ -13,9 +13,13 @@ export const ThemeLight: ITheme = {
         divisions: 100,
     },
     outlineEffect: {
-        clearColor: '#000000',
+        clearColor: 0xc2883d,
         visibleEdgeColor: 0xc2883d,
         hiddenEdgeColor: 0xc2883d,
+        edgeGlow: 0,
+        edgeThickness: 3,
+        edgeStrength: 10,
+        pulsePeriod: 0,
     },
     edges: {
         color: '#222222',
@@ -38,6 +42,10 @@ export const ThemeDark: ITheme = {
         clearColor: '#000000',
         visibleEdgeColor: 0xc2883d,
         hiddenEdgeColor: 0xc2883d,
+        edgeGlow: 0,
+        edgeThickness: 3,
+        edgeStrength: 10,
+        pulsePeriod: 0,
     },
     edges: {
         color: '#222222',

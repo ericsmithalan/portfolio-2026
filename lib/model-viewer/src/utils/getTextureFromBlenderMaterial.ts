@@ -8,7 +8,6 @@ export const getTextureFromBlenderMaterial = (
     const wood = material.name?.indexOf('wood') !== -1;
     const primary = material.name?.indexOf('primary') !== -1;
     const contrast = material.name?.indexOf('contrast') !== -1;
-    const fabric = material.name?.indexOf('fabric') !== -1;
     const metal = material.name?.indexOf('metal') !== -1;
     const hardware = material.name?.indexOf('hardware') !== -1;
 
@@ -38,13 +37,6 @@ export const getTextureFromBlenderMaterial = (
         };
     }
 
-    if (fabric) {
-        return {
-            type: 'fabric',
-            texture: DATA.fabricTextures[0],
-            formattedName: 'fabric',
-        };
-    }
     if (metal || hardware) {
         return {
             type: 'metal',

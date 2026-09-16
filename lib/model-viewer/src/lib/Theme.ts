@@ -16,6 +16,10 @@ export const ThemeDark: ITheme = {
         clearColor: '#000000',
         visibleEdgeColor: 0xc2883d,
         hiddenEdgeColor: 0xc2883d,
+        edgeGlow: 0,
+        edgeThickness: 2,
+        edgeStrength: 10,
+        pulsePeriod: 0,
     },
     edges: {
         color: 'black',

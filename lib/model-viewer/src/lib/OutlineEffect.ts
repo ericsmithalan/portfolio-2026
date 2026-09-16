@@ -68,10 +68,10 @@ export class OutlineEffect {
             camera,
         );
 
-        this.outlinePass.edgeGlow = 0;
-        this.outlinePass.edgeThickness = 2;
-        this.outlinePass.edgeStrength = 10;
-        this.outlinePass.pulsePeriod = 0;
+        this.outlinePass.edgeGlow = theme.outlineEffect.edgeGlow;
+        this.outlinePass.edgeThickness = theme.outlineEffect.edgeThickness;
+        this.outlinePass.edgeStrength = theme.outlineEffect.edgeStrength;
+        this.outlinePass.pulsePeriod = theme.outlineEffect.pulsePeriod;
 
         this.outlinePass.visibleEdgeColor.set(
             new Color(theme.outlineEffect.visibleEdgeColor),

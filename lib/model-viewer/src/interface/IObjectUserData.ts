@@ -1,18 +1,21 @@
-export interface IEdgeInfo {
+import { IOutliner } from './IOutliner';
+
+export interface IUserDataEdgeInfo {
     objectId: number;
     edgeId: number;
 }
 
-export interface ITextureInfo {
+export interface IUserDataTextureInfo {
     textureId: number | null;
 }
 
-export interface IViewportInfo {
+export interface IUserDataViewportInfo {
     selectable: boolean;
 }
 
 export interface IObjectUserData {
-    edgeInfo: IEdgeInfo | null;
-    textureInfo: ITextureInfo | null;
-    viewportInfo: IViewportInfo | null;
+    outlinerInfo: IOutliner | null;
+    edgeInfo: IUserDataEdgeInfo | null;
+    textureInfo: IUserDataTextureInfo | null;
+    viewportInfo: IUserDataViewportInfo | null;
 }
