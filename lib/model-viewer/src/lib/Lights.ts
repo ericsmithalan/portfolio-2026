@@ -95,9 +95,8 @@ export class Lights {
 
     loadEnvironment(scene: Scene) {
         const hdriLoader = new HDRLoader();
-        // const hdriTxtr = await hdriLoader.loadAsync(hdr);
 
-        hdriLoader.load('/env/studio2k.hdr', (texture) => {
+        hdriLoader.load('/env/studio1k.hdr', (texture) => {
             texture.mapping = EquirectangularReflectionMapping;
             scene.environment = texture;
             scene.environmentIntensity = 0.4; // Keeps it subtle

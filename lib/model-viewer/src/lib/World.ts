@@ -99,7 +99,7 @@ export class World extends EventDispatcher<IWorldEvent> {
             this.gizmo.attachControls(this.orbitControls);
         }
 
-        this.lights = new Lights(this.scene, this.renderer);
+        this.lights = new Lights(this.scene);
         this.floor = new Floor(this.scene);
         this.grid = new Grid(this.scene);
 
