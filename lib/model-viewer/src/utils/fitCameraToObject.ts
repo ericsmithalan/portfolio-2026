@@ -1,5 +1,5 @@
-import { Box3, Object3D, PerspectiveCamera, Vector3 } from "three";
-import { OrbitControls } from "three/examples/jsm/Addons.js";
+import { Box3, Object3D, PerspectiveCamera, Vector3 } from 'three';
+import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
 const size = new Vector3();
 const center = new Vector3();
@@ -20,7 +20,8 @@ export const fitCameraToObject = (
     box.getCenter(center);
 
     const maxSize = Math.max(size.x, size.y, size.z);
-    const fitHeightDistance = maxSize / (2 * Math.atan((Math.PI * camera.fov) / 360));
+    const fitHeightDistance =
+        maxSize / (2 * Math.atan((Math.PI * camera.fov) / 360));
     const fitWidthDistance = fitHeightDistance / camera.aspect;
     const distance = fitOffset * Math.max(fitHeightDistance, fitWidthDistance);
 

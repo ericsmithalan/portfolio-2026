@@ -11,8 +11,7 @@ import {
     WebGLRenderer,
 } from 'three';
 import { ViewportGizmo } from 'three-viewport-gizmo';
-import { OrbitControls, RGBELoader } from 'three/examples/jsm/Addons.js';
-import hdr from '../assets/env/1a.hdr';
+import { HDRLoader, OrbitControls } from 'three/examples/jsm/Addons.js';
 
 import { IScreenSize } from '@/interface';
 import { disposeObject } from '@/utils';
@@ -99,11 +98,10 @@ export class World extends EventDispatcher<IWorldEvent> {
             this.gizmo.attachControls(this.orbitControls);
         }
 
-        this.lights = new Lights();
-        this.floor = new Floor();
-        this.grid = new Grid();
+        this.lights = new Lights(this.scene, this.renderer);
+        this.floor = new Floor(this.scene);
+        this.grid = new Grid(this.scene);
 
-        this.scene.add(this.lights.dirLight, this.floor, this.grid);
         this.registerEvents();
     }
 
@@ -142,20 +140,6 @@ export class World extends EventDispatcher<IWorldEvent> {
 
     private unregisterEvents() {
         window.removeEventListener('resize', () => this.resize());
-    }
-
-    async loadEnvironment() {
-        const pmremGenerator = new PMREMGenerator(this.renderer);
-
-        const hdriLoader = new RGBELoader();
-        const texture = await hdriLoader.loadAsync(hdr);
-
-        const env = pmremGenerator.fromEquirectangular(texture).texture;
-        this.scene.environment = env;
-
-        env.dispose();
-        texture.dispose();
-        pmremGenerator.dispose();
     }
 
     setSize() {

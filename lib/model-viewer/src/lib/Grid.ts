@@ -4,12 +4,14 @@ import {
     LineBasicMaterial,
     LineSegments,
     Object3D,
+    Scene,
     Vector3,
 } from 'three';
 import { disposeGeometry, disposeMaterial, disposeObject } from '@/utils';
 
 export class Grid extends Object3D {
     constructor(
+        scene: Scene,
         size: number = 100,
         divisions: number = 100,
         color: ColorRepresentation = '#555555',
@@ -54,6 +56,8 @@ export class Grid extends Object3D {
         disposeGeometry(hLine);
         disposeGeometry(vLine);
         disposeMaterial(material);
+
+        scene.add(this);
     }
 
     dispose() {

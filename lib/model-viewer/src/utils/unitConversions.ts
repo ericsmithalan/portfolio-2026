@@ -1,9 +1,11 @@
-import { Vector3 } from "three";
+import { Vector3 } from 'three';
 
 const METERS_TO_INCHES = 39.3700787402;
 
 export const convertMeterToInch = (vector: Vector3): Vector3 => {
-    const arr: Array<number> = [vector.x, vector.y, vector.z].sort((a, b) => a - b);
+    const arr: Array<number> = [vector.x, vector.y, vector.z].sort(
+        (a, b) => a - b,
+    );
 
     const thickness = arr[0];
     const width = arr[1];
@@ -30,7 +32,9 @@ export const convertMeterToInchRaw = (vector: Vector3): Vector3 => {
 
 export const getLengthWidthThickness = (vector: Vector3) => {
     // board feet = length (ft) × width (in) × thickness (in) / 12
-    const arr: Array<number> = [vector.x, vector.y, vector.z].sort((a, b) => a - b);
+    const arr: Array<number> = [vector.x, vector.y, vector.z].sort(
+        (a, b) => a - b,
+    );
 
     const thickness = arr[0];
     const width = arr[1];
@@ -45,7 +49,9 @@ export const getLengthWidthThickness = (vector: Vector3) => {
 
 export const convertToBordFeet = (vector: Vector3) => {
     // board feet = length (ft) × width (in) × thickness (in) / 12
-    const arr: Array<number> = [vector.x, vector.y, vector.z].sort((a, b) => a - b);
+    const arr: Array<number> = [vector.x, vector.y, vector.z].sort(
+        (a, b) => a - b,
+    );
 
     const thickness = arr[0];
     const width = arr[1];
@@ -72,7 +78,10 @@ interface Vector3Fraction {
     z: Fraction;
 }
 
-export const toFraction = (vector: Vector3, lowestD: number = 32): Vector3Fraction => {
+export const toFraction = (
+    vector: Vector3,
+    lowestD: number = 32,
+): Vector3Fraction => {
     const vect = convertMeterToInch(vector);
     return {
         x: getFraction(vect.x, lowestD),
@@ -91,7 +100,7 @@ interface Fraction {
 
 const getFraction = (value: number, denominator: number = 32): Fraction => {
     const integer = Math.floor(value);
-    let str = "";
+    let str = '';
     let numerator = Math.floor(((value - integer) * 1000) / denominator + 0.5);
 
     while (numerator % 2 == 0 && denominator % 2 == 0) {

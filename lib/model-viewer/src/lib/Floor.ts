@@ -1,8 +1,8 @@
-import { Mesh, PlaneGeometry, ShadowMaterial } from 'three';
+import { Mesh, PlaneGeometry, Scene, ShadowMaterial } from 'three';
 import { disposeGeometry, disposeMaterial, disposeObject } from '@/utils';
 
 export class Floor extends Mesh {
-    constructor() {
+    constructor(scene: Scene) {
         super();
 
         const material = new ShadowMaterial();
@@ -21,6 +21,8 @@ export class Floor extends Mesh {
 
         disposeMaterial(material);
         disposeGeometry(geometry);
+
+        scene.add(this);
     }
 
     dispose() {

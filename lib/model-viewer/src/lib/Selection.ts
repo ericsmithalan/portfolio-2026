@@ -86,10 +86,7 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
                 this.borderEffect.objects = [];
             }
 
-            this.dispatchEvent({
-                type: 'change',
-                object: value,
-            });
+            this.dispatchEvent({ type: 'change', object: value });
         }
     }
 

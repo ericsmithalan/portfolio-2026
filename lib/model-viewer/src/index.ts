@@ -3,6 +3,7 @@ export {
     type IOutliner,
     type ITexture,
     type IImageResource,
+    type IModel,
 } from '@/interface';
 export { type IconName } from '@/types';
-export { Viewport } from '@/lib';
+export { Viewport, type IViewportEvent } from '@/lib';

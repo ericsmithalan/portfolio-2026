@@ -5,8 +5,11 @@ export const WoodworkingPage = () => {
     return (
         <div className="viewer-page">
             <Viewer
-                onLoaded={(viewport: Viewport) => {
-                    // console.log('LOADED', viewport.model);
+                onModelChanged={(type: string, value: boolean) => {
+                    console.log('CHANCED', type, value);
+                }}
+                onLoaded={(type: string, value: boolean) => {
+                    console.log('LOADED', type, value);
                 }}
             />
         </div>

@@ -14,6 +14,7 @@ import {
 import { AnimationState } from '@/types';
 import { getLengthWidthThickness } from '@/utils';
 import { Edges } from './Edges';
+
 export interface IExploderEvent {
     animated: { type: string; state: AnimationState; running: boolean };
 }

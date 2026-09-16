@@ -5,16 +5,17 @@ import {
     LoopOnce,
     Object3D,
 } from 'three';
-import { IOutliner, IModel } from '@/interface';
+import { IModel } from '@/interface';
 import { AnimationState } from '@/types';
 import { disposeObject, fitCameraToObject, loadModel } from '@/utils';
 import { Exploder, IExploderEvent } from './Exploder';
-import { Selection } from './Selection';
+import { ISelectionEvent, Selection } from './Selection';
 import { IWorldEvent, World } from './World';
 
 export interface IViewportEvent {
     loading: { type: string; value: boolean };
     modelChanged: { type: string; model: IModel | null };
+    selectionChanged: { type: string; selection: Object3D | null };
     modelAnimated: {
         type: string;
         running: boolean;
@@ -49,7 +50,7 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
                   this.world.camera,
                   this.world.renderer,
               );
-
+        this.setEvents();
         this.init();
     }
 
@@ -237,8 +238,6 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     async init() {
         this.world.renderer.setAnimationLoop(() => this.animate());
         this.world.addEventListener('resize', this.resize);
-
-        await this.world.loadEnvironment();
     }
 
     private resize(e: IWorldEvent['resize']) {
@@ -272,9 +271,32 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         this.world.logStats();
     };
 
-    dispose() {
-        this.world.removeEventListener('resize', this.resize);
+    private handleSelectionChange = (e: ISelectionEvent['change']) => {
+        this.dispatchEvent({
+            type: 'selectionChanged',
+            selection: e.object,
+        });
+    };
 
+    private setEvents = () => {
+        this.selection?.addEventListener('change', this.handleSelectionChange);
+    };
+
+    private removeEvents = () => {
+        this.selection?.removeEventListener(
+            'change',
+            this.handleSelectionChange,
+        );
+        this.world.removeEventListener('resize', this.resize);
+        this.selection?.removeEventListener(
+            'change',
+            this.handleSelectionChange,
+        );
+        this.disposeExploder();
+    };
+
+    dispose() {
+        this.removeEvents();
         if (this.model) {
             disposeObject(this.model.object);
             this.model.edges.dispose();

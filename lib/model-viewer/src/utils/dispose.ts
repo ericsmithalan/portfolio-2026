@@ -6,7 +6,7 @@ import {
     MeshStandardMaterial,
     Object3D,
     Scene,
-} from "three";
+} from 'three';
 
 export const disposeObject = (obj?: Object3D | null) => {
     if (obj) {

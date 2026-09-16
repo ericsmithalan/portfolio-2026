@@ -56,14 +56,14 @@ export const getPopupPosition = (
     target: IElementCoordinate,
     popup: IElementCoordinate,
     container: IElementCoordinate,
-    placement: "side" | "bottom",
+    placement: 'side' | 'bottom',
 ) => {
     let x = 0;
     let y = 0;
 
     const position = availablePositions(target, popup, container);
 
-    if (placement === "bottom") {
+    if (placement === 'bottom') {
         if (position.bottom) {
             x = target.x;
             y = target.y + target.height;
@@ -78,7 +78,7 @@ export const getPopupPosition = (
         // if (!position.right) {
         //     x = container.width - popup.width;
         // }
-    } else if (placement === "side") {
+    } else if (placement === 'side') {
         if (position.right) {
             x = target.x + target.width;
             y = target.y;
