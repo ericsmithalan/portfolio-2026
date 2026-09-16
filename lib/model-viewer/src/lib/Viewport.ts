@@ -5,7 +5,7 @@ import {
     LoopOnce,
     Object3D,
 } from 'three';
-import { IModel } from '@/interface';
+import { IModel, ITheme } from '@/interface';
 import { AnimationState } from '@/types';
 import { disposeObject, fitCameraToObject, loadModel } from '@/utils';
 import { Exploder, IExploderEvent } from './Exploder';
@@ -38,11 +38,16 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     clock = new Clock();
     animating: boolean = false;
 
-    constructor(canvas: HTMLCanvasElement, isMobile: boolean, envUrl?: string) {
+    constructor(
+        canvas: HTMLCanvasElement,
+        isMobile: boolean,
+        theme: ITheme,
+        envUrl?: string,
+    ) {
         super();
 
         this.isMobile = isMobile;
-        this.world = new World(canvas, isMobile, false, envUrl);
+        this.world = new World(canvas, isMobile, false, theme, envUrl);
         this.selection = isMobile
             ? null
             : new Selection(

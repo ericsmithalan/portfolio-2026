@@ -1,15 +1,16 @@
-import { IViewportEvent, Viewport } from '@/lib';
+import { IViewportEvent, ThemeDark, Viewport } from '@/lib';
 import { FC, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import { isMobile } from 'react-device-detect';
 import './style.scss';
-import { IModel } from '@/interface';
+import { IModel, ITheme } from '@/interface';
 import { Object3D } from 'three';
 
 export interface ViewerProps {
     children?: React.ReactNode;
     modelUrl?: string;
     envUrl?: string;
+    theme?: ITheme;
     onLoaded?: (type: string, value: boolean) => void;
     onModelChange?: (type: string, model: IModel | null) => void;
     onPartSelectionChange?: (type: string, selection: Object3D | null) => void;
@@ -20,6 +21,7 @@ export const Viewer: FC<ViewerProps> = ({
     onModelChange,
     onPartSelectionChange,
     modelUrl,
+    theme,
     envUrl,
 }: ViewerProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -55,7 +57,11 @@ export const Viewer: FC<ViewerProps> = ({
         };
 
         if (canvas) {
-            vp = new Viewport(canvas, isMobile, envUrl);
+            if (!theme) {
+                theme = ThemeDark;
+            }
+
+            vp = new Viewport(canvas, isMobile, theme, envUrl);
             vp.addEventListener('loading', load);
             vp.addEventListener('modelChanged', changed);
             vp.addEventListener('selectionChanged', selectionChanve);

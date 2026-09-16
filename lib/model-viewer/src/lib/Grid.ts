@@ -1,6 +1,5 @@
 import {
     BufferGeometry,
-    ColorRepresentation,
     LineBasicMaterial,
     LineSegments,
     Object3D,
@@ -8,39 +7,37 @@ import {
     Vector3,
 } from 'three';
 import { disposeGeometry, disposeMaterial, disposeObject } from '@/utils';
+import { ITheme } from '@/interface';
 
 export class Grid extends Object3D {
-    constructor(
-        scene: Scene,
-        size: number = 100,
-        divisions: number = 100,
-        color: ColorRepresentation = '#555555',
-    ) {
+    constructor(scene: Scene, theme: ITheme) {
         super();
 
         this.name = 'Grid';
 
+        const { grid } = theme;
+
         const hpoints: Array<Vector3> = [];
         const vpoints: Array<Vector3> = [];
 
-        const stepHeight = (2 * size) / divisions;
-        const stepWidth = (2 * size) / divisions;
+        const stepHeight = (2 * grid.size) / grid.divisions;
+        const stepWidth = (2 * grid.divisions) / grid.divisions;
 
         const material = new LineBasicMaterial({
-            color: color,
-            opacity: 0.2,
+            color: grid.lineColor,
+            opacity: grid.opacity,
         });
 
         // Add horizontal lines
-        for (var i = -size; i <= size; i += stepHeight) {
-            hpoints.push(new Vector3(-size, i, 0));
-            hpoints.push(new Vector3(size, i, 0));
+        for (var i = -grid.size; i <= grid.size; i += stepHeight) {
+            hpoints.push(new Vector3(-grid.size, i, 0));
+            hpoints.push(new Vector3(grid.size, i, 0));
         }
 
         // Add vertical lines
-        for (var i = -size; i <= size; i += stepWidth) {
-            vpoints.push(new Vector3(i, -size, 0));
-            vpoints.push(new Vector3(i, size, 0));
+        for (var i = -grid.size; i <= grid.size; i += stepWidth) {
+            vpoints.push(new Vector3(i, -grid.size, 0));
+            vpoints.push(new Vector3(i, grid.size, 0));
         }
 
         const hLine = new BufferGeometry().setFromPoints(hpoints);

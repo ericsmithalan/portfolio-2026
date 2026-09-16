@@ -4,6 +4,8 @@ export {
     type ITexture,
     type IImageResource,
     type IModel,
+    type ITheme,
+    type ThemeStyle,
 } from '@/interface';
 export { type IconName, type ModelName } from '@/types';
 export { Viewport, type IViewportEvent } from '@/lib';

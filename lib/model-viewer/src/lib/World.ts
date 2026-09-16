@@ -2,19 +2,17 @@ import {
     ACESFilmicToneMapping,
     Color,
     EventDispatcher,
-    Fog,
-    NeutralToneMapping,
-    PCFSoftShadowMap,
+    FogExp2,
+    PCFShadowMap,
     PerspectiveCamera,
-    PMREMGenerator,
     Scene,
     SRGBColorSpace,
     WebGLRenderer,
 } from 'three';
 import { ViewportGizmo } from 'three-viewport-gizmo';
-import { HDRLoader, OrbitControls } from 'three/examples/jsm/Addons.js';
+import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
-import { IScreenSize } from '@/interface';
+import { IScreenSize, ITheme } from '@/interface';
 import { disposeObject } from '@/utils';
 import { Floor } from './Floor';
 import { Grid } from './Grid';
@@ -48,16 +46,22 @@ export class World extends EventDispatcher<IWorldEvent> {
         canvas: HTMLCanvasElement,
         isMobile: boolean,
         showStats: boolean,
+        theme: ITheme,
         envUrl?: string,
     ) {
         super();
+
+        const worldTheme = theme.world;
 
         this.setSize();
         this.showStats = showStats;
         this.scene = new Scene();
         this.scene.name = 'Scene';
-        this.scene.background = new Color('#222222');
-        this.scene.fog = new Fog(new Color('#222222'), 10, 30);
+        this.scene.background = new Color(worldTheme.backgroundColor);
+        this.scene.fog = new FogExp2(
+            new Color(worldTheme.fogColor),
+            worldTheme.fogDensity,
+        );
 
         this.camera = new PerspectiveCamera(40, this.size.aspect, 1, 50);
         this.camera.name = 'Camera';
@@ -71,12 +75,13 @@ export class World extends EventDispatcher<IWorldEvent> {
             antialias: true,
             alpha: true,
         });
+
         this.renderer.shadowMap.enabled = true;
         this.renderer.toneMapping = ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 1;
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(this.size.width, this.size.height);
-        this.renderer.shadowMap.type = PCFSoftShadowMap;
+        this.renderer.shadowMap.type = PCFShadowMap;
         this.renderer.outputColorSpace = SRGBColorSpace;
         this.renderer.autoClear = false;
 
@@ -102,7 +107,7 @@ export class World extends EventDispatcher<IWorldEvent> {
 
         this.lights = new Lights(this.scene, envUrl);
         this.floor = new Floor(this.scene);
-        this.grid = new Grid(this.scene);
+        this.grid = new Grid(this.scene, theme);
 
         this.registerEvents();
     }

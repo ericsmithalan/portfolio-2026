@@ -7,3 +7,4 @@ export * from './IScreenSize';
 export * from './IStat';
 export * from './ITexture';
 export * from './IObjectUserData';
+export * from './ITheme';
