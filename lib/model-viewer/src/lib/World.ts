@@ -1,4 +1,5 @@
 import {
+    ACESFilmicToneMapping,
     Color,
     EventDispatcher,
     Fog,
@@ -70,7 +71,7 @@ export class World extends EventDispatcher<IWorldEvent> {
             alpha: true,
         });
         this.renderer.shadowMap.enabled = true;
-        this.renderer.toneMapping = NeutralToneMapping;
+        this.renderer.toneMapping = ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 1;
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(this.size.width, this.size.height);

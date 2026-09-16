@@ -47,7 +47,7 @@ export class Lights {
     helperRim: DirectionalLightHelper;
     helperFill: DirectionalLightHelper;
 
-    constructor(scene: Scene, renderer: WebGLRenderer) {
+    constructor(scene: Scene) {
         this.key = new DirectionalLight(0xffeedd, 1.5);
         this.key.position.set(5, 8, 5);
         this.key.castShadow = true;
@@ -65,7 +65,7 @@ export class Lights {
         this.fill.position.set(-5, 4, 3);
 
         // 4. Back / Rim Light (Separates object from background, highlights edges)
-        this.rim = new DirectionalLight(0xffffff, 1.5);
+        this.rim = new DirectionalLight(0xffffff, 1);
         this.rim.position.set(0, 5, -5);
 
         scene.add(this.key, this.fill, this.rim);
@@ -100,7 +100,7 @@ export class Lights {
         hdriLoader.load('/env/studio2k.hdr', (texture) => {
             texture.mapping = EquirectangularReflectionMapping;
             scene.environment = texture;
-            scene.environmentIntensity = 0.55; // Keeps it subtle
+            scene.environmentIntensity = 0.4; // Keeps it subtle
         });
     }
 

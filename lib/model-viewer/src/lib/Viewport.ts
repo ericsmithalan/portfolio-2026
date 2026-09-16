@@ -4,7 +4,6 @@ import {
     EventDispatcher,
     LoopOnce,
     Object3D,
-    Vector3,
 } from 'three';
 import { IModel } from '@/interface';
 import { AnimationState } from '@/types';
@@ -42,6 +41,7 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     constructor(canvas: HTMLCanvasElement, isMobile: boolean) {
         super();
 
+        this.isMobile = isMobile;
         this.world = new World(canvas, isMobile, false);
         this.selection = isMobile
             ? null
