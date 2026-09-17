@@ -12,7 +12,7 @@ export const WoodworkingPage = () => {
         <div className="viewer-page">
             <Viewer
                 theme={getTheme('light')}
-                modelUserData={modelsUserData[0]}
+                modelUserData={modelsUserData[5]}
                 envUrl="/env/studio1k.hdr"
                 onModelChange={(type: string, value: Obj3D | null) => {
                     setModel(value);

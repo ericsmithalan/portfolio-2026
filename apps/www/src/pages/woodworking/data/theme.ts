@@ -23,7 +23,7 @@ export const ThemeLight: ITheme = {
     },
     edges: {
         color: '#222222',
-        lineWidth: 3,
+        lineWidth: 1,
     },
 };
 
@@ -50,7 +50,7 @@ export const ThemeDark: ITheme = {
     },
     edges: {
         color: '#222222',
-        lineWidth: 3,
+        lineWidth: 1,
     },
 };
 

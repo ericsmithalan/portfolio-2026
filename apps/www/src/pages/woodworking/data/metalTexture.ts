@@ -18,7 +18,7 @@ const getMetalTextures = (): Array<ITexture> => {
     const url = '/textures/metal';
 
     return [
-        createTextureData(1, 'wood', 'none', 1, url, {
+        createTextureData(1, 'metal', 'none', 1, url, {
             ...settings,
             diffuse: true,
         }),
@@ -42,6 +42,10 @@ const getMetalTextures = (): Array<ITexture> => {
 };
 
 export const metalTextures = getMetalTextures();
+
 export const getMetalTexture = (name: string): ITexture => {
-    return metalTextures.find((item) => (item.name = name)) || metalTextures[0];
+    const txtr =
+        metalTextures.find((item) => item.name === name) || metalTextures[1];
+
+    return txtr;
 };

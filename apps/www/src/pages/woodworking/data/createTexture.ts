@@ -39,14 +39,14 @@ export const createTextureData = (
                 ? `${url}/${name}/${variant}-normal-2k.png`
                 : null,
             rough: options.rough
-                ? `${url}/${name}/${variant}-roughness-2k.png`
+                ? `${url}/${name}/${variant}-rough-2k.png`
                 : null,
             coat: options.coat ? `${url}/${name}/${variant}-coat-2k` : null,
             coatNormal: options.coatNormal
                 ? `${url}/${name}/${variant}-coatNormal-2k.png`
                 : null,
             coatRough: options.coatRough
-                ? `${url}/${name}/${variant}-coatRoughness-2k.png`
+                ? `${url}/${name}/${variant}-coatRough-2k.png`
                 : null,
             specular: options.specular
                 ? `${url}/${name}/${variant}-spec-2k.png`

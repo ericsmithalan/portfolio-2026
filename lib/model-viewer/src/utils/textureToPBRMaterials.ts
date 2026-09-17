@@ -1,6 +1,6 @@
 import { ITexture, IPBRTexture } from '@/interface';
 import { AppCache } from '@/lib';
-import { Material, MeshStandardMaterial, Texture } from 'three';
+import { Material, MeshPhysicalMaterial, Texture, Vector2 } from 'three';
 import { loadTexture } from './loadTexture';
 
 const cached = new AppCache<number, Material>();
@@ -31,15 +31,25 @@ export const textureToPBRMaterials = async (
         } else {
             const pbrs = await loadPBRs(texture.pbr);
 
-            material = new MeshStandardMaterial({
+            console.log('TEXTURE', texture.type);
+
+            material = new MeshPhysicalMaterial({
                 aoMap: pbrs.ao,
+                aoMapIntensity: 1.0,
                 envMap: environment,
                 envMapIntensity: 1,
                 map: pbrs.diffuse,
                 normalMap: pbrs.normal,
                 roughnessMap: pbrs.rough,
                 metalnessMap: pbrs.metal,
-                displacementMap: pbrs.displace,
+                // displacementMap: pbrs.displace, // causing issues with the
+                normalScale: new Vector2(0.5, 0.5),
+                metalness: 0,
+                roughness: texture.type === 'metal' ? 0 : 0.5,
+                clearcoatMap: pbrs.coat,
+                clearcoatNormalMap: pbrs.coatNormal,
+                clearcoatRoughnessMap: pbrs.coatRough,
+                transparent: true,
             });
 
             cached.set(texture.id, material);
@@ -53,16 +63,27 @@ export const textureToPBRMaterials = async (
 
 const loadPBRs = async (pbr: IPBRTexture | null): Promise<PBRTexture> => {
     if (pbr) {
-        const [ao, diffuse, normal, rough, displace, metal] = await Promise.all(
-            [
-                loadTexture(pbr.ao),
-                loadTexture(pbr.diffuse),
-                loadTexture(pbr.normal),
-                loadTexture(pbr.rough),
-                loadTexture(pbr.displace),
-                loadTexture(pbr.metal),
-            ],
-        );
+        const [
+            ao,
+            diffuse,
+            normal,
+            rough,
+            displace,
+            metal,
+            coat,
+            coatNormal,
+            coatRough,
+        ] = await Promise.all([
+            loadTexture(pbr.ao),
+            loadTexture(pbr.diffuse),
+            loadTexture(pbr.normal),
+            loadTexture(pbr.rough),
+            loadTexture(pbr.displace),
+            loadTexture(pbr.metal),
+            loadTexture(pbr.coat),
+            loadTexture(pbr.coatNormal),
+            loadTexture(pbr.coatRough),
+        ]);
 
         return {
             diffuse: diffuse,
@@ -71,9 +92,9 @@ const loadPBRs = async (pbr: IPBRTexture | null): Promise<PBRTexture> => {
             metal: metal,
             rough: rough,
             normal: normal,
-            coat: null,
-            coatRough: null,
-            coatNormal: null,
+            coat: coat,
+            coatRough: coatRough,
+            coatNormal: coatNormal,
             specular: null,
         };
     } else {

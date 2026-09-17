@@ -25,6 +25,7 @@ export const loadModel = (
 
                 scene.castShadow = true;
                 scene.receiveShadow = true;
+                scene.renderOrder = 0;
 
                 scene.traverse(async (part: Object3D) => {
                     if (part instanceof Mesh) {
@@ -94,7 +95,7 @@ export const loadModel = (
                     selectable: true,
                 });
 
-                console.log('scene.userData', scene.userData);
+                // console.log('scene.userData', scene.userData);
 
                 resolve(scene);
             });

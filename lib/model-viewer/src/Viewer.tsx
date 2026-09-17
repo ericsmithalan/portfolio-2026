@@ -4,7 +4,6 @@ import {
     Viewport,
     IObjectUserData,
     ITheme,
-    ObjectUserData,
 } from '@/lib';
 import { FC, useCallback, useEffect, useRef } from 'react';
 import clsx from 'clsx';
@@ -37,39 +36,49 @@ export const Viewer: FC<ViewerProps> = ({
 }: ViewerProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const loadMaterials = useCallback(
-        async (vp: Viewport) => {
-            if (vp.model) {
-                const { textures } = vp.model.userData;
-                const { environment } = vp.world.scene;
+    const setMaterials = async (vp: Viewport) => {
+        if (vp.model) {
+            const { textures } = vp.model.userData;
+            const { environment } = vp.world.scene;
 
-                const [base, alt, metal] = await Promise.all<Material | null>([
-                    textureToPBRMaterials(environment, textures.base),
-                    textureToPBRMaterials(environment, textures.alt),
-                    textureToPBRMaterials(environment, textures.metal),
-                ]);
+            const [base, alt, metal] = await Promise.all<Material | null>([
+                textureToPBRMaterials(environment, textures.base),
+                textureToPBRMaterials(environment, textures.alt),
+                textureToPBRMaterials(environment, textures.metal),
+            ]);
 
-                const material = base || alt || metal || null;
-
+            if (base) {
                 getObjectsById(vp, textures.baseIds, (obj) => {
                     if (obj instanceof Mesh) {
                         disposeMaterial(obj.material);
-
-                        if (obj.userData instanceof ObjectUserData) {
-                            obj.userData.textureId = Number(
-                                obj.userData.textures.base?.id,
-                            );
-                        }
-
-                        obj.material = material;
+                        obj.material = base;
                     }
                 });
-
-                disposeMaterial(material);
             }
-        },
-        [theme],
-    );
+
+            if (alt) {
+                getObjectsById(vp, textures.altIds, (obj) => {
+                    if (obj instanceof Mesh) {
+                        disposeMaterial(obj.material);
+                        obj.material = alt;
+                    }
+                });
+            }
+
+            if (metal) {
+                getObjectsById(vp, textures.metalIds, (obj) => {
+                    if (obj instanceof Mesh) {
+                        disposeMaterial(obj.material);
+                        obj.material = metal;
+                    }
+                });
+            }
+
+            disposeMaterial(base);
+            disposeMaterial(alt);
+            disposeMaterial(metal);
+        }
+    };
 
     const initalize = useCallback(async (theme: ITheme, vp: Viewport) => {
         if (modelUserData) {
@@ -78,7 +87,7 @@ export const Viewer: FC<ViewerProps> = ({
             });
 
             if (modelUserData.textures) {
-                await loadMaterials(vp);
+                await setMaterials(vp);
             }
         }
     }, []);

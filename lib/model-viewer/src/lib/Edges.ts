@@ -2,6 +2,7 @@ import {
     EdgesGeometry,
     Group,
     LineBasicMaterial,
+    LineDashedMaterial,
     LineSegments,
     Mesh,
     Object3D,
@@ -11,6 +12,7 @@ import {
 import { disposeGeometry, disposeObject } from '@/utils';
 import { ObjectUserData } from './ObjectUserData';
 import { ITheme } from '@/lib';
+import { LineMaterial } from 'three/examples/jsm/Addons.js';
 
 export class Edges {
     edgeGroup: Group;
@@ -45,6 +47,8 @@ export class Edges {
             new LineBasicMaterial({
                 color: theme.edges.color,
                 linewidth: theme.edges.lineWidth,
+                transparent: true,
+                opacity: 0.5,
             }),
         );
         line.name = `${mesh.name}__edge`;
