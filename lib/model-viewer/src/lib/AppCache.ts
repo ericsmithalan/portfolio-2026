@@ -1,5 +1,4 @@
 import { Material, Texture } from 'three';
-import { disposeMaterial } from '@/utils';
 
 export class AppCache<K, T> {
     private readonly collection: Map<K, T>;
@@ -23,8 +22,12 @@ export class AppCache<K, T> {
         this.collection.clear();
     }
 
-    dispose() {
-        Array.from(this.collection.entries()).forEach(([key, item]) => {
+    // Dynamic import inside the method entirely prevents top-level module blocking
+    async dispose() {
+        // 1. Defer importing utils until dispose() is explicitly triggered
+        const { disposeMaterial } = await import('@/utils');
+
+        Array.from(this.collection.entries()).forEach(([, item]) => {
             if (item instanceof Material) {
                 disposeMaterial(item);
             }

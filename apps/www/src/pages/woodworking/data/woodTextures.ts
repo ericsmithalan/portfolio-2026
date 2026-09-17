@@ -1,7 +1,7 @@
 import { ITexture } from '@portfolio/model-viewer';
 import { createTextureData } from './createTexture';
 
-export const getWoodTextures = (): Array<ITexture> => {
+const getWoodTextures = (): Array<ITexture> => {
     const settings = {
         coat: false,
         ao: false,
@@ -15,7 +15,7 @@ export const getWoodTextures = (): Array<ITexture> => {
         specular: false,
     };
 
-    const URL = '../textures/wood';
+    const URL = '/textures/wood';
 
     return [
         createTextureData(1, 'wood', 'white', 1, URL, {
@@ -53,4 +53,9 @@ export const getWoodTextures = (): Array<ITexture> => {
             diffuse: true,
         }),
     ];
+};
+
+export const woodTextures: Array<ITexture> = getWoodTextures();
+export const getWoodTexture = (name: string): ITexture => {
+    return woodTextures.find((item) => item.name === name) || woodTextures[0];
 };

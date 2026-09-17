@@ -1,54 +1,34 @@
 import { Material, MeshStandardMaterial, Texture } from 'three';
-import { ITexture, TextureResolution } from '@/interface';
-import { AppCache } from '@/lib';
-import { formatTextureUrl } from './formatTextureUrl';
 import { loadTexture } from './loadTexture';
+import { AppCache } from '@/lib';
 
-let cachedInstance: AppCache<number, Material> | null = null;
-const getCache = () => {
-    if (!cachedInstance) {
-        cachedInstance = new AppCache<number, Material>();
-    }
-    return cachedInstance;
-};
+const cached = new AppCache<string, Material>();
 
 export const createTextureMaterials = async (
-    texture: ITexture,
     environment: Texture | null,
-    resolution: TextureResolution,
+    texture?: string | null,
 ): Promise<Material> => {
     return new Promise(async (resolve) => {
         let material: Material;
 
-        const cache = getCache();
-        const cacheItem = cache.get(texture.id);
+        if (texture) {
+            const cache = cached.get(texture);
 
-        if (cacheItem) {
-            return resolve(cacheItem);
-        } else {
-            if (texture.pbr?.diffuse) {
-                const url = formatTextureUrl(texture.pbr?.diffuse, resolution);
-                const textr = await loadTexture(url);
-
+            if (cache) {
+                resolve(cache);
+            } else {
+                const textr = await loadTexture(texture);
                 material = new MeshStandardMaterial({
                     envMap: environment,
                     envMapIntensity: 1,
                     map: textr,
-                    metalness:
-                        texture.type === 'metal' || texture.type === 'hardware'
-                            ? 1
-                            : 0,
-                    roughness:
-                        texture.type === 'metal' || texture.type === 'hardware'
-                            ? 0.1
-                            : 0.4,
                 });
 
-                if (textr) {
-                    textr.dispose();
-                }
+                cached.set(texture, material);
 
-                cache.set(texture.id, material);
+                // if (textr) {
+                //     textr.dispose();
+                // }
 
                 resolve(material);
             }

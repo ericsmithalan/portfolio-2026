@@ -34,6 +34,7 @@ export default defineConfig({
                 if (req.url?.endsWith('.glb')) {
                     res.setHeader('Content-Type', 'model/gltf-binary');
                 }
+
                 next();
             });
         },

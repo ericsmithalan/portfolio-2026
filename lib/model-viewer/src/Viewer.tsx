@@ -1,10 +1,16 @@
-import { IViewportEvent, DefaultTheme, Viewport } from '@/lib';
-import { FC, useEffect, useRef } from 'react';
+import { IViewportEvent, DefaultTheme, Viewport, ObjectUserData } from '@/lib';
+import { FC, useCallback, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import { isMobile } from 'react-device-detect';
-import { IModel, ITheme } from '@/interface';
-import { Object3D } from 'three';
+import { IModel, IObjectMaterialMapper, ITheme } from '@/interface';
+import { Material, Mesh, Object3D } from 'three';
 import './style.scss';
+
+import {
+    disposeMaterial,
+    createTextureMaterials,
+    getObjectsById,
+} from './utils';
 
 export interface ViewerProps {
     model: IModel | null;
@@ -13,6 +19,7 @@ export interface ViewerProps {
     onLoaded?: (type: string, value: boolean) => void;
     onModelChange?: (type: string, model: IModel | null) => void;
     onSelectChange?: (type: string, selection: Object3D | null) => void;
+    onMaterialChange?: (type: string, selection: Material | null) => void;
 }
 
 export const Viewer: FC<ViewerProps> = ({
@@ -22,8 +29,42 @@ export const Viewer: FC<ViewerProps> = ({
     onLoaded,
     onModelChange,
     onSelectChange,
+    onMaterialChange,
 }: ViewerProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+
+    const loadMaterials = useCallback(
+        async (vp: Viewport, materialObj?: IObjectMaterialMapper) => {
+            if (materialObj) {
+                const materials = await createTextureMaterials(
+                    vp.world.scene.environment,
+                    materialObj.texture.pbr?.diffuse,
+                );
+
+                materialObj.material = materials;
+
+                getObjectsById(vp, materialObj.objects, (obj) => {
+                    if (obj instanceof Mesh) {
+                        disposeMaterial(obj.material);
+
+                        if (obj.userData instanceof ObjectUserData) {
+                            obj.userData.textureId = Number(
+                                materialObj.texture.id,
+                            );
+                        }
+
+                        obj.material = materials;
+                        if (onMaterialChange) {
+                            onMaterialChange('materialChange', materials);
+                        }
+                    }
+                });
+
+                disposeMaterial(materials);
+            }
+        },
+        [],
+    );
 
     useEffect(() => {
         const canvas = canvasRef?.current;
@@ -33,13 +74,17 @@ export const Viewer: FC<ViewerProps> = ({
             theme = DefaultTheme;
         }
 
-        const callasync = async (theme: ITheme) => {
+        const callasync = async (theme: ITheme, vp: Viewport) => {
             if (model) {
                 await vp.loadModel(model, theme).catch((e) => {
                     console.log(e);
                 });
 
-                console.log('Viewer > callasync', vp.model);
+                const mat = model.materials?.get('maple');
+
+                if (mat) {
+                    await loadMaterials(vp, mat);
+                }
             }
         };
 
@@ -66,7 +111,8 @@ export const Viewer: FC<ViewerProps> = ({
             vp.addEventListener('loading', load);
             vp.addEventListener('modelChanged', changed);
             vp.addEventListener('selectionChanged', selectionChanve);
-            callasync(theme);
+
+            callasync(theme, vp);
         }
         return () => {
             vp.removeEventListener('loading', load);
@@ -74,7 +120,7 @@ export const Viewer: FC<ViewerProps> = ({
             vp.removeEventListener('selectionChanged', selectionChanve);
             vp?.dispose();
         };
-    }, [theme, model]);
+    }, [theme]);
 
     return (
         <>

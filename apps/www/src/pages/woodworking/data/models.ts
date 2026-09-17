@@ -1,4 +1,5 @@
 import { IModel } from '@portfolio/model-viewer';
+import { getWoodTexture, woodTextures } from './woodTextures';
 
 const getImagePath = (
     dir: string,
@@ -57,7 +58,11 @@ export const models: Array<IModel> = [
                 ...getImagePath('sideboard', '10'),
             },
         ],
-        textures: [],
+        defaultTextures: {
+            base: getWoodTexture('maple'),
+            alt: getWoodTexture('walnut'),
+            metal: getWoodTexture('black'),
+        },
         children: [],
         object: null,
         edges: null,

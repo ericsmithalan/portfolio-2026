@@ -12,7 +12,7 @@ import {
 import { ViewportGizmo } from 'three-viewport-gizmo';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
-import { IScreenSize, ITheme } from '@/interface';
+import { ITheme } from '@/interface';
 import { disposeObject } from '@/utils';
 import { Floor } from './Floor';
 import { Grid } from './Grid';
@@ -20,6 +20,11 @@ import { Lights } from './Lights';
 
 export interface IWorldEvent {
     resize: { type: string; size: IScreenSize };
+}
+export interface IScreenSize {
+    width: number;
+    height: number;
+    aspect: number;
 }
 
 export class World extends EventDispatcher<IWorldEvent> {

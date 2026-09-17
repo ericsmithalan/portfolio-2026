@@ -1,4 +1,13 @@
+import { Material } from 'three';
+
 export type TextureType = 'wood' | 'metal';
+
+export interface IObjectMaterialMapper {
+    type: TextureType;
+    objects: Array<number>;
+    texture: ITexture;
+    material: Material | null;
+}
 
 export interface IPBRTexture {
     diffuse: string | null;

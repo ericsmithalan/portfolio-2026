@@ -1,7 +1,7 @@
 import { ITexture } from '@portfolio/model-viewer';
 import { createTextureData } from './createTexture';
 
-export const getMetalTextures = (): Array<ITexture> => {
+const getMetalTextures = (): Array<ITexture> => {
     const settings = {
         coat: false,
         ao: false,
@@ -15,7 +15,7 @@ export const getMetalTextures = (): Array<ITexture> => {
         specular: false,
     };
 
-    const url = '../textures/metal';
+    const url = '/textures/metal';
 
     return [
         createTextureData(1, 'wood', 'none', 1, url, {
@@ -39,4 +39,9 @@ export const getMetalTextures = (): Array<ITexture> => {
             diffuse: true,
         }),
     ];
+};
+
+export const metalTextures = getMetalTextures();
+export const getMetalTexture = (name: string): ITexture => {
+    return metalTextures.find((item) => (item.name = name)) || metalTextures[0];
 };

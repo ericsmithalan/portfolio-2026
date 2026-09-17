@@ -1,6 +1,6 @@
 import { Mesh, Object3D } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
-import { IModel, IStat, ITexture, ITheme } from '@/interface';
+import { IModel, IStat, IObjectMaterialMapper, ITheme } from '@/interface';
 import { Edges, ObjectUserData, Viewport } from '@/lib';
 import { getObjectDimensions } from './getObjectDimensions';
 import { getTextureFromBlenderMaterial } from './getTextureFromBlenderMaterial';
@@ -17,34 +17,38 @@ export const loadModel = (
             loader.load(model.url, (gltf) => {
                 const scene = gltf.scene;
                 const edges = new Edges();
-                const materials: Map<string, ITexture> = new Map();
+                const materials: Map<string, IObjectMaterialMapper> = new Map();
 
                 scene.castShadow = true;
                 scene.receiveShadow = true;
 
-                scene.traverse((part: Object3D) => {
+                scene.traverse(async (part: Object3D) => {
                     if (part instanceof Mesh) {
                         part.castShadow = true;
                         part.receiveShadow = true;
 
                         if (part.material) {
-                            const matType = getTextureFromBlenderMaterial(
-                                part.material,
-                            );
-
-                            if (matType) {
-                                const mat = materials.get(
-                                    matType.formattedName,
+                            const defaultTexture =
+                                getTextureFromBlenderMaterial(
+                                    model,
+                                    part.material,
                                 );
 
-                                if (!mat) {
-                                    materials.set(matType.formattedName, {
-                                        type: matType.type,
-                                        id: part.id,
-                                        name: '',
-                                        thumbnail: '',
-                                        pbr: null,
+                            if (defaultTexture) {
+                                const material = materials.get(
+                                    defaultTexture.name,
+                                );
+
+                                if (!material) {
+                                    materials.set(defaultTexture.name, {
+                                        type: defaultTexture.type,
+                                        objects: [defaultTexture.id],
+                                        texture: defaultTexture,
+                                        material: null,
                                     });
+                                } else {
+                                    //only push part ID's
+                                    material.objects.push(part.id);
                                 }
                             }
                         }

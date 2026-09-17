@@ -17,14 +17,14 @@ export const WoodworkingPage = () => {
                 envUrl="/env/studio1k.hdr"
                 onModelChange={(type: string, value: IModel | null) => {
                     setModel(value);
-                    console.log('onModelChange', type, value);
+                    // console.log('onModelChange', type, value);
                 }}
                 onLoaded={(type: string, value: boolean) => {
-                    console.log('onLoaded', type, value);
+                    // console.log('onLoaded', type, value);
                 }}
                 onSelectChange={(type: string, value: Obj3D | null) => {
                     setPart(value);
-                    console.log('onSelectChange', type, value);
+                    // console.log('onSelectChange', type, value);
                 }}
             />
         </div>
