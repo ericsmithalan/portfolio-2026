@@ -50,9 +50,8 @@ export const loadModel = (
                         }
 
                         part.userData = new ObjectUserData({
-                            viewportInfo: {
-                                selectable: true,
-                            },
+                            objectId: part.id,
+                            selectable: true,
                         });
 
                         model.children.push(part);
@@ -97,7 +96,8 @@ export const loadModel = (
                 };
 
                 scene.userData = new ObjectUserData({
-                    viewportInfo: { selectable: true },
+                    objectId: scene.id,
+                    selectable: true,
                 });
 
                 edges.edgeGroup.updateMatrixWorld();

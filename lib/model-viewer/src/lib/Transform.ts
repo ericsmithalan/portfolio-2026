@@ -34,7 +34,7 @@ export class Transform extends EventDispatcher<ITransformEvent> {
     private init() {
         this.helper.name = 'Transform Helper';
         this.helper.userData = new ObjectUserData({
-            viewportInfo: { selectable: true },
+            selectable: true,
         });
 
         this.scene.add(this.helper);

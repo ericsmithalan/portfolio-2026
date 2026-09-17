@@ -1,18 +1,15 @@
-import {
-    IUserDataEdgeInfo,
-    IObjectUserData,
-    IUserDataTextureInfo,
-    IUserDataViewportInfo,
-} from '@/interface';
+import { IObjectUserData } from '@/interface';
 
 export class ObjectUserData implements IObjectUserData {
-    edgeInfo: IUserDataEdgeInfo | null;
-    textureInfo: IUserDataTextureInfo | null;
-    viewportInfo: IUserDataViewportInfo | null;
+    objectId: number | null;
+    edgeId: number | null;
+    textureId: number | null;
+    selectable: boolean;
 
     constructor(data: Partial<IObjectUserData>) {
-        this.edgeInfo = data.edgeInfo || null;
-        this.textureInfo = data.textureInfo || null;
-        this.viewportInfo = data.viewportInfo || null;
+        this.objectId = data.objectId || null;
+        this.edgeId = data.edgeId || null;
+        this.textureId = data.textureId || null;
+        this.selectable = data.selectable || true;
     }
 }

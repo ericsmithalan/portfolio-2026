@@ -148,7 +148,7 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
 
         this.scene.traverseVisible((child) => {
             if (child.userData instanceof ObjectUserData) {
-                if (child.userData?.viewportInfo?.selectable === true) {
+                if (child.userData?.selectable === true) {
                     sceneChildren.push(child);
                 }
             }

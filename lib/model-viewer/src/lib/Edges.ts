@@ -49,17 +49,13 @@ export class Edges {
         );
         line.name = `${mesh.name}__edge`;
         line.userData = new ObjectUserData({
-            edgeInfo: {
-                objectId: mesh.id,
-                edgeId: line.id,
-            },
+            objectId: mesh.id,
+            edgeId: line.id,
         });
 
         mesh.userData = new ObjectUserData({
-            edgeInfo: {
-                objectId: mesh.id,
-                edgeId: line.id,
-            },
+            objectId: mesh.id,
+            edgeId: line.id,
         });
 
         // line.position.x = wp.x;
@@ -111,10 +107,8 @@ export class Edges {
         if (this.edgeGroup) {
             this.edgeGroup.traverse((item) => {
                 if (item.userData instanceof ObjectUserData) {
-                    if (item.userData.edgeInfo) {
-                        const obj = scene.getObjectById(
-                            item.userData.edgeInfo?.objectId,
-                        );
+                    if (item.userData) {
+                        const obj = scene.getObjectById(item.id);
 
                         if (obj) {
                             // if obj has parent (from blender) other than scene
