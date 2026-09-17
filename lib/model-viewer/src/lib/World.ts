@@ -12,7 +12,7 @@ import {
 import { ViewportGizmo } from 'three-viewport-gizmo';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
-import { ITheme } from '@/interface';
+import { ITheme } from '@/lib';
 import { disposeObject } from '@/utils';
 import { Floor } from './Floor';
 import { Grid } from './Grid';

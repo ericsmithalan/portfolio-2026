@@ -1,70 +1,87 @@
-import { IViewportEvent, DefaultTheme, Viewport, ObjectUserData } from '@/lib';
+import {
+    IViewportEvent,
+    DefaultTheme,
+    Viewport,
+    IObjectUserData,
+    ITheme,
+    ObjectUserData,
+} from '@/lib';
 import { FC, useCallback, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import { isMobile } from 'react-device-detect';
-import { IModel, IObjectMaterialMapper, ITheme } from '@/interface';
+
 import { Material, Mesh, Object3D } from 'three';
 import './style.scss';
-
 import {
-    disposeMaterial,
-    createTextureMaterials,
+    textureToPBRMaterials,
     getObjectsById,
+    disposeMaterial,
 } from './utils';
 
 export interface ViewerProps {
-    model: IModel | null;
+    modelUserData: IObjectUserData | null;
     envUrl?: string;
     theme?: ITheme;
     onLoaded?: (type: string, value: boolean) => void;
-    onModelChange?: (type: string, model: IModel | null) => void;
+    onModelChange?: (type: string, model: Object3D | null) => void;
     onSelectChange?: (type: string, selection: Object3D | null) => void;
-    onMaterialChange?: (type: string, selection: Material | null) => void;
 }
 
 export const Viewer: FC<ViewerProps> = ({
-    model,
+    modelUserData,
     theme,
     envUrl,
     onLoaded,
     onModelChange,
     onSelectChange,
-    onMaterialChange,
 }: ViewerProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     const loadMaterials = useCallback(
-        async (vp: Viewport, materialObj?: IObjectMaterialMapper) => {
-            if (materialObj) {
-                const materials = await createTextureMaterials(
-                    vp.world.scene.environment,
-                    materialObj.texture.pbr?.diffuse,
-                );
+        async (vp: Viewport) => {
+            if (vp.model) {
+                const { textures } = vp.model.userData;
+                const { environment } = vp.world.scene;
 
-                materialObj.material = materials;
+                const [base, alt, metal] = await Promise.all<Material | null>([
+                    textureToPBRMaterials(environment, textures.base),
+                    textureToPBRMaterials(environment, textures.alt),
+                    textureToPBRMaterials(environment, textures.metal),
+                ]);
 
-                getObjectsById(vp, materialObj.objects, (obj) => {
+                const material = base || alt || metal || null;
+
+                getObjectsById(vp, textures.baseIds, (obj) => {
                     if (obj instanceof Mesh) {
                         disposeMaterial(obj.material);
 
                         if (obj.userData instanceof ObjectUserData) {
                             obj.userData.textureId = Number(
-                                materialObj.texture.id,
+                                obj.userData.textures.base?.id,
                             );
                         }
 
-                        obj.material = materials;
-                        if (onMaterialChange) {
-                            onMaterialChange('materialChange', materials);
-                        }
+                        obj.material = material;
                     }
                 });
 
-                disposeMaterial(materials);
+                disposeMaterial(material);
             }
         },
-        [],
+        [theme],
     );
+
+    const initalize = useCallback(async (theme: ITheme, vp: Viewport) => {
+        if (modelUserData) {
+            await vp.loadModel(modelUserData, theme).catch((e) => {
+                console.log(e);
+            });
+
+            if (modelUserData.textures) {
+                await loadMaterials(vp);
+            }
+        }
+    }, []);
 
     useEffect(() => {
         const canvas = canvasRef?.current;
@@ -73,20 +90,6 @@ export const Viewer: FC<ViewerProps> = ({
         if (!theme) {
             theme = DefaultTheme;
         }
-
-        const callasync = async (theme: ITheme, vp: Viewport) => {
-            if (model) {
-                await vp.loadModel(model, theme).catch((e) => {
-                    console.log(e);
-                });
-
-                const mat = model.materials?.get('maple');
-
-                if (mat) {
-                    await loadMaterials(vp, mat);
-                }
-            }
-        };
 
         const selectionChanve = (e: IViewportEvent['selectionChanged']) => {
             if (onSelectChange) {
@@ -112,7 +115,7 @@ export const Viewer: FC<ViewerProps> = ({
             vp.addEventListener('modelChanged', changed);
             vp.addEventListener('selectionChanged', selectionChanve);
 
-            callasync(theme, vp);
+            initalize(theme, vp);
         }
         return () => {
             vp.removeEventListener('loading', load);
@@ -120,7 +123,7 @@ export const Viewer: FC<ViewerProps> = ({
             vp.removeEventListener('selectionChanged', selectionChanve);
             vp?.dispose();
         };
-    }, [theme]);
+    }, []);
 
     return (
         <>

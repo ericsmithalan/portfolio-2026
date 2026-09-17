@@ -7,7 +7,7 @@ import {
     Vector3,
 } from 'three';
 import { disposeGeometry, disposeMaterial, disposeObject } from '@/utils';
-import { ITheme } from '@/interface';
+import { ITheme } from '@/lib';
 
 export class Grid extends Object3D {
     constructor(scene: Scene, theme: ITheme) {

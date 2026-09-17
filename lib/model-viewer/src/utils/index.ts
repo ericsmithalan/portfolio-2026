@@ -1,4 +1,3 @@
-export * from './createTextureMaterials';
 export * from './dispose';
 export * from './fitCameraToObject';
 export * from './getEdge';
@@ -13,3 +12,4 @@ export * from './popupHelpers';
 export * from './setObjectVisibility';
 export * from './unitConversions';
 export * from './loadModel';
+export * from './textureToPBRMaterials';

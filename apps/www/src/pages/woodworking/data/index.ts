@@ -1,4 +1,4 @@
-import { IModel } from '@portfolio/model-viewer';
-import { models } from './models';
+import { IObjectUserData } from '@portfolio/model-viewer';
+import { modelsUserData } from './models';
 
-export const OUTLINE_DATA: Array<IModel> = models;
+export const OUTLINE_DATA: Array<IObjectUserData> = modelsUserData;

@@ -10,7 +10,7 @@ import {
 } from 'three';
 import { disposeGeometry, disposeObject } from '@/utils';
 import { ObjectUserData } from './ObjectUserData';
-import { ITheme } from '@/interface';
+import { ITheme } from '@/lib';
 
 export class Edges {
     edgeGroup: Group;

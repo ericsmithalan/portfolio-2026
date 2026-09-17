@@ -1,5 +1,6 @@
-import { IModel } from '@portfolio/model-viewer';
+import { IObjectUserData } from '@portfolio/model-viewer';
 import { getWoodTexture, woodTextures } from './woodTextures';
+import { getMetalTexture } from './metalTexture';
 
 const getImagePath = (
     dir: string,
@@ -11,9 +12,8 @@ const getImagePath = (
     };
 };
 
-export const models: Array<IModel> = [
+export const modelsUserData: Array<IObjectUserData> = [
     {
-        id: 1,
         url: '/models/sideboard/model.glb',
         name: 'Sideboard',
         images: [
@@ -58,15 +58,13 @@ export const models: Array<IModel> = [
                 ...getImagePath('sideboard', '10'),
             },
         ],
-        defaultTextures: {
+        textures: {
             base: getWoodTexture('maple'),
+            baseIds: [],
             alt: getWoodTexture('walnut'),
-            metal: getWoodTexture('black'),
+            altIds: [],
+            metal: getMetalTexture('black'),
+            metalIds: [],
         },
-        children: [],
-        object: null,
-        edges: null,
-        materials: null,
-        stats: [],
     },
 ];

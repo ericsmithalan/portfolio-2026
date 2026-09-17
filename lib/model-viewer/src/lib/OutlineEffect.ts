@@ -19,7 +19,7 @@ import {
     ShaderPass,
 } from 'three/examples/jsm/Addons.js';
 import { disposeObject } from '@/utils';
-import { ITheme } from '@/interface';
+import { ITheme } from '@/lib';
 
 export class OutlineEffect {
     private target: WebGLRenderTarget;

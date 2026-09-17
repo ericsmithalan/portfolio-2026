@@ -57,5 +57,9 @@ const getWoodTextures = (): Array<ITexture> => {
 
 export const woodTextures: Array<ITexture> = getWoodTextures();
 export const getWoodTexture = (name: string): ITexture => {
-    return woodTextures.find((item) => item.name === name) || woodTextures[0];
+    const txtr =
+        woodTextures.find((item) => item.name === name) || woodTextures[0];
+
+    console.log('getWoodTexture', name, txtr);
+    return txtr;
 };

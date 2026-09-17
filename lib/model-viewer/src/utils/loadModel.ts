@@ -1,23 +1,27 @@
 import { Mesh, Object3D } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
-import { IModel, IStat, IObjectMaterialMapper, ITheme } from '@/interface';
-import { Edges, ObjectUserData, Viewport } from '@/lib';
+import { IStat } from '@/interface';
+import {
+    Edges,
+    IObjectUserData,
+    ObjectUserData,
+    Viewport,
+    ITheme,
+} from '@/lib';
 import { getObjectDimensions } from './getObjectDimensions';
-import { getTextureFromBlenderMaterial } from './getTextureFromBlenderMaterial';
 
 const loader: GLTFLoader = new GLTFLoader();
 
 export const loadModel = (
-    model: IModel | null,
+    userData: IObjectUserData | null,
     viewport: Viewport,
     theme: ITheme,
-): Promise<IModel> => {
+): Promise<Object3D> => {
     return new Promise(async (resolve) => {
-        if (model) {
-            loader.load(model.url, (gltf) => {
+        if (userData) {
+            loader.load(userData.url, (gltf) => {
                 const scene = gltf.scene;
                 const edges = new Edges();
-                const materials: Map<string, IObjectMaterialMapper> = new Map();
 
                 scene.castShadow = true;
                 scene.receiveShadow = true;
@@ -27,30 +31,18 @@ export const loadModel = (
                         part.castShadow = true;
                         part.receiveShadow = true;
 
-                        if (part.material) {
-                            const defaultTexture =
-                                getTextureFromBlenderMaterial(
-                                    model,
-                                    part.material,
-                                );
+                        if (part.material && userData.textures) {
+                            const base =
+                                part.material.name?.indexOf('wood') !== -1 ||
+                                part.material.name?.indexOf('primary') !== -1;
+                            const alt =
+                                part.material.name?.indexOf('contrast') !== -1;
+                            const metal =
+                                part.material.name?.indexOf('metal') !== -1;
 
-                            if (defaultTexture) {
-                                const material = materials.get(
-                                    defaultTexture.name,
-                                );
-
-                                if (!material) {
-                                    materials.set(defaultTexture.name, {
-                                        type: defaultTexture.type,
-                                        objects: [defaultTexture.id],
-                                        texture: defaultTexture,
-                                        material: null,
-                                    });
-                                } else {
-                                    //only push part ID's
-                                    material.objects.push(part.id);
-                                }
-                            }
+                            base && userData.textures.baseIds.push(part.id);
+                            alt && userData.textures.altIds.push(part.id);
+                            metal && userData.textures.metalIds.push(part.id);
                         }
 
                         part.userData = new ObjectUserData({
@@ -58,20 +50,11 @@ export const loadModel = (
                             selectable: true,
                         });
 
-                        model.children.push(part);
                         edges.add(part, theme);
                     } else {
                         part.layers.disableAll();
                     }
                 });
-
-                // make sure metal is the last button.
-                const keyToMove = 'metal';
-                if (materials.has(keyToMove)) {
-                    const value = materials.get(keyToMove)!;
-                    materials.delete(keyToMove); // 1. Remove it
-                    materials.set(keyToMove, value); // 2. Re-insert it at the end
-                }
 
                 const size = getObjectDimensions(viewport, scene, true);
 
@@ -79,7 +62,7 @@ export const loadModel = (
                     return [
                         {
                             name: 'parts',
-                            value: String(model.children.length),
+                            value: String(scene.children.length),
                         },
                         {
                             name: 'Width',
@@ -99,20 +82,21 @@ export const loadModel = (
                     ];
                 };
 
+                edges.edgeGroup.updateMatrixWorld();
+                scene.updateMatrixWorld();
+
+                userData.edges = edges;
+                userData.stats = getStats();
+
                 scene.userData = new ObjectUserData({
+                    ...userData,
                     objectId: scene.id,
                     selectable: true,
                 });
 
-                edges.edgeGroup.updateMatrixWorld();
-                scene.updateMatrixWorld();
+                console.log('scene.userData', scene.userData);
 
-                model.edges = edges;
-                model.object = scene;
-                model.stats = getStats();
-                model.materials = materials;
-
-                resolve(model);
+                resolve(scene);
             });
         }
     });

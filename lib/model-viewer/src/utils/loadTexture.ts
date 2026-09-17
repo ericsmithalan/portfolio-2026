@@ -9,7 +9,7 @@ import {
 const loader = new TextureLoader();
 
 export const loadTexture = async (
-    url: string | null,
+    url?: string | null,
 ): Promise<Texture | null> => {
     if (url) {
         const texture = await loader.loadAsync(url).catch((e) => {

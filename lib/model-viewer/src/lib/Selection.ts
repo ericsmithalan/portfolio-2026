@@ -10,7 +10,7 @@ import {
 
 import { SelectMode } from '@/types';
 import { ObjectUserData, OutlineEffect } from '.';
-import { ITheme } from '@/interface';
+import { ITheme } from '@/lib';
 
 export interface ISelectionEvent {
     change: {

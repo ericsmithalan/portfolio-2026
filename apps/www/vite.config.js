@@ -25,21 +25,21 @@ export default defineConfig({
         // }),
     ],
 
-    server: {
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-        },
-        configureServer(server) {
-            server.middlewares.use((req, res, next) => {
-                if (req.url?.endsWith('.glb')) {
-                    res.setHeader('Content-Type', 'model/gltf-binary');
-                }
+    // server: {
+    //     headers: {
+    //         'Access-Control-Allow-Origin': '*',
+    //     },
+    //     configureServer(server) {
+    //         server.middlewares.use((req, res, next) => {
+    //             if (req.url?.endsWith('.glb')) {
+    //                 res.setHeader('Content-Type', 'model/gltf-binary');
+    //             }
 
-                next();
-            });
-        },
-    },
-    assetsInclude: ['**/*.glb', '**/*.png', '**/*.hri'],
+    //             next();
+    //         });
+    //     },
+    // },
+    // assetsInclude: ['**/*.glb', '**/*.png', '**/*.hri'],
     // fs: {
     //     allow: [
     //         // Allow Vite to serve files from your project root

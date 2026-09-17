@@ -1,14 +1,15 @@
 import { AnimationMixer, EventDispatcher, Object3D, Timer } from 'three';
-import { IModel, ITheme } from '@/interface';
+import { ITheme } from '@/lib';
 import { AnimationState } from '@/types';
 import { disposeObject, fitCameraToObject, loadModel } from '@/utils';
 import { Exploder, IExploderEvent } from './Exploder';
 import { ISelectionEvent, Selection } from './Selection';
 import { IWorldEvent, World } from './World';
+import { IObjectUserData } from './ObjectUserData';
 
 export interface IViewportEvent {
     loading: { type: string; value: boolean };
-    modelChanged: { type: string; model: IModel | null };
+    modelChanged: { type: string; model: Object3D | null };
     selectionChanged: { type: string; selection: Object3D | null };
     modelAnimated: {
         type: string;
@@ -25,7 +26,7 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     readonly selection: Selection | null;
     exploder: Exploder | null = null;
 
-    private _model: IModel | null = null;
+    private _model: Object3D | null = null;
     private _edges: boolean = true;
 
     clock = new Timer();
@@ -58,8 +59,8 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     }
 
     set edges(value: boolean) {
-        if (this.model && this.model.edges) {
-            this.model.edges.edgeGroup.visible = value;
+        if (this.model && this.model.userData.edges) {
+            this.model.userData.edges.edgeGroup.visible = value;
             this._edges = value;
         }
     }
@@ -68,28 +69,28 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         return this._model;
     }
 
-    set model(value: IModel | null) {
+    set model(obj: Object3D | null) {
         if (this._model) {
             this.disposeModelAnimations();
-            disposeObject(this._model.object);
+            disposeObject(this._model);
             this.exploder = null;
-            this._model.edges?.dispose();
+            this._model.userData.edges?.dispose();
         }
 
-        if (value && value.object) {
-            this.world.scene.add(value.object);
-            this.world.lights.alignToModel(value.object);
+        if (obj && obj) {
+            this.world.scene.add(obj);
+            this.world.lights.alignToModel(obj);
 
-            if (value.edges) {
-                this.world.scene.add(value.edges.edgeGroup);
-                value.edges.edgeGroup.visible = this.edges;
+            if (obj.userData.edges) {
+                this.world.scene.add(obj.userData.edges.edgeGroup);
+                obj.userData.edges.edgeGroup.visible = this.edges;
             }
 
-            this.setupExploder(value);
+            this.setupExploder(obj);
         }
 
-        this._model = value;
-        this.dispatchEvent({ type: 'modelChanged', model: value });
+        this._model = obj;
+        this.dispatchEvent({ type: 'modelChanged', model: obj });
     }
 
     toggleExplode() {
@@ -98,13 +99,13 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         }
     }
 
-    private setupExploder(model: IModel | null) {
+    private setupExploder(model: Object3D | null) {
         if (this.exploder) {
             this.disposeExploder();
         }
 
-        if (model && model.object && model.edges) {
-            this.exploder = new Exploder(model.object, model.edges);
+        if (model && model.userData.edges) {
+            this.exploder = new Exploder(model, model.userData.edges);
             this.exploder.addEventListener('animated', (e) =>
                 this.handleExploderAnimated(e),
             );
@@ -154,21 +155,21 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         this.mixer = null;
     }
 
-    async loadModel(model: IModel, theme: ITheme) {
-        if (model.id !== this.model?.id) {
+    async loadModel(model: IObjectUserData, theme: ITheme) {
+        if (!this.model?.id) {
             this.dispatchEvent({ type: 'loading', value: true });
             const obj = await loadModel(model, this, theme);
 
-            if (obj.object) {
+            if (obj) {
                 fitCameraToObject(
                     this.world.camera,
                     this.world.orbitControls,
-                    [obj.object],
+                    [obj],
                     2,
                 );
             }
 
-            this.model = model;
+            this.model = obj;
 
             this.dispatchEvent({ type: 'loading', value: false });
         }
@@ -193,9 +194,9 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         if (this.exploder) {
             this.exploder.animateExplosion();
         }
-        if (this.mixer && this.animating && this.model?.edges) {
+        if (this.mixer && this.animating && this.model?.userData.edges) {
             this.mixer.update(this.clock.getDelta());
-            this.model.edges.update(this.world.scene);
+            this.model.userData.edges.update(this.world.scene);
         }
 
         if (gizmo) {
@@ -235,10 +236,10 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     dispose() {
         this.removeEvents();
         if (this.model) {
-            disposeObject(this.model.object);
+            disposeObject(this.model);
 
-            if (this.model.edges) {
-                this.model.edges.dispose();
+            if (this.model.userData.edges) {
+                this.model.userData.edges.dispose();
             }
         }
 
