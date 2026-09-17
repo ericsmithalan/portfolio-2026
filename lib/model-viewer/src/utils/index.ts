@@ -2,7 +2,6 @@ export * from './createTextureMaterials';
 export * from './dispose';
 export * from './fitCameraToObject';
 export * from './formatTextureUrl';
-export * from './generateImageResource';
 export * from './getEdge';
 export * from './getObject';
 export * from './getObjectDimensions';

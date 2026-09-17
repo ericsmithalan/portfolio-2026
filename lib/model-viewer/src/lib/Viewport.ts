@@ -1,11 +1,5 @@
-import {
-    AnimationMixer,
-    Clock,
-    EventDispatcher,
-    LoopOnce,
-    Object3D,
-} from 'three';
-import { IModel, ITextureData, ITheme } from '@/interface';
+import { AnimationMixer, EventDispatcher, Object3D, Timer } from 'three';
+import { IModel, ITheme } from '@/interface';
 import { AnimationState } from '@/types';
 import { disposeObject, fitCameraToObject, loadModel } from '@/utils';
 import { Exploder, IExploderEvent } from './Exploder';
@@ -25,9 +19,7 @@ export interface IViewportEvent {
 }
 
 export class Viewport extends EventDispatcher<IViewportEvent> {
-    private readonly isMobile: boolean = false;
     mixer: AnimationMixer | null = null;
-    private readonly textureData: ITextureData;
 
     readonly world: World;
     readonly selection: Selection | null;
@@ -36,20 +28,17 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     private _model: IModel | null = null;
     private _edges: boolean = true;
 
-    clock = new Clock();
+    clock = new Timer();
     animating: boolean = false;
 
     constructor(
         canvas: HTMLCanvasElement,
         isMobile: boolean,
         theme: ITheme,
-        textureData: ITextureData,
         envUrl?: string,
     ) {
         super();
 
-        this.textureData = textureData;
-        this.isMobile = isMobile;
         this.world = new World(canvas, isMobile, false, theme, envUrl);
         this.selection = isMobile
             ? null
@@ -69,7 +58,7 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     }
 
     set edges(value: boolean) {
-        if (this.model) {
+        if (this.model && this.model.edges) {
             this.model.edges.edgeGroup.visible = value;
             this._edges = value;
         }
@@ -84,26 +73,19 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
             this.disposeModelAnimations();
             disposeObject(this._model.object);
             this.exploder = null;
-            this._model.edges.dispose();
+            this._model.edges?.dispose();
         }
 
-        if (value) {
+        if (value && value.object) {
             this.world.scene.add(value.object);
-            this.world.scene.add(value.edges.edgeGroup);
             this.world.lights.alignToModel(value.object);
 
-            // value.edges.edgeGroup.position.copy(value.object.position);
-            value.edges.edgeGroup.visible = this.edges;
-            this.setupExploder(value);
-
-            if (value.animations) {
-                this.setupModelAnimations(value.object);
-            } else {
-                if (this.mixer) {
-                    this.mixer.stopAllAction();
-                    this.mixer = null;
-                }
+            if (value.edges) {
+                this.world.scene.add(value.edges.edgeGroup);
+                value.edges.edgeGroup.visible = this.edges;
             }
+
+            this.setupExploder(value);
         }
 
         this._model = value;
@@ -116,59 +98,12 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         }
     }
 
-    toggleAnimation() {
-        if (!this.animating && this.mixer) {
-            if (this.mixer && this.model && this.model.animations) {
-                let state: AnimationState = 'closed';
-
-                this.model.animations.forEach((clip) => {
-                    if (this.mixer) {
-                        const action = this.mixer.clipAction(clip);
-
-                        /// not sure why this works??
-                        if (action.isRunning()) {
-                            state = 'opened';
-                            action.paused = false;
-                            action.loop = LoopOnce;
-                            action.timeScale = -action.timeScale;
-                            action.clampWhenFinished = true;
-                        }
-
-                        /// need isRunning above ???
-                        if (action.paused) {
-                            action.paused = false;
-                            action.loop = LoopOnce;
-                            action.timeScale = -action.timeScale;
-                            action.clampWhenFinished = true;
-
-                            action.play();
-                        } else {
-                            action.paused = false;
-                            action.loop = LoopOnce;
-                            action.clampWhenFinished = true;
-
-                            action.play();
-                        }
-                    }
-                });
-
-                this.dispatchEvent({
-                    type: 'modelAnimated',
-                    running: true,
-                    state: state,
-                });
-
-                this.animating = true;
-            }
-        }
-    }
-
     private setupExploder(model: IModel | null) {
         if (this.exploder) {
             this.disposeExploder();
         }
 
-        if (model) {
+        if (model && model.object && model.edges) {
             this.exploder = new Exploder(model.object, model.edges);
             this.exploder.addEventListener('animated', (e) =>
                 this.handleExploderAnimated(e),
@@ -205,17 +140,6 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         }
     }
 
-    private setupModelAnimations(model: Object3D) {
-        this.animating = false;
-        this.mixer = new AnimationMixer(model);
-        this.mixer.addEventListener('loop', (e) =>
-            this.handleModelAnimationComplete(e),
-        );
-        this.mixer.addEventListener('finished', (e) =>
-            this.handleModelAnimationComplete(e),
-        );
-    }
-
     private disposeModelAnimations() {
         this.animating = false;
         if (this.mixer) {
@@ -230,23 +154,24 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         this.mixer = null;
     }
 
-    async loadModel(modelUrl: string, theme: ITheme) {
-        this.dispatchEvent({ type: 'loading', value: true });
+    async loadModel(model: IModel, theme: ITheme) {
+        if (model.id !== this.model?.id) {
+            this.dispatchEvent({ type: 'loading', value: true });
+            const obj = await loadModel(model, this, theme);
 
-        const model = await loadModel(modelUrl, this, theme, this.textureData);
+            if (obj.object) {
+                fitCameraToObject(
+                    this.world.camera,
+                    this.world.orbitControls,
+                    [obj.object],
+                    2,
+                );
+            }
 
-        if (model.object) {
-            fitCameraToObject(
-                this.world.camera,
-                this.world.orbitControls,
-                [model.object],
-                2,
-            );
+            this.model = model;
+
+            this.dispatchEvent({ type: 'loading', value: false });
         }
-
-        this.model = model;
-
-        this.dispatchEvent({ type: 'loading', value: false });
     }
 
     async init() {
@@ -272,8 +197,6 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
             this.mixer.update(this.clock.getDelta());
             this.model.edges.update(this.world.scene);
         }
-
-        this.selection?.animate();
 
         if (gizmo) {
             gizmo.render();
@@ -313,7 +236,10 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         this.removeEvents();
         if (this.model) {
             disposeObject(this.model.object);
-            this.model.edges.dispose();
+
+            if (this.model.edges) {
+                this.model.edges.dispose();
+            }
         }
 
         this.selection?.dispose();

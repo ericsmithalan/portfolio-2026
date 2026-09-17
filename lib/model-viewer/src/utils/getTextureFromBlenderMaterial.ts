@@ -1,10 +1,15 @@
 import { MeshStandardMaterial } from 'three';
-import { ITexture, ITextureData, TextureType } from '@/interface';
+import { ITexture, TextureType } from '@/interface';
+
+export interface IBlenderTexture {
+    type: TextureType;
+    texture: ITexture | null;
+    formattedName: string;
+}
 
 export const getTextureFromBlenderMaterial = (
     material: MeshStandardMaterial,
-    textureData: ITextureData,
-): { type: TextureType; texture: ITexture; formattedName: string } | null => {
+): IBlenderTexture | null => {
     const wood = material.name?.indexOf('wood') !== -1;
     const primary = material.name?.indexOf('primary') !== -1;
     const contrast = material.name?.indexOf('contrast') !== -1;
@@ -24,23 +29,23 @@ export const getTextureFromBlenderMaterial = (
     if (wood || primary) {
         return {
             type: 'wood',
-            texture: textureData.woodTextures[0],
-            formattedName: 'Base',
+            texture: null,
+            formattedName: 'base',
         };
     }
 
     if (contrast) {
         return {
             type: 'wood',
-            texture: textureData.woodTextures[0],
-            formattedName: 'Accent',
+            texture: null,
+            formattedName: 'alt',
         };
     }
 
     if (metal || hardware) {
         return {
             type: 'metal',
-            texture: textureData.metalTextures[0],
+            texture: null,
             formattedName: 'metal',
         };
     }

@@ -26,30 +26,32 @@ export const createTextureMaterials = async (
         if (cacheItem) {
             return resolve(cacheItem);
         } else {
-            const url = formatTextureUrl(texture.basic.url, resolution);
-            const textr = await loadTexture(url);
+            if (texture.pbr?.diffuse) {
+                const url = formatTextureUrl(texture.pbr?.diffuse, resolution);
+                const textr = await loadTexture(url);
 
-            material = new MeshStandardMaterial({
-                envMap: environment,
-                envMapIntensity: 1,
-                map: textr,
-                metalness:
-                    texture.type === 'metal' || texture.type === 'hardware'
-                        ? 1
-                        : 0,
-                roughness:
-                    texture.type === 'metal' || texture.type === 'hardware'
-                        ? 0.1
-                        : 0.4,
-            });
+                material = new MeshStandardMaterial({
+                    envMap: environment,
+                    envMapIntensity: 1,
+                    map: textr,
+                    metalness:
+                        texture.type === 'metal' || texture.type === 'hardware'
+                            ? 1
+                            : 0,
+                    roughness:
+                        texture.type === 'metal' || texture.type === 'hardware'
+                            ? 0.1
+                            : 0.4,
+                });
 
-            if (textr) {
-                textr.dispose();
+                if (textr) {
+                    textr.dispose();
+                }
+
+                cache.set(texture.id, material);
+
+                resolve(material);
             }
-
-            cache.set(texture.id, material);
-
-            resolve(material);
         }
     });
 };

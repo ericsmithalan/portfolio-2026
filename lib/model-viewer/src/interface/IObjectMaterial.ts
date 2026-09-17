@@ -4,6 +4,6 @@ import { ITexture, TextureType } from './ITexture';
 export interface IObjectMaterial {
     type: TextureType;
     objects: Array<number>;
-    texture: ITexture;
+    texture: ITexture | null;
     material: Material | null;
 }

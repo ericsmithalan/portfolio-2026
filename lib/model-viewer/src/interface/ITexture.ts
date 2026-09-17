@@ -1,5 +1,4 @@
-export type TextureType = 'wood' | 'metal' | 'hardware';
-export type TextureResolution = '1k' | '2k' | '3k' | '4k';
+export type TextureType = 'wood' | 'metal';
 
 export interface IPBRTexture {
     diffuse: string | null;
@@ -14,15 +13,10 @@ export interface IPBRTexture {
     specular: string | null;
 }
 
-export interface IBasicTexture {
-    url: string;
-}
-
 export interface ITexture {
     id: number;
     type: TextureType;
     name: string;
     thumbnail: string;
-    pbr: IPBRTexture;
-    basic: IBasicTexture;
+    pbr: IPBRTexture | null;
 }

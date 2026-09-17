@@ -1,12 +1,6 @@
 import { Mesh, Object3D } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
-import {
-    IObjectMaterial,
-    IModel,
-    IStat,
-    ITheme,
-    ITextureData,
-} from '@/interface';
+import { IModel, IStat, ITexture, ITheme } from '@/interface';
 import { Edges, ObjectUserData, Viewport } from '@/lib';
 import { getObjectDimensions } from './getObjectDimensions';
 import { getTextureFromBlenderMaterial } from './getTextureFromBlenderMaterial';
@@ -14,31 +8,28 @@ import { getTextureFromBlenderMaterial } from './getTextureFromBlenderMaterial';
 const loader: GLTFLoader = new GLTFLoader();
 
 export const loadModel = (
-    modelUrl: string,
+    model: IModel | null,
     viewport: Viewport,
     theme: ITheme,
-    textureData: ITextureData,
 ): Promise<IModel> => {
     return new Promise(async (resolve) => {
-        if (modelUrl) {
-            loader.load(`${modelUrl}`, (gltf) => {
-                const model = gltf.scene;
+        if (model) {
+            loader.load(model.url, (gltf) => {
+                const scene = gltf.scene;
                 const edges = new Edges();
-                const materials: Map<string, IObjectMaterial> = new Map();
-                const children: Array<Object3D> = [];
+                const materials: Map<string, ITexture> = new Map();
 
-                model.castShadow = true;
-                model.receiveShadow = true;
+                scene.castShadow = true;
+                scene.receiveShadow = true;
 
-                model.traverse((object: Object3D) => {
-                    if (object instanceof Mesh) {
-                        object.castShadow = true;
-                        object.receiveShadow = true;
+                scene.traverse((part: Object3D) => {
+                    if (part instanceof Mesh) {
+                        part.castShadow = true;
+                        part.receiveShadow = true;
 
-                        if (object.material) {
+                        if (part.material) {
                             const matType = getTextureFromBlenderMaterial(
-                                object.material,
-                                textureData,
+                                part.material,
                             );
 
                             if (matType) {
@@ -49,26 +40,25 @@ export const loadModel = (
                                 if (!mat) {
                                     materials.set(matType.formattedName, {
                                         type: matType.type,
-                                        objects: [object.id],
-                                        texture: matType.texture,
-                                        material: null,
+                                        id: part.id,
+                                        name: '',
+                                        thumbnail: '',
+                                        pbr: null,
                                     });
-                                } else {
-                                    mat.objects.push(object.id);
                                 }
                             }
                         }
 
-                        object.userData = new ObjectUserData({
+                        part.userData = new ObjectUserData({
                             viewportInfo: {
                                 selectable: true,
                             },
                         });
 
-                        children.push(object);
-                        edges.add(object, theme);
+                        model.children.push(part);
+                        edges.add(part, theme);
                     } else {
-                        object.layers.disableAll();
+                        part.layers.disableAll();
                     }
                 });
 
@@ -80,13 +70,13 @@ export const loadModel = (
                     materials.set(keyToMove, value); // 2. Re-insert it at the end
                 }
 
-                const size = getObjectDimensions(viewport, model, true);
+                const size = getObjectDimensions(viewport, scene, true);
 
                 const getStats = (): Array<IStat> => {
                     return [
                         {
                             name: 'parts',
-                            value: String(children.length),
+                            value: String(model.children.length),
                         },
                         {
                             name: 'Width',
@@ -106,23 +96,19 @@ export const loadModel = (
                     ];
                 };
 
-                model.userData = new ObjectUserData({
+                scene.userData = new ObjectUserData({
                     viewportInfo: { selectable: true },
                 });
 
                 edges.edgeGroup.updateMatrixWorld();
-                model.updateMatrixWorld();
+                scene.updateMatrixWorld();
 
-                resolve({
-                    object: model,
-                    // outliner: outliner,
-                    edges: edges,
-                    materials: materials,
-                    children: children,
-                    stats: getStats(),
-                    animations:
-                        gltf.animations?.length > 0 ? gltf.animations : null,
-                });
+                model.edges = edges;
+                model.object = scene;
+                model.stats = getStats();
+                model.materials = materials;
+
+                resolve(model);
             });
         }
     });

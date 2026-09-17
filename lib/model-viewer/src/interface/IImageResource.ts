@@ -1,5 +1,5 @@
 export interface IImageResource {
-    count: number;
+    id: number;
     path: string;
-    primaryImg: number;
+    thumb: string;
 }

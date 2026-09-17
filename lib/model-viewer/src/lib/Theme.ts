@@ -1,6 +1,6 @@
 import { ITheme } from '@/interface';
 
-export const ThemeDark: ITheme = {
+export const DefaultTheme: ITheme = {
     world: {
         backgroundColor: '#222222',
         fogColor: '#222222',

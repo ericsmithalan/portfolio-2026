@@ -24,9 +24,6 @@ export const createTextureData = (
         type: type,
         name: name,
         thumbnail: `${url}/${name}/${variant}-thumb.png`,
-        basic: {
-            url: `${url}/${name}/${variant}-diffuse`,
-        },
         pbr: {
             diffuse: options.diffuse
                 ? `${url}/${name}/${variant}-diffuse`

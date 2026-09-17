@@ -1,15 +1,18 @@
-import { AnimationClip, Object3D } from 'three';
+import { Object3D } from 'three';
 import { Edges } from '@/lib';
-import { IObjectMaterial } from './IObjectMaterial';
-import { IOutliner } from './IOutliner';
 import { IStat } from './IStat';
+import { ITexture } from './ITexture';
+import { IImageResource } from './IImageResource';
 
 export interface IModel {
-    object: Object3D;
-    outliner?: IOutliner;
-    edges: Edges;
-    materials: Map<string, IObjectMaterial>;
-    animations: Array<AnimationClip> | null;
+    id: number;
+    name: string;
+    url: string;
+    images: Array<IImageResource>;
+    object: Object3D | null;
+    edges: Edges | null;
+    materials: Map<string, ITexture> | null;
+    textures: Array<ITexture> | null;
     children: Array<Object3D>;
     stats: Array<IStat>;
 }

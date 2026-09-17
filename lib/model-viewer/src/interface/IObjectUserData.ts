@@ -1,5 +1,3 @@
-import { IOutliner } from './IOutliner';
-
 export interface IUserDataEdgeInfo {
     objectId: number;
     edgeId: number;
@@ -14,7 +12,6 @@ export interface IUserDataViewportInfo {
 }
 
 export interface IObjectUserData {
-    outlinerInfo: IOutliner | null;
     edgeInfo: IUserDataEdgeInfo | null;
     textureInfo: IUserDataTextureInfo | null;
     viewportInfo: IUserDataViewportInfo | null;
