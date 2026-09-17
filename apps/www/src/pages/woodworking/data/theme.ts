@@ -7,7 +7,7 @@ export const ThemeLight: ITheme = {
         fogDensity: 0.08,
     },
     grid: {
-        lineColor: '#999999',
+        lineColor: '#cccccc',
         opacity: 0.2,
         size: 100,
         divisions: 100,
@@ -26,6 +26,7 @@ export const ThemeLight: ITheme = {
         lineWidth: 3,
     },
 };
+
 export const ThemeDark: ITheme = {
     world: {
         backgroundColor: '#222222',

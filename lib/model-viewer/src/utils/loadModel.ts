@@ -1,6 +1,12 @@
 import { Mesh, Object3D } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
-import { IObjectMaterial, IModel, IStat, ITheme } from '@/interface';
+import {
+    IObjectMaterial,
+    IModel,
+    IStat,
+    ITheme,
+    ITextureData,
+} from '@/interface';
 import { Edges, ObjectUserData, Viewport } from '@/lib';
 import { getObjectDimensions } from './getObjectDimensions';
 import { getTextureFromBlenderMaterial } from './getTextureFromBlenderMaterial';
@@ -11,6 +17,7 @@ export const loadModel = (
     modelUrl: string,
     viewport: Viewport,
     theme: ITheme,
+    textureData: ITextureData,
 ): Promise<IModel> => {
     return new Promise(async (resolve) => {
         if (modelUrl) {
@@ -31,6 +38,7 @@ export const loadModel = (
                         if (object.material) {
                             const matType = getTextureFromBlenderMaterial(
                                 object.material,
+                                textureData,
                             );
 
                             if (matType) {

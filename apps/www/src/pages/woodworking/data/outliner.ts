@@ -1,20 +1,20 @@
-import { IOutliner } from '@/interface';
+import { IOutliner } from '@portfolio/model-viewer';
 
 export const rootOutliner: Array<IOutliner> = [
     {
-        id: 10984,
-        modelUrl: '/models/case-1/final.glb',
+        id: 1,
+        modelUrl: '/models/case/model.glb',
         name: 'Sideboard',
         imageResouce: {
             primaryImg: 10,
             count: 10,
-            path: '/models/case-1/images/',
+            path: '/models/case/images/',
         },
         children: [],
     },
     {
-        id: 7564,
-        modelUrl: '/models/bunk/bunks1.glb',
+        id: 2,
+        modelUrl: '/models/bunk/model.glb',
         name: 'Bunk Bed',
         imageResouce: {
             primaryImg: 14,
@@ -24,8 +24,8 @@ export const rootOutliner: Array<IOutliner> = [
         children: [],
     },
     {
-        id: 7921,
-        modelUrl: '/models/twin/twin-Portfolio.glb',
+        id: 3,
+        modelUrl: '/models/twin/model.glb',
         name: 'Twin Bed',
         imageResouce: {
             primaryImg: 3,
@@ -35,8 +35,8 @@ export const rootOutliner: Array<IOutliner> = [
         children: [],
     },
     {
-        id: 8888,
-        modelUrl: '/models/toolbox/tool-box.glb',
+        id: 4,
+        modelUrl: '/models/toolbox/model.glb',
         name: 'Toolbox',
         imageResouce: {
             primaryImg: 2,
@@ -46,35 +46,35 @@ export const rootOutliner: Array<IOutliner> = [
         children: [],
     },
     {
-        id: 987,
+        id: 5,
         imageResouce: {
             primaryImg: 11,
             count: 11,
-            path: '/models/windsor-chair/images/',
+            path: '/models/chair/images/',
         },
-        modelUrl: '/models/windsor-chair/chair.glb',
+        modelUrl: '/models/chair/model.glb',
         name: 'Windsor Chair',
         children: [],
     },
     {
-        id: 3320,
+        id: 6,
         name: 'Shaker Table',
-        modelUrl: '/models/shaker-table/shaker-table.glb',
+        modelUrl: '/models/table/model.glb',
         imageResouce: {
             primaryImg: 2,
             count: 3,
-            path: '/models/shaker-table/images/',
+            path: '/models/table/images/',
         },
         children: [],
     },
     {
-        id: 11001,
+        id: 7,
         imageResouce: {
             primaryImg: 1,
             count: 3,
             path: '/models/desk/images/',
         },
-        modelUrl: '/models/desk/desk1.glb',
+        modelUrl: '/models/desk/model.glb',
         name: 'Desk',
         children: [],
     },

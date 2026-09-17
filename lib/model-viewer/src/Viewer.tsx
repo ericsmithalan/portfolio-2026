@@ -2,24 +2,26 @@ import { IViewportEvent, ThemeDark, Viewport } from '@/lib';
 import { FC, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import { isMobile } from 'react-device-detect';
-import './style.scss';
-import { IModel, ITheme } from '@/interface';
+import { IModel, ITextureData, ITheme } from '@/interface';
 import { Object3D } from 'three';
+import './style.scss';
 
 export interface ViewerProps {
     children?: React.ReactNode;
     modelUrl?: string;
     envUrl?: string;
     theme?: ITheme;
+    textureData: ITextureData;
     onLoaded?: (type: string, value: boolean) => void;
     onModelChange?: (type: string, model: IModel | null) => void;
-    onPartSelectionChange?: (type: string, selection: Object3D | null) => void;
+    onSelectChange?: (type: string, selection: Object3D | null) => void;
 }
 
 export const Viewer: FC<ViewerProps> = ({
     onLoaded,
     onModelChange,
-    onPartSelectionChange,
+    onSelectChange,
+    textureData,
     modelUrl,
     theme,
     envUrl,
@@ -43,8 +45,8 @@ export const Viewer: FC<ViewerProps> = ({
         };
 
         const selectionChanve = (e: IViewportEvent['selectionChanged']) => {
-            if (onPartSelectionChange) {
-                onPartSelectionChange(e.type, e.selection);
+            if (onSelectChange) {
+                onSelectChange(e.type, e.selection);
             }
         };
 
@@ -61,7 +63,7 @@ export const Viewer: FC<ViewerProps> = ({
         };
 
         if (canvas) {
-            vp = new Viewport(canvas, isMobile, theme, envUrl);
+            vp = new Viewport(canvas, isMobile, theme, textureData, envUrl);
             vp.addEventListener('loading', load);
             vp.addEventListener('modelChanged', changed);
             vp.addEventListener('selectionChanged', selectionChanve);
@@ -73,7 +75,7 @@ export const Viewer: FC<ViewerProps> = ({
             vp.removeEventListener('selectionChanged', selectionChanve);
             vp?.dispose();
         };
-    }, []);
+    }, [theme]);
 
     return (
         <>

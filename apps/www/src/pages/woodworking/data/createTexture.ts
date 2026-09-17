@@ -1,4 +1,4 @@
-import { ITexture, TextureType } from '@/interface';
+import { ITexture, TextureType } from '@portfolio/model-viewer';
 
 export const createTextureData = (
     id: number,

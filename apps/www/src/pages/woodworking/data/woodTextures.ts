@@ -1,7 +1,7 @@
-import { ITexture } from '@/interface';
+import { ITexture } from '@portfolio/model-viewer';
 import { createTextureData } from './createTexture';
 
-export const getAllWoodTextures = (): Array<ITexture> => {
+export const getWoodTextures = (): Array<ITexture> => {
     const settings = {
         coat: false,
         ao: false,

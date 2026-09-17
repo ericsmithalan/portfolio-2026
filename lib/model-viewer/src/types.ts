@@ -1,3 +1,6 @@
+import { Object3D } from 'three';
+
+export type Obj3D = Object3D;
 export type ModelName =
     'bunk' | 'case' | 'chair' | 'desk' | 'table' | 'toolbox' | 'twin';
 export type TransformMode = 'translate' | 'rotate' | 'scale';

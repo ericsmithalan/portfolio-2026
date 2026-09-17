@@ -5,7 +5,7 @@ import {
     LoopOnce,
     Object3D,
 } from 'three';
-import { IModel, ITheme } from '@/interface';
+import { IModel, ITextureData, ITheme } from '@/interface';
 import { AnimationState } from '@/types';
 import { disposeObject, fitCameraToObject, loadModel } from '@/utils';
 import { Exploder, IExploderEvent } from './Exploder';
@@ -27,6 +27,7 @@ export interface IViewportEvent {
 export class Viewport extends EventDispatcher<IViewportEvent> {
     private readonly isMobile: boolean = false;
     mixer: AnimationMixer | null = null;
+    private readonly textureData: ITextureData;
 
     readonly world: World;
     readonly selection: Selection | null;
@@ -42,10 +43,12 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         canvas: HTMLCanvasElement,
         isMobile: boolean,
         theme: ITheme,
+        textureData: ITextureData,
         envUrl?: string,
     ) {
         super();
 
+        this.textureData = textureData;
         this.isMobile = isMobile;
         this.world = new World(canvas, isMobile, false, theme, envUrl);
         this.selection = isMobile
@@ -230,7 +233,7 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     async loadModel(modelUrl: string, theme: ITheme) {
         this.dispatchEvent({ type: 'loading', value: true });
 
-        const model = await loadModel(modelUrl, this, theme);
+        const model = await loadModel(modelUrl, this, theme, this.textureData);
 
         if (model.object) {
             fitCameraToObject(

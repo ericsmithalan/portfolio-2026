@@ -1,7 +1,7 @@
-import { ITexture } from '@/interface';
+import { ITexture } from '@portfolio/model-viewer';
 import { createTextureData } from './createTexture';
 
-export const getAllMetalTextures = (): Array<ITexture> => {
+export const getMetalTextures = (): Array<ITexture> => {
     const settings = {
         coat: false,
         ao: false,
