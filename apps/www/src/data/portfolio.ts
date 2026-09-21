@@ -38,39 +38,12 @@ export const masterProfile: MasterProfile = {
     },
 
     healthAndLimitations: {
-        diagnoses: [
-            'Cervical radiculopathy (Left, M54.12)',
-            'DDD/DJD C5-C7 (Onset ~5/12/2026)',
-        ],
-        mriFindings: {
-            date: new Date(2026, 6, 8),
-            findings: [
-                'Multilevel degenerative changes of the cervical spine.',
-                'Disc protrusions with associated osteophytes causing moderate to severe spinal canal stenosis at C4-C5 and C6-C7 with mild mass effect on the right aspect of the cord.',
-                'Osteophytes causing severe neural foraminal stenosis bilaterally at C4-C5, on the right at C5-C6, and on the left at C6-C7.',
-            ],
-        },
         workplaceRestrictions: [
             'Lifting weighted objects aggravates neck and left-arm symptoms; light-duty preferred (<20 lbs).',
             'All-day, repeated, or overhead lifting is restricted.',
             'Prolonged looking down (downward reading or keyboard posture) aggravates symptoms.',
             'Continuous or rapid scanning of the environment / repetitive head turning triggers radiating pain.',
             'Driving tolerance is limited during acute symptom flare-ups.',
-        ],
-    },
-
-    careerGoals: {
-        primaryTargets: [
-            'Digital Court Reporter / Digital Reporter',
-            'Administrative Assistant / Clerical / Office Support',
-            'Customer Service Representative / 311 Operator',
-            'Peer Support Specialist / Case Manager / Court Resource Coordinator',
-        ],
-        parameters: [
-            'Requires low physical demand (strictly light-duty desk environments).',
-            'Utilizes organizational, procedural, document control, and technological optimization skills.',
-            'Open to federal (GS-5/7), state, county, local municipal, VA, or veteran-serving non-profit sectors.',
-            'Open to lower-level, practical interface or website maintenance tasks (e.g., WordPress/Squarespace frontend updates for small companies) but explicitly rejects high-end corporate UX design leadership or heavy modern architecture stacks.',
         ],
     },
 
@@ -452,19 +425,22 @@ export const masterProfile: MasterProfile = {
             subTeams: [
                 {
                     name: 'HealthVault',
-                    dates: '2008 - 2011',
+                    startDate: new Date(2008, 1, 1), //estimated
+                    endDate: new Date(2011, 1, 1), //estimated
                     summary:
                         'Elected as the first dedicated UI programmer for a new 20-member healthcare storage incubation division. Built production .NET server pages, front-end scripting controls, and high-fidelity interface models. Designed the structural layout for HealthVault Connection Center, cross-training in Windows Forms and high-realism WPF code to pass working software components to backend engineers. Independently developed and deployed Ghost, a native WPF overlay utility that superimposed layout files directly over functional builds to eliminate manual redlining from team sprints. Promptly stepped into critical production gaps when the lead web developer separated, accelerating site updates by translating flat wireframe images straight into code without dependent documentation.',
                 },
                 {
                     name: 'Office Live',
-                    dates: '2004 - 2008',
+                    startDate: new Date(2004, 1, 1), //estimated
+                    endDate: new Date(2008, 1, 1), //estimated
                     summary:
                         'Served as a key founding architect on a tight 8-member core proof-of-concept incubation division that converted standard SharePoint setups into scalable public business hosting platforms. Gathered requirements directly from codebase analysis and reverse-engineered source components. Hand-developed the layout infrastructure for the core V1 launch, including web engines and 20 integrated SharePoint apps. Coded a custom C# script hooking directly into the Photoshop DLL API, looping style tables to automatically batch-generate over 800,000 distinct theme asset combinations, eliminating thousands of hours of manual asset slicing. Awarded the prestigious Microsoft Gold Star recognition (granted to the top 3% of performance groups) for delivery alignment.',
                 },
                 {
                     name: 'bCentral',
-                    dates: '2000 - 2004',
+                    startDate: new Date(2000, 1, 1), //estimated
+                    endDate: new Date(2004, 1, 1), //estimated
                     summary:
                         'Hired initially to support online content layout and marketing assets. Proactively crossed technical divides into engineering when specialized backend programmers faced front-end layout friction. Independently mastered HTML, CSS, native JavaScript, ASP, and early .NET frameworks to implement original designs directly into internal content management engines. Maintained strict architectural componentization rules, reinforcing user interface consistency rules across early online business platform updates.',
                 },

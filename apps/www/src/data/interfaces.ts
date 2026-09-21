@@ -63,24 +63,8 @@ export interface Military {
     coreDuties: string[];
 }
 
-export interface MriFindings {
-    date: Date;
-    findings: string[];
-}
-
 export interface HealthAndLimitations {
-    diagnoses: string[];
-    mriFindings: MriFindings;
     workplaceRestrictions: string[];
-}
-
-export interface CareerGoals {
-    primaryTargets: string[];
-    parameters: string[];
-}
-
-export interface ThinkingAndProblemApproach {
-    analysis: string[];
 }
 
 export interface SkillsLibrary {
@@ -99,7 +83,8 @@ export interface SideConcepts {
 
 export interface SubTeam {
     name: string;
-    dates: string;
+    startDate: Date;
+    endDate: Date;
     summary: string;
 }
 
@@ -170,7 +155,6 @@ export interface MasterProfile {
     identity: Identity;
     military: Military;
     healthAndLimitations: HealthAndLimitations;
-    careerGoals: CareerGoals;
     thinkingAndProblemApproach: DeepThinkingAndProblemApproach; // Transformed here
     skillsLibrary: SkillsLibrary;
     workHistory: WorkExperience[];
