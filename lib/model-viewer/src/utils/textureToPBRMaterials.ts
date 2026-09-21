@@ -42,7 +42,7 @@ export const textureToPBRMaterials = async (
                 normalMap: pbrs.normal,
                 roughnessMap: pbrs.rough,
                 metalnessMap: pbrs.metal,
-                // displacementMap: pbrs.displace, // causing issues with the
+                displacementMap: pbrs.displace, // causing issues with the
                 normalScale: new Vector2(0.5, 0.5),
                 metalness: 0,
                 roughness: texture.type === 'metal' ? 0 : 0.5,

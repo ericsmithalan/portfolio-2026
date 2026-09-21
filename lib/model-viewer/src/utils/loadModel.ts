@@ -1,24 +1,23 @@
 import { Mesh, Object3D } from 'three';
-import { GLTFLoader } from 'three/examples/jsm/Addons.js';
-import { IStat } from '@/interface';
-import {
-    Edges,
-    IObjectUserData,
-    ObjectUserData,
-    Viewport,
-    ITheme,
-} from '@/lib';
+import { GLTFLoader, DRACOLoader } from 'three/examples/jsm/Addons.js';
+import { IStat, IViewerOptions } from '@/interface';
+import { Edges, IObjectUserData, ObjectUserData, Viewport } from '@/lib';
 import { getObjectDimensions } from './getObjectDimensions';
 
 const loader: GLTFLoader = new GLTFLoader();
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath(
+    'https://www.gstatic.com/draco/versioned/decoders/1.5.6/',
+);
 
 export const loadModel = (
     userData: IObjectUserData | null,
     viewport: Viewport,
-    theme: ITheme,
+    options: IViewerOptions,
 ): Promise<Object3D> => {
     return new Promise(async (resolve) => {
         if (userData) {
+            loader.setDRACOLoader(dracoLoader);
             loader.load(userData.url, (gltf) => {
                 const scene = gltf.scene;
                 const edges = new Edges();
@@ -51,7 +50,9 @@ export const loadModel = (
                             selectable: true,
                         });
 
-                        edges.add(part, theme);
+                        if (options.showObjectBorders) {
+                            edges.add(part, options.theme);
+                        }
                     } else {
                         part.layers.disableAll();
                     }

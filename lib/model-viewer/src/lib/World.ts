@@ -12,11 +12,11 @@ import {
 import { ViewportGizmo } from 'three-viewport-gizmo';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
-import { ITheme } from '@/lib';
 import { disposeObject } from '@/utils';
 import { Floor } from './Floor';
 import { Grid } from './Grid';
 import { Lights } from './Lights';
+import { IViewerOptions } from '@/interface';
 
 export interface IWorldEvent {
     resize: { type: string; size: IScreenSize };
@@ -34,10 +34,11 @@ export class World extends EventDispatcher<IWorldEvent> {
     readonly camera: PerspectiveCamera;
     readonly orbitControls: OrbitControls;
     readonly lights: Lights;
-    readonly grid: Grid;
-    readonly floor: Floor;
+    readonly grid: Grid | null;
+    readonly floor: Floor | null;
     private showStats: boolean;
-
+    private options: IViewerOptions | undefined;
+    private _canvas: HTMLCanvasElement;
     private geometries = 0;
     private textures = 0;
 
@@ -47,19 +48,16 @@ export class World extends EventDispatcher<IWorldEvent> {
         aspect: 0,
     };
 
-    constructor(
-        canvas: HTMLCanvasElement,
-        isMobile: boolean,
-        showStats: boolean,
-        theme: ITheme,
-        envUrl?: string,
-    ) {
+    constructor(canvas: HTMLCanvasElement, options: IViewerOptions) {
         super();
 
-        const worldTheme = theme.world;
+        const worldTheme = options.theme.world;
 
+        this._canvas = canvas;
+        this.options = options;
         this.setSize();
-        this.showStats = showStats;
+        this.showStats = options.showStats;
+
         this.scene = new Scene();
         this.scene.name = 'Scene';
         this.scene.background = new Color(worldTheme.backgroundColor);
@@ -91,18 +89,36 @@ export class World extends EventDispatcher<IWorldEvent> {
         this.renderer.autoClear = false;
 
         this.orbitControls = new OrbitControls(this.camera, canvas);
-        this.orbitControls.enableDamping = false; // an animation loop is required when either damping or auto-rotation are enabled
-        this.orbitControls.dampingFactor = 0.05;
-        this.orbitControls.screenSpacePanning = true;
-        this.orbitControls.minDistance = 0.1;
-        this.orbitControls.maxDistance = 3500;
-        this.orbitControls.maxPolarAngle = Math.PI / 1.5;
+        if (!options.restrictOrbit) {
+            this.orbitControls.enableDamping = false;
+            this.orbitControls.dampingFactor = 0.05;
+            this.orbitControls.screenSpacePanning = true;
+
+            // 1. Remove distance zoom restrictions (set back to default values)
+            this.orbitControls.minDistance = 0; // Default: 0 (Allows zooming inside the target)
+            this.orbitControls.maxDistance = Infinity; // Default: Infinity (Allows infinite zooming out)
+
+            // 2. Remove rotational angle constraints (allows complete orbital rotation)
+            this.orbitControls.minPolarAngle = 0; // Default: 0 (Allows looking straight down from the top)
+            this.orbitControls.maxPolarAngle = Math.PI; // Default: Math.PI (Allows looking straight up from the bottom)
+            this.orbitControls.minAzimuthAngle = -Infinity; // Default: -Infinity (Unlocks full horizontal rotation)
+            this.orbitControls.maxAzimuthAngle = Infinity; // Default: Infinity
+        } else {
+            this.orbitControls = new OrbitControls(this.camera, canvas);
+            this.orbitControls.enableDamping = false; // an animation loop is required when either damping or auto-rotation are enabled
+            this.orbitControls.dampingFactor = 0.05;
+            this.orbitControls.screenSpacePanning = true;
+            this.orbitControls.minDistance = 0.1;
+            this.orbitControls.maxDistance = 3500;
+            this.orbitControls.maxPolarAngle = Math.PI / 1.5;
+        }
         this.orbitControls.update();
 
-        this.gizmo = isMobile
+        this.gizmo = !this.options.showAxisHelper
             ? null
             : new ViewportGizmo(this.camera, this.renderer, {
                   placement: 'bottom-right',
+                  container: this._canvas,
               });
 
         if (this.gizmo) {
@@ -110,9 +126,19 @@ export class World extends EventDispatcher<IWorldEvent> {
             this.gizmo.attachControls(this.orbitControls);
         }
 
-        this.lights = new Lights(this.scene, envUrl);
-        this.floor = new Floor(this.scene);
-        this.grid = new Grid(this.scene, theme);
+        this.lights = new Lights(this.scene, options?.envUrl);
+
+        if (options.showGrid) {
+            this.grid = new Grid(this.scene, this.options.theme);
+        } else {
+            this.grid = null;
+        }
+
+        if (options.showFloor) {
+            this.floor = new Floor(this.scene);
+        } else {
+            this.floor = null;
+        }
 
         this.registerEvents();
     }
@@ -158,8 +184,17 @@ export class World extends EventDispatcher<IWorldEvent> {
         let width: number = 0;
         let height: number = 0;
 
-        width = window.innerWidth;
-        height = window.innerHeight;
+        if (this.options?.height) {
+            height = Number(this.options.height);
+        } else {
+            height = window.innerHeight;
+        }
+
+        if (this.options?.width) {
+            width = Number(this.options.width);
+        } else {
+            width = window.innerWidth;
+        }
 
         this.size.aspect = width / height;
         this.size.width = width;
@@ -176,8 +211,14 @@ export class World extends EventDispatcher<IWorldEvent> {
             this.gizmo.dispose();
         }
 
-        this.grid.dispose();
-        this.floor.dispose();
+        if (this.grid) {
+            this.grid.dispose();
+        }
+
+        if (this.floor) {
+            this.floor.dispose();
+        }
+
         this.lights.dispose();
         disposeObject(this.scene);
     }

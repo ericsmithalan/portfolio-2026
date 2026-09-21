@@ -20,25 +20,34 @@ export const fitCameraToObject = (
     box.getCenter(center);
 
     const maxSize = Math.max(size.x, size.y, size.z);
+
+    // Calculate distance needed for vertical field of view
     const fitHeightDistance =
         maxSize / (2 * Math.atan((Math.PI * camera.fov) / 360));
+
+    // Calculate distance needed for horizontal field of view based on aspect ratio
     const fitWidthDistance = fitHeightDistance / camera.aspect;
-    const distance = fitOffset * Math.max(fitHeightDistance, fitWidthDistance);
 
-    const direction = controls.target
-        .clone()
-        .sub(camera.position)
-        .normalize()
-        .multiplyScalar(distance);
+    // Use the maximum of the two distances, then multiply by the offset padding
+    const distance = Math.max(fitHeightDistance, fitWidthDistance) * fitOffset;
 
+    // Get the current viewing direction of the camera
+    const direction = new Vector3()
+        .subVectors(camera.position, controls.target)
+        .normalize();
+
+    // Configure controls boundaries
     controls.maxDistance = distance * 10;
     controls.target.copy(center);
+    controls.enableZoom = true;
 
-    camera.near = 0.1;
+    // Update clipping planes safely
+    camera.near = distance / 100;
     camera.far = distance * 100;
     camera.updateProjectionMatrix();
 
-    camera.position.copy(controls.target).sub(direction);
+    // Position camera along the viewing direction vector away from the new center
+    camera.position.copy(center).addScaledVector(direction, distance);
 
     controls.update();
 };

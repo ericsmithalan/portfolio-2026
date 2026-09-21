@@ -1,11 +1,12 @@
 import { AnimationMixer, EventDispatcher, Object3D, Timer } from 'three';
-import { ITheme } from '@/lib';
+import { DefaultTheme, ITheme } from '@/lib';
 import { AnimationState } from '@/types';
 import { disposeObject, fitCameraToObject, loadModel } from '@/utils';
 import { Exploder, IExploderEvent } from './Exploder';
 import { ISelectionEvent, Selection } from './Selection';
 import { IWorldEvent, World } from './World';
 import { IObjectUserData } from './ObjectUserData';
+import { IViewerOptions } from '@/interface';
 
 export interface IViewportEvent {
     loading: { type: string; value: boolean };
@@ -28,27 +29,38 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
 
     private _model: Object3D | null = null;
     private _edges: boolean = true;
+    private _options: IViewerOptions;
 
     clock = new Timer();
     animating: boolean = false;
 
-    constructor(
-        canvas: HTMLCanvasElement,
-        isMobile: boolean,
-        theme: ITheme,
-        envUrl?: string,
-    ) {
+    private defaultOptions: IViewerOptions = {
+        isMobile: false,
+        height: undefined,
+        width: undefined,
+        showAxisHelper: true,
+        showStats: true,
+        theme: DefaultTheme,
+        showGrid: true,
+        showFloor: true,
+        restrictOrbit: true,
+        showObjectBorders: true,
+    };
+
+    constructor(canvas: HTMLCanvasElement, options?: Partial<IViewerOptions>) {
         super();
 
-        this.world = new World(canvas, isMobile, false, theme, envUrl);
-        this.selection = isMobile
+        this._options = { ...this.defaultOptions, ...options };
+
+        this.world = new World(canvas, this._options);
+        this.selection = this._options.isMobile
             ? null
             : new Selection(
                   canvas,
                   this.world.scene,
                   this.world.camera,
                   this.world.renderer,
-                  theme,
+                  this._options.theme,
               );
         this.setEvents();
         this.init();
@@ -59,9 +71,13 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     }
 
     set edges(value: boolean) {
-        if (this.model && this.model.userData.edges) {
-            this.model.userData.edges.edgeGroup.visible = value;
-            this._edges = value;
+        if (!this._options.showObjectBorders) {
+            this._edges = false;
+        } else {
+            if (this.model && this.model.userData.edges) {
+                this.model.userData.edges.edgeGroup.visible = value;
+                this._edges = value;
+            }
         }
     }
 
@@ -155,17 +171,17 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         this.mixer = null;
     }
 
-    async loadModel(model: IObjectUserData, theme: ITheme) {
+    async loadModel(model: IObjectUserData) {
         if (!this.model?.id) {
             this.dispatchEvent({ type: 'loading', value: true });
-            const obj = await loadModel(model, this, theme);
+            const obj = await loadModel(model, this, this._options);
 
             if (obj) {
                 fitCameraToObject(
                     this.world.camera,
                     this.world.orbitControls,
                     [obj],
-                    2,
+                    1,
                 );
             }
 

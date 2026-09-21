@@ -19,7 +19,7 @@ export interface IObjectUserData {
     selectable?: boolean;
     images: Array<IImageResource>;
     edges?: Edges;
-    textures: ITextureData;
+    textures: ITextureData | null;
     stats?: Array<IStat>;
 }
 
@@ -30,7 +30,7 @@ export class ObjectUserData implements IObjectUserData {
     selectable: boolean;
     images: IImageResource[];
     edges: Edges;
-    textures: ITextureData;
+    textures: ITextureData | null;
     stats: IStat[];
     url: string;
     name: string;

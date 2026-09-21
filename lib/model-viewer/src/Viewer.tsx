@@ -1,13 +1,5 @@
-import {
-    IViewportEvent,
-    DefaultTheme,
-    Viewport,
-    IObjectUserData,
-    ITheme,
-} from '@/lib';
+import { IViewportEvent, Viewport, IObjectUserData } from '@/lib';
 import { FC, useCallback, useEffect, useRef } from 'react';
-import clsx from 'clsx';
-import { isMobile } from 'react-device-detect';
 
 import { Material, Mesh, Object3D } from 'three';
 import './style.scss';
@@ -16,11 +8,11 @@ import {
     getObjectsById,
     disposeMaterial,
 } from './utils';
+import { IViewerOptions } from './interface';
 
 export interface ViewerProps {
+    options?: Partial<IViewerOptions>;
     modelUserData: IObjectUserData | null;
-    envUrl?: string;
-    theme?: ITheme;
     onLoaded?: (type: string, value: boolean) => void;
     onModelChange?: (type: string, model: Object3D | null) => void;
     onSelectChange?: (type: string, selection: Object3D | null) => void;
@@ -28,8 +20,7 @@ export interface ViewerProps {
 
 export const Viewer: FC<ViewerProps> = ({
     modelUserData,
-    theme,
-    envUrl,
+    options,
     onLoaded,
     onModelChange,
     onSelectChange,
@@ -80,9 +71,9 @@ export const Viewer: FC<ViewerProps> = ({
         }
     };
 
-    const initalize = useCallback(async (theme: ITheme, vp: Viewport) => {
+    const initalize = useCallback(async (vp: Viewport) => {
         if (modelUserData) {
-            await vp.loadModel(modelUserData, theme).catch((e) => {
+            await vp.loadModel(modelUserData).catch((e) => {
                 console.log(e);
             });
 
@@ -95,10 +86,6 @@ export const Viewer: FC<ViewerProps> = ({
     useEffect(() => {
         const canvas = canvasRef?.current;
         let vp: Viewport;
-
-        if (!theme) {
-            theme = DefaultTheme;
-        }
 
         const selectionChanve = (e: IViewportEvent['selectionChanged']) => {
             if (onSelectChange) {
@@ -119,12 +106,12 @@ export const Viewer: FC<ViewerProps> = ({
         };
 
         if (canvas) {
-            vp = new Viewport(canvas, isMobile, theme, envUrl);
+            vp = new Viewport(canvas, options);
             vp.addEventListener('loading', load);
             vp.addEventListener('modelChanged', changed);
             vp.addEventListener('selectionChanged', selectionChanve);
 
-            initalize(theme, vp);
+            initalize(vp);
         }
         return () => {
             vp.removeEventListener('loading', load);
@@ -135,12 +122,10 @@ export const Viewer: FC<ViewerProps> = ({
     }, []);
 
     return (
-        <>
-            <div className={clsx('viewer')}>
-                <div className="content">
-                    <canvas className="canvas" ref={canvasRef} />
-                </div>
-            </div>
-        </>
+        <canvas
+            className="canvas"
+            ref={canvasRef}
+            style={{ width: options?.width, height: options?.height }}
+        />
     );
 };

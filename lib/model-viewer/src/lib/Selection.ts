@@ -9,8 +9,7 @@ import {
 } from 'three';
 
 import { SelectMode } from '@/types';
-import { ObjectUserData, OutlineEffect } from '.';
-import { ITheme } from '@/lib';
+import { ObjectUserData, OutlineEffect, ITheme } from '@/lib';
 
 export interface ISelectionEvent {
     change: {
@@ -148,18 +147,16 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
 
         this.scene.traverseVisible((child) => {
             if (child.userData instanceof ObjectUserData) {
-                if (child.userData?.selectable === true) {
+                if (child.userData.selectable === true) {
                     sceneChildren.push(child);
                 }
             }
         });
 
         this.raycaster.setFromCamera(this.mouse, this.camera);
-        const objects = this.raycaster.intersectObjects(
-            sceneChildren as Object3D[],
-            true,
-        );
+        const objects = this.raycaster.intersectObjects(sceneChildren, true);
 
+        console.log('objs', objects);
         return objects;
     };
 

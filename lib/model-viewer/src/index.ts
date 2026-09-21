@@ -3,6 +3,7 @@ export {
     type ITexture,
     type IImageResource,
     type TextureType,
+    type IViewerOptions,
 } from '@/interface';
 export { type IconName, type ModelName, type Obj3D } from '@/types';
 export {
