@@ -127,6 +127,8 @@ export const masterProfile: MasterProfile = {
     workHistory: [
         {
             company: 'Palm Aire Country Club',
+            companyInfo: '',
+            startup: false,
             location: {
                 city: 'Sarasota',
                 state: 'FL',
@@ -177,8 +179,9 @@ export const masterProfile: MasterProfile = {
             },
         },
         {
-            company:
-                'Lenawee County 39th Circuit Court / Veterans Treatment Court',
+            company: 'Veterans Mentor Coordinator',
+            companyInfo: '',
+            startup: false,
             location: {
                 city: 'Adrian',
                 state: 'MI',
@@ -214,6 +217,8 @@ export const masterProfile: MasterProfile = {
         },
         {
             company: 'Ascendum Solutions',
+            companyInfo: '',
+            startup: false,
             location: {
                 city: 'Blue Ash',
                 state: 'OH',
@@ -249,13 +254,12 @@ export const masterProfile: MasterProfile = {
         },
         {
             company: 'DISCUS',
+            companyInfo: '',
+            startup: false,
             location: {
                 city: 'Columbus',
                 state: 'OH',
-                zip: 'Not Provided',
-                street: 'Not Provided',
             },
-            phone: 'Not Provided',
             title: 'UX Designer & Developer (Product Technologist)',
             startDate: new Date(2018, 3, 1),
             endDate: new Date(2019, 7, 1),
@@ -280,13 +284,13 @@ export const masterProfile: MasterProfile = {
         },
         {
             company: 'Vivomi',
+            companyInfo: '',
+            startup: true,
             location: {
                 city: 'Lake Stevens',
                 state: 'WA',
                 zip: '98258',
-                street: 'Not Provided',
             },
-            phone: 'Not Provided',
             title: 'Lead UX Designer (Product Technologist)',
             startDate: new Date(2018, 3, 1),
             endDate: new Date(2018, 6, 1),
@@ -309,6 +313,8 @@ export const masterProfile: MasterProfile = {
         },
         {
             company: 'Omax',
+            companyInfo: '',
+            startup: true,
             location: {
                 city: 'Kent',
                 state: 'WA',
@@ -345,6 +351,9 @@ export const masterProfile: MasterProfile = {
         },
         {
             company: 'AudienceScience',
+            companyInfo:
+                'AudienceScience is the leading global SaaS-based Advertising Automation suite, delivering simplicity and accountability to advertisers on a global scale.',
+            startup: true,
             location: {
                 city: 'Bellevue',
                 state: 'WA',
@@ -357,7 +366,7 @@ export const masterProfile: MasterProfile = {
             endDate: new Date(2017, 4, 1),
             contacts: [],
             responsibilitiesSummary:
-                'Architected user interfaces, built front-end script controls, and managed agile design workflows for a massive global SaaS ad-automation suite.',
+                "I'm responsible for providing our users with the best user interface possible. I worked closely with product and users to gather all the requirements needed for the design. I was responsible for creating all site maps, information architecture, user flows, wireframes, and final designs.",
             resumeBullets: [
                 'Designed and hand-developed single-page interface modules using Backbone.js model/view frameworks, HTML, CSS, and native JavaScript.',
                 'Coded scalable large-scale testing prototypes using the MEAN stack, deploying custom data mockups and indexing strategies across millions of data rows.',
@@ -365,6 +374,11 @@ export const masterProfile: MasterProfile = {
                 'Sustained extreme production delivery targets as the single central designer coordinating output specifications for 12 to 15 concurrent web programmers.',
                 'Sourced, vetted, and contracted an outside development firm and design helpers, liquidating a severe workflow backlog two weeks ahead of schedule.',
                 'Coordinated agile development tracking, cross-location sprint planning, and daily scrum checkpoints across distributed engineering teams in Ukraine, Germany, and Boston.',
+                'I helped build and ship our Segment Manager application in 2013. I was the primary UX Designer and one of two UI Developers assigned to the task.',
+                'Using the latest JS technologies like the MEAN stack, I built several prototypes that were used to communicate features and behaviors to developers and potential customers. Many of these were also used to help guide the product vision and to test new ideas. These also impacted the development of the products by providing a way to test different technologies before choosing React.',
+                'I Collaborated with multiple Product Managers, Developers, & Program Managers to produce assets and design specs needed for two big UX projects. My development and design skills helped bridge the gap between UX and UI Dev which made it a lot easier to work with the UI development team.',
+                'I worked with over 15 UI Developers to ensure they had the correct specifications and designs for all components related to the sprints. Being the only designer, I had to make difficult decisions around UX to keep the developers working.',
+                'I contracted out positions for two designers and a web developer to help boost up the speed of UX being delivered to the 15 developers. We were able to get caught up in about four weeks which was about two weeks earlier than we expected.',
             ],
             userStories: [
                 'In 2012, I was assigned to be a UI Developer on the segment management application. Although developing was my first responsibility, I had been given the additional task of redesigning the user experience for the application. I worked with one other UI developer on this project. We decided that we would build a single page application using backbonejs. My primary responsibility was to create all the UI controls. That meant creating all the models and views needed that met the requirements for the UI. That also included me building all the HTML, CSS, and Javascript functionality for the UI controls.',
@@ -378,14 +392,16 @@ export const masterProfile: MasterProfile = {
         },
         {
             company: 'ValueAppeal',
+            companyInfo:
+                'ValueAppeal is a discontinued web-based service that provided property owners and tax professionals a tool to evaluate and/or appeal property taxes',
+            startup: true,
             location: {
                 city: 'Seattle',
                 state: 'WA',
                 zip: '98101',
                 street: '1325 4th Ave',
             },
-            phone: 'Not Provided',
-            title: 'UI Developer & Principal Designer (Product Technologist)',
+            title: 'UI Developer & UX Designer',
             startDate: new Date(2011, 5, 1),
             endDate: new Date(2012, 6, 1),
             contacts: [],
@@ -397,6 +413,9 @@ export const masterProfile: MasterProfile = {
                 'Collaborated with core engineering staff to iterate prototype code cleanly into scalable, production-ready release software.',
                 'Refactored high-traffic consumer landing pages to reduce user friction, leveraging Google Analytics data to measure verified gains in conversion metrics.',
                 "Executed search engine optimization (SEO) tactics on structural copy, moving the company's rank for primary target keywords from Google page 24 up into the top 10 results.",
+                'Designed and developed the UI for our pro product which shipped in 2012. I used the .NET framework to build server controls. HTML, JavaScript, and CSS were used for front-end controls.',
+                'Helped create the pro product from its conception. I was given a small list of features and was expected to turn it into an application. Once I got a live prototype working, we were able to piece together more features and requirements while trying them out in real-time.',
+                'Redesigned and rebuilt many parts of the website to drive traffic into the assessment tool. These changes were effective in increasing our conversion rates. ',
             ],
             userStories: [
                 'In 2011 I was hired at ValueAppeal to be a UI Developer and UX Designer. I started out by working on the existing website where I had to redesign a few pages... Everything ran on the .NET framework. That was an easy transition for me to make, given that I had just left Microsoft after 11 years... Not long after being hired I was asked to think about an application that would allow tax professionals to find and manage property owners whose property was overassessed. If I remember correctly, I was given a spreadsheet with a few columns that outlined about five features. Within a few weeks, I had a working prototype of this new product up and running.',
@@ -405,6 +424,8 @@ export const masterProfile: MasterProfile = {
         },
         {
             company: 'Microsoft',
+            companyInfo: '',
+            startup: false,
             location: {
                 city: 'Redmond',
                 state: 'WA',
@@ -425,24 +446,59 @@ export const masterProfile: MasterProfile = {
             subTeams: [
                 {
                     name: 'HealthVault',
+                    startup: true,
+                    companyInfo:
+                        'A pioneering healthcare technology division focused on developing a secure, cloud-based Personal Health Record (PHR) platform. Built to empower individuals to track, store, and share health data, the platform established early industry standards for patient-controlled privacy, electronic health record (EHR) interoperability, and secure medical device data aggregation.',
+                    responsibilitiesSummary: '',
                     startDate: new Date(2008, 1, 1), //estimated
                     endDate: new Date(2011, 1, 1), //estimated
                     summary:
                         'Elected as the first dedicated UI programmer for a new 20-member healthcare storage incubation division. Built production .NET server pages, front-end scripting controls, and high-fidelity interface models. Designed the structural layout for HealthVault Connection Center, cross-training in Windows Forms and high-realism WPF code to pass working software components to backend engineers. Independently developed and deployed Ghost, a native WPF overlay utility that superimposed layout files directly over functional builds to eliminate manual redlining from team sprints. Promptly stepped into critical production gaps when the lead web developer separated, accelerating site updates by translating flat wireframe images straight into code without dependent documentation.',
+                    resumeBullets: [
+                        'I was the first web developer the hired. I was responsible for building the v1 application. I then transitioned to design for a while but ending back up as a developer in the end.',
+                        'I Developed all UI for our V1 product launch. I used the .NET framework, where I created all the pages as well as server controls, front-end controls, HTML, CSS, and JavaScript.',
+                        'I was the primary UI Designer for Connection Center. I worked with project managers to gather all the requirements needed for the design. I was responsible for creating all site maps, information architecture, user flows, wireframes, and final designs.',
+                        'I built several highly effective prototypes for Connection Center that were used in usability studies and focus groups. I was also the primary designer on most of these prototypes, so many improvements were made to the UX because of this. These prototypes were built using WPF. ',
+                        'I was the primary UI Developer for the rebranding of the HealthValult website. I rebuilt the entire UX experience using the .NET framework. I worked with designers to componentize the designs that could work across the website and the new application being built. This ended up saving a lot of time because.',
+                    ],
+                    userStories: [],
                 },
                 {
                     name: 'Office Live',
+                    startup: true,
+                    companyInfo:
+                        "(2006-2012)An innovative cloud-services division responsible for Microsoft's inaugural Software-as-a-Service (SaaS) suite, bridging desktop software with the web for small businesses. Powered by hosted Windows SharePoint Services (WSS 3.0), the platform provided cloud-based document collaboration, web hosting, and intranet portals, serving as the strategic architectural and operational foundation for what eventually became Microsoft 365.",
+                    responsibilitiesSummary: '',
                     startDate: new Date(2004, 1, 1), //estimated
                     endDate: new Date(2008, 1, 1), //estimated
                     summary:
                         'Served as a key founding architect on a tight 8-member core proof-of-concept incubation division that converted standard SharePoint setups into scalable public business hosting platforms. Gathered requirements directly from codebase analysis and reverse-engineered source components. Hand-developed the layout infrastructure for the core V1 launch, including web engines and 20 integrated SharePoint apps. Coded a custom C# script hooking directly into the Photoshop DLL API, looping style tables to automatically batch-generate over 800,000 distinct theme asset combinations, eliminating thousands of hours of manual asset slicing. Awarded the prestigious Microsoft Gold Star recognition (granted to the top 3% of performance groups) for delivery alignment.',
+                    resumeBullets: [
+                        'I was responsible for the UX Design and UI Development of all UI across the website and applications that shipped around 2004.',
+                        'I was the primary UI Designer for OfficeLive beta. I worked with project managers to gather all the requirements needed for the design. I was responsible for creating all site maps, information architecture, user flows, wireframes, and final designs.',
+                        'Designed and developed all UI for our V1 launch. This included a public facing website, over 20 SharePoint applications, and a web page building tool. These were all done using the .NET framework, JavaScript, HTML, and CSS.',
+                        "I created a Photoshop script that allowed me to produce over 800,000 different website theme variations. This ended up saved a lot of time and money since I didn't have to go in and cut images out for each variation",
+                        'I Received the Gold Star which is only handed to the top 3% of people within the group for all the hard work I did to get the V1 site launched on time.',
+                    ],
+                    userStories: [],
                 },
                 {
                     name: 'bCentral',
+                    startup: true,
+                    companyInfo:
+                        "A pioneering business unit within Microsoft’s Internet Business Division focused on delivering the company's first Software-as-a-Service (SaaS) and e-commerce portal for small-to-medium businesses (SMBs). Operating on the early Microsoft .NET framework, bCentral provided critical web infrastructure, digital marketing tools, and cloud-based subscription services that enabled early-stage digital transformation at the dawn of the modern web.",
+                    responsibilitiesSummary: '',
                     startDate: new Date(2000, 1, 1), //estimated
                     endDate: new Date(2004, 1, 1), //estimated
                     summary:
                         'Hired initially to support online content layout and marketing assets. Proactively crossed technical divides into engineering when specialized backend programmers faced front-end layout friction. Independently mastered HTML, CSS, native JavaScript, ASP, and early .NET frameworks to implement original designs directly into internal content management engines. Maintained strict architectural componentization rules, reinforcing user interface consistency rules across early online business platform updates.',
+                    resumeBullets: [
+                        'I was initially hired as a designer but would switch between UX Design and UI Development frequently.',
+                        'I provided several designs to our content writers and marketing team. We would do a lot of AB Testing with UX on the website',
+                        'I helped ship the site each time it rebranded. I did this by helping with the design when needed, and developing all designs using ASP, HTML, CSS, & JS',
+                        'I learned how to design and develop around content management systems. Creating and rebuilding reusable controls save time and money. It also helps with usability since it enforces consistency.',
+                    ],
+                    userStories: [],
                 },
             ],
             responsibilitiesSummary:
@@ -462,14 +518,14 @@ export const masterProfile: MasterProfile = {
             ],
         },
         {
-            company: 'Urban Earth',
+            company: 'UrbanEarth',
+            startup: true,
+            companyInfo:
+                'UrbanEarth is a discontinued website that provided products, news, and email',
             location: {
                 city: 'Seattle',
                 state: 'WA',
-                zip: 'Not Provided',
-                street: 'Not Provided',
             },
-            phone: 'Not Provided',
             title: 'UX Designer',
             startDate: new Date(1999, 7, 1),
             endDate: new Date(2000, 6, 1),
@@ -538,8 +594,6 @@ export const masterProfile: MasterProfile = {
             location: {
                 city: 'Bay City',
                 state: 'MI',
-                zip: 'Not Provided',
-                street: 'Not Provided',
             },
             website: 'bayveterans.org',
             title: 'Facility Volunteer',
@@ -569,7 +623,6 @@ export const masterProfile: MasterProfile = {
     references: [
         {
             name: 'Michael Saldana',
-            phone: 'Not Provided',
             email: 'Mikeysaldana01@icloud.com',
             relationship:
                 'Professional Reference / Co-worker at Palm Aire Country Club',
@@ -961,6 +1014,140 @@ export const masterProfile: MasterProfile = {
                     'Consolidating fragmented community services into a standardized, component-driven directory platform that trades layout complexity for clean, structured utility.',
                 currentStatus:
                     'Maintained as a fully articulated high-fidelity systems design package.',
+            },
+        ],
+    },
+    education: {
+        combinedCivilianTranscriptCredits: 80.0,
+        combinedNoteForSixtyCreditPostings:
+            '80.0 credits as printed. An employer could potentially exclude TCCD developmental English (3.0) and/or AIS transfer K credits (6.0). Floor if both are excluded is 71.0 credits.',
+        institutions: [
+            {
+                institutionName: 'Art Institute of Seattle',
+                contact: {
+                    phone: '(800) 275-2471',
+                    website: 'www.artinstitutes.edu/seattle',
+                    address: {
+                        street: '2323 Elliott Avenue',
+                        city: 'Seattle',
+                        state: 'WA',
+                        zip: '98121',
+                    },
+                },
+                startDate: new Date(1998, 9, 5),
+                endDate: new Date(1999, 11, 18),
+                studentId: '315007',
+                programName: 'Computer Animation',
+                credentialConferred:
+                    'Associate of Applied Arts program (No degree date listed; degree was not conferred)',
+                additionalNotes: [
+                    'Official transcript earned figure is 57.0 credits, which includes 6.0 transfer credits from Academy of Art College with grades of K.',
+                    'Final transcript line attempted/quality metrics state 51.0 credits attempted, 57.0 credits earned, and 6.0 pass/transfer credits.',
+                    'Left school after being hired at Microsoft in 2000.',
+                ],
+            },
+            {
+                institutionName: 'Chabot College',
+                contact: {
+                    phone: '(510) 723-6700',
+                    website: 'www.chabotcollege.edu',
+                    address: {
+                        street: '25555 Hesperian Blvd.',
+                        city: 'Hayward',
+                        state: 'CA',
+                        zip: '94545',
+                    },
+                },
+                startDate: new Date(1998, 0, 1),
+                endDate: new Date(1998, 4, 31),
+                studentId: 'W10394611',
+                programName: 'Undergraduate General Studies',
+                credentialConferred: 'No degree (Moved to Seattle)',
+                honorsList: 'Academic Honors List (GPA 3.75; Good Standing)',
+                additionalNotes: [
+                    'Official transcript earned: 12.00 semester units.',
+                    'Completed coursework comprises HIST 7, MATH 105, PSYC 1, and SOC 1.',
+                ],
+            },
+            {
+                institutionName:
+                    'Tarrant County College District (TCCD / TCCC)',
+                contact: {
+                    address: {
+                        city: 'Fort Worth',
+                        state: 'TX',
+                    },
+                },
+                startDate: new Date(1992, 7, 1),
+                endDate: new Date(1993, 4, 31),
+                studentId: '0182370',
+                programName: 'DTCCD General',
+                credentialConferred: 'No degree',
+                additionalNotes: [
+                    'Official transcript earned: 11 hours (Cumulative totals: ATT 11, EARN 11).',
+                    'Includes 3.0 hours of developmental English (ENG-1203, CR), Drawing I (D), Design I (C), and two 1.0 hour PE courses.',
+                    'Several W/F withdrawals are present on the record and were not earned.',
+                ],
+            },
+            {
+                institutionName: 'Tecumseh High School',
+                contact: {
+                    address: {
+                        city: 'Tecumseh',
+                        state: 'MI',
+                    },
+                },
+                startDate: new Date(1987, 8, 1),
+                endDate: new Date(1991, 5, 1),
+                studentId: 'Parchment Student ID 50673677',
+                programName: 'High School Diploma Curriculum',
+                credentialConferred: 'High School Diploma',
+                additionalNotes: [
+                    'Verified via official Parchment file issued 03/08/2023.',
+                    'Document ID tracking number: TWXU1CLN.',
+                    'No college-level courses or earned academic hours are tracked on this specific page layer.',
+                ],
+            },
+            {
+                institutionName: 'Joint Services Transcript (JST)',
+                contact: {
+                    email: 'jst@doded.mil',
+                    website: 'doded.mil',
+                    address: {
+                        street: '130 West Ave, Suite G, Bldg 603',
+                        city: 'Pensacola',
+                        state: 'FL',
+                        zip: '32508',
+                    },
+                },
+                startDate: new Date(1993, 6, 12),
+                endDate: new Date(1997, 7, 6),
+                studentId: 'SMITH, ERIC ALAN (ABF2 E5)',
+                programName: 'U.S. Navy Military Training and Occupation',
+                credentialConferred: 'None (JST Academic Evaluation)',
+                additionalNotes: [
+                    'Counted ACE SH lines on this copy: 59 semester hours.',
+                    'American Council on Education (ACE) recommended hours are credit recommendations, not automatically awarded civilian credits, and are kept separate from the civilian transcript total.',
+                    'JST fax contact listed: 850-473-6013.',
+                    'Other-institution addendum tracks Central Texas College courses listed with grades of F or D (PO Box 1800, Killeen, TX 76540); these are not added to the earned civilian total.',
+                ],
+            },
+            {
+                institutionName: 'Sam Beauford Woodworking Institute',
+                contact: {
+                    address: {
+                        city: 'Adrian',
+                        state: 'MI',
+                    },
+                },
+                startDate: new Date(2024, 9, 1),
+                endDate: new Date(2025, 5, 1),
+                programName: 'Furniture Making (Wood Design)',
+                credentialConferred:
+                    'None (Attended during Vocational Rehabilitation period; overlapping with VTC assignment)',
+                additionalNotes: [
+                    'No civilian college transcript on file in backup records.',
+                ],
             },
         ],
     },

@@ -9,9 +9,11 @@
         "preview": "vite preview",
         "format": "prettier --cache --write \"src/**/*.{ts,tsx,css,json,md}\""
     },
+    "framework": "vite",
     "dependencies": {
         "@portfolio/model-viewer": "workspace:*",
         "@tailwindcss/vite": "^4.3.3",
+        "daisyui": "^5.7.43",
         "react-router-dom": "^7.18.3",
         "tailwind": "^4.0.0",
         "tinybase": "^9.7.1"

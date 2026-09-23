@@ -119,10 +119,10 @@ export class World extends EventDispatcher<IWorldEvent> {
             : new ViewportGizmo(this.camera, this.renderer, {
                   placement: 'bottom-right',
                   container: this._canvas,
+                  size: 0.7,
               });
 
         if (this.gizmo) {
-            this.gizmo.scale.set(0.7, 0.7, 0.7);
             this.gizmo.attachControls(this.orbitControls);
         }
 

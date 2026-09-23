@@ -1,8 +1,8 @@
 export interface Location {
     city: string;
     state: string;
-    zip: string;
-    street: string;
+    zip?: string;
+    street?: string;
 }
 
 export interface InnovationProject {
@@ -84,15 +84,22 @@ export interface SideConcepts {
 export interface SubTeam {
     name: string;
     startDate: Date;
+    startup: boolean;
     endDate: Date;
     summary: string;
+    companyInfo: string;
+    responsibilitiesSummary: string;
+    resumeBullets: Array<string>;
+    userStories: string[];
 }
 
 export interface WorkExperience {
     company: string;
+    companyInfo?: string;
     location: Location;
-    phone: string;
+    phone?: string;
     title: string;
+    startup: boolean;
     startDate: Date;
     endDate: Date;
     contacts: Contact[];
@@ -118,9 +125,9 @@ export interface VolunteerExperience {
 
 export interface ProfessionalReference {
     name: string;
-    phone: string;
-    email: string;
-    relationship: string;
+    phone?: string;
+    email?: string;
+    relationship?: string;
 }
 
 export interface SystemMapNode {
@@ -161,4 +168,28 @@ export interface MasterProfile {
     volunteerWork: VolunteerExperience[];
     references: ProfessionalReference[];
     innovations: InventionsAndConcepts;
+    education: EducationLibrary;
+}
+
+export interface EducationContact {
+    phone?: string;
+    email?: string;
+    website?: string;
+    address: Location;
+}
+export interface InstitutionalRecord {
+    institutionName: string;
+    contact: EducationContact;
+    startDate: Date;
+    endDate: Date;
+    studentId?: string;
+    programName: string;
+    credentialConferred: string;
+    honorsList?: string;
+    additionalNotes: string[];
+}
+export interface EducationLibrary {
+    combinedCivilianTranscriptCredits: number;
+    combinedNoteForSixtyCreditPostings: string;
+    institutions: InstitutionalRecord[];
 }

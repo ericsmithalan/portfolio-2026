@@ -5,10 +5,10 @@
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
-    "private": "true",
+    "private": true,
     "scripts": {
         "build": "tsup --tsconfig tsconfig.build.json",
-        "dev": "tsup --tsconfig tsconfig.build.json --watch",
+        "build-dev": "tsup --tsconfig tsconfig.build.json --watch",
         "format": "prettier --cache --write \"src/**/*.{ts,tsx,css,scss,json,md}\"",
         "typecheck": "tsc --noEmit"
     },
