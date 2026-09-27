@@ -1,93 +1,24 @@
-import { IViewportEvent, Viewport, IObjectUserData } from '@/lib';
-import { FC, useCallback, useEffect, useRef } from 'react';
+import { IObjectUserData, IViewportEvent, IViewportOptions, ViewportLoadingEvent } from '@/lib';
+import { FC, useEffect, useRef } from 'react';
 
-import { Material, Mesh, Object3D } from 'three';
+import { Object3D } from 'three';
 import './style.scss';
-import {
-    textureToPBRMaterials,
-    getObjectsById,
-    disposeMaterial,
-} from './utils';
-import { IViewerOptions } from './interface';
+import { useViewport } from './hooks';
 
 export interface ViewerProps {
-    options?: Partial<IViewerOptions>;
+    options: Partial<IViewportOptions> | null;
     modelUserData: IObjectUserData | null;
-    onLoaded?: (type: string, value: boolean) => void;
+    onLoaded?: (type: string, value: ViewportLoadingEvent) => void;
     onModelChange?: (type: string, model: Object3D | null) => void;
     onSelectChange?: (type: string, selection: Object3D | null) => void;
 }
 
-export const Viewer: FC<ViewerProps> = ({
-    modelUserData,
-    options,
-    onLoaded,
-    onModelChange,
-    onSelectChange,
-}: ViewerProps) => {
+export const Viewer: FC<ViewerProps> = ({ modelUserData, options, onLoaded, onModelChange, onSelectChange }: ViewerProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-
-    const setMaterials = async (vp: Viewport) => {
-        if (vp.model) {
-            const { textures } = vp.model.userData;
-            const { environment } = vp.world.scene;
-
-            const [base, alt, metal] = await Promise.all<Material | null>([
-                textureToPBRMaterials(environment, textures.base),
-                textureToPBRMaterials(environment, textures.alt),
-                textureToPBRMaterials(environment, textures.metal),
-            ]);
-
-            if (base) {
-                getObjectsById(vp, textures.baseIds, (obj) => {
-                    if (obj instanceof Mesh) {
-                        disposeMaterial(obj.material);
-                        obj.material = base;
-                    }
-                });
-            }
-
-            if (alt) {
-                getObjectsById(vp, textures.altIds, (obj) => {
-                    if (obj instanceof Mesh) {
-                        disposeMaterial(obj.material);
-                        obj.material = alt;
-                    }
-                });
-            }
-
-            if (metal) {
-                getObjectsById(vp, textures.metalIds, (obj) => {
-                    if (obj instanceof Mesh) {
-                        disposeMaterial(obj.material);
-                        obj.material = metal;
-                    }
-                });
-            }
-
-            disposeMaterial(base);
-            disposeMaterial(alt);
-            disposeMaterial(metal);
-        }
-    };
-
-    const initalize = useCallback(async (vp: Viewport) => {
-        if (modelUserData) {
-            await vp.loadModel(modelUserData).catch((e) => {
-                console.log(e);
-            });
-
-            if (modelUserData.textures) {
-                await setMaterials(vp);
-            }
-        }
-    }, []);
+    const viewportContext = useViewport();
 
     useEffect(() => {
-        const canvas = canvasRef?.current;
-        let vp: Viewport;
-
-        const selectionChanve = (e: IViewportEvent['selectionChanged']) => {
+        const selectionChange = (e: IViewportEvent['selectionChanged']) => {
             if (onSelectChange) {
                 onSelectChange(e.type, e.selection);
             }
@@ -105,27 +36,27 @@ export const Viewer: FC<ViewerProps> = ({
             }
         };
 
-        if (canvas) {
-            vp = new Viewport(canvas, options);
-            vp.addEventListener('loading', load);
-            vp.addEventListener('modelChanged', changed);
-            vp.addEventListener('selectionChanged', selectionChanve);
-
-            initalize(vp);
+        if (viewportContext.viewport) {
+            viewportContext.viewport.addEventListener('loading', load);
+            viewportContext.viewport.addEventListener('modelChanged', changed);
+            viewportContext.viewport.addEventListener('selectionChanged', selectionChange);
         }
-        return () => {
-            vp.removeEventListener('loading', load);
-            vp.removeEventListener('modelChanged', changed);
-            vp.removeEventListener('selectionChanged', selectionChanve);
-            vp?.dispose();
-        };
-    }, []);
 
-    return (
-        <canvas
-            className="canvas"
-            ref={canvasRef}
-            style={{ width: options?.width, height: options?.height }}
-        />
-    );
+        return () => {
+            if (viewportContext.viewport) {
+                viewportContext.viewport.removeEventListener('loading', load);
+                viewportContext.viewport.removeEventListener('modelChanged', changed);
+                viewportContext.viewport.removeEventListener('selectionChanged', selectionChange);
+                viewportContext.viewport.dispose();
+            }
+        };
+    }, [viewportContext.viewport]);
+
+    useEffect(() => {
+        if (canvasRef.current) {
+            viewportContext.createViewport(canvasRef.current, options, modelUserData);
+        }
+    }, [canvasRef]);
+
+    return <canvas className="canvas" ref={canvasRef} style={{ width: options?.width, height: options?.height }} />;
 };

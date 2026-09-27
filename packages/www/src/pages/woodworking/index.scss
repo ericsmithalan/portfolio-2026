@@ -1,3 +1,13 @@
 .viewer-page {
-    background-color: red;
+    position: relative;
+
+    .viewer-nav{
+        position: absolute;
+        top:1rem;
+        left:1rem;
+        width: 250px;
+        height: 400px;
+        background-color: red;
+        z-index: 1;
+    }
 }

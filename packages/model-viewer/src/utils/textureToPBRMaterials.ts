@@ -31,8 +31,6 @@ export const textureToPBRMaterials = async (
         } else {
             const pbrs = await loadPBRs(texture.pbr);
 
-            console.log('TEXTURE', texture.type);
-
             material = new MeshPhysicalMaterial({
                 aoMap: pbrs.ao,
                 aoMapIntensity: 1.0,

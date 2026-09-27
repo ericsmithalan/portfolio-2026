@@ -13,7 +13,7 @@ const getImagePath = (
     };
 };
 
-export const modelsUserData: Array<IObjectUserData> = [
+export const modelUserData: Array<IObjectUserData> = [
     {
         url: '/models/sideboard/model.glb',
         name: 'Sideboard',
@@ -163,3 +163,10 @@ export const modelsUserData: Array<IObjectUserData> = [
         },
     },
 ];
+
+export const getModelUserData = (name: string): IObjectUserData => {
+    const model =
+        modelUserData.find((item) => item.name === name) || modelUserData[0];
+
+    return model;
+};

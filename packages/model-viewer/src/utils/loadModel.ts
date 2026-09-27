@@ -1,20 +1,14 @@
 import { Mesh, Object3D } from 'three';
 import { GLTFLoader, DRACOLoader } from 'three/examples/jsm/Addons.js';
-import { IStat, IViewerOptions } from '@/interface';
-import { Edges, IObjectUserData, ObjectUserData, Viewport } from '@/lib';
+import { IStat } from '@/interface';
+import { Edges, IObjectUserData, IViewportOptions, ObjectUserData, Viewport } from '@/lib';
 import { getObjectDimensions } from './getObjectDimensions';
 
 const loader: GLTFLoader = new GLTFLoader();
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath(
-    'https://www.gstatic.com/draco/versioned/decoders/1.5.6/',
-);
+dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
 
-export const loadModel = (
-    userData: IObjectUserData | null,
-    viewport: Viewport,
-    options: IViewerOptions,
-): Promise<Object3D> => {
+export const loadModel = (userData: IObjectUserData | null, viewport: Viewport, options: IViewportOptions): Promise<Object3D> => {
     return new Promise(async (resolve) => {
         if (userData) {
             loader.setDRACOLoader(dracoLoader);
@@ -25,6 +19,7 @@ export const loadModel = (
                 scene.castShadow = true;
                 scene.receiveShadow = true;
                 scene.renderOrder = 0;
+                scene.name = userData.name;
 
                 scene.traverse(async (part: Object3D) => {
                     if (part instanceof Mesh) {
@@ -33,12 +28,9 @@ export const loadModel = (
 
                         if (part.material && userData.textures) {
                             const base =
-                                part.material.name?.indexOf('wood') !== -1 ||
-                                part.material.name?.indexOf('primary') !== -1;
-                            const alt =
-                                part.material.name?.indexOf('contrast') !== -1;
-                            const metal =
-                                part.material.name?.indexOf('metal') !== -1;
+                                part.material.name?.indexOf('wood') !== -1 || part.material.name?.indexOf('primary') !== -1;
+                            const alt = part.material.name?.indexOf('contrast') !== -1;
+                            const metal = part.material.name?.indexOf('metal') !== -1;
 
                             base && userData.textures.baseIds.push(part.id);
                             alt && userData.textures.altIds.push(part.id);
@@ -95,8 +87,6 @@ export const loadModel = (
                     objectId: scene.id,
                     selectable: true,
                 });
-
-                // console.log('scene.userData', scene.userData);
 
                 resolve(scene);
             });

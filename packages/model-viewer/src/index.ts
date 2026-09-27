@@ -1,10 +1,7 @@
 export { Viewer, type ViewerProps } from './Viewer';
-export {
-    type ITexture,
-    type IImageResource,
-    type TextureType,
-    type IViewerOptions,
-} from '@/interface';
+export { Viewport3D } from './Viewport3D';
+
+export { type ITexture, type IImageResource, type TextureType } from '@/interface';
 export { type IconName, type ModelName, type Obj3D } from '@/types';
 export {
     Viewport,
@@ -12,4 +9,9 @@ export {
     type IObjectUserData,
     type ITheme,
     type ThemeStyle,
+    type ViewportLoadingEvent,
+    type IViewportOptions,
 } from '@/lib';
+
+export { useViewport } from '@/hooks';
+export { ViewportProvider } from '@/context';

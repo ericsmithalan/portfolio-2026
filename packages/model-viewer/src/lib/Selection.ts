@@ -156,7 +156,6 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
         this.raycaster.setFromCamera(this.mouse, this.camera);
         const objects = this.raycaster.intersectObjects(sceneChildren, true);
 
-        console.log('objs', objects);
         return objects;
     };
 

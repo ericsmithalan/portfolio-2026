@@ -16,7 +16,7 @@ import { disposeObject } from '@/utils';
 import { Floor } from './Floor';
 import { Grid } from './Grid';
 import { Lights } from './Lights';
-import { IViewerOptions } from '@/interface';
+import { IViewportOptions } from '@/lib';
 
 export interface IWorldEvent {
     resize: { type: string; size: IScreenSize };
@@ -37,7 +37,7 @@ export class World extends EventDispatcher<IWorldEvent> {
     readonly grid: Grid | null;
     readonly floor: Floor | null;
     private showStats: boolean;
-    private options: IViewerOptions | undefined;
+    private options: IViewportOptions | undefined;
     private _canvas: HTMLCanvasElement;
     private geometries = 0;
     private textures = 0;
@@ -48,7 +48,7 @@ export class World extends EventDispatcher<IWorldEvent> {
         aspect: 0,
     };
 
-    constructor(canvas: HTMLCanvasElement, options: IViewerOptions) {
+    constructor(canvas: HTMLCanvasElement, options: IViewportOptions) {
         super();
 
         const worldTheme = options.theme.world;
@@ -61,10 +61,7 @@ export class World extends EventDispatcher<IWorldEvent> {
         this.scene = new Scene();
         this.scene.name = 'Scene';
         this.scene.background = new Color(worldTheme.backgroundColor);
-        this.scene.fog = new FogExp2(
-            new Color(worldTheme.fogColor),
-            worldTheme.fogDensity,
-        );
+        this.scene.fog = new FogExp2(new Color(worldTheme.fogColor), worldTheme.fogDensity);
 
         this.camera = new PerspectiveCamera(40, this.size.aspect, 1, 50);
         this.camera.name = 'Camera';

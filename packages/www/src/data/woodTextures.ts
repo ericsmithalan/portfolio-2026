@@ -49,12 +49,6 @@ const getWoodTextures = (): Array<ITexture> => {
         createTextureData(6, 'wood', 'maple', 1, URL, {
             ...settings,
             diffuse: true,
-            ao: true,
-            normal: true,
-            rough: true,
-            coatNormal: true,
-            coat: true,
-            coatRough: true,
         }),
         createTextureData(7, 'wood', 'oak', 1, URL, {
             ...settings,
@@ -69,8 +63,7 @@ const getWoodTextures = (): Array<ITexture> => {
 
 export const woodTextures: Array<ITexture> = getWoodTextures();
 export const getWoodTexture = (name: string): ITexture => {
-    const txtr =
-        woodTextures.find((item) => item.name === name) || woodTextures[0];
+    const txtr = woodTextures.find((item) => item.name === name) || woodTextures[0];
 
     return txtr;
 };

@@ -1,19 +1,11 @@
-import {
-    RGBAFormat,
-    RepeatWrapping,
-    SRGBColorSpace,
-    Texture,
-    TextureLoader,
-} from 'three';
+import { RGBAFormat, RepeatWrapping, SRGBColorSpace, Texture, TextureLoader } from 'three';
 
 const loader = new TextureLoader();
 
-export const loadTexture = async (
-    url?: string | null,
-): Promise<Texture | null> => {
+export const loadTexture = async (url?: string | null): Promise<Texture | null> => {
     if (url) {
         const texture = await loader.loadAsync(url).catch((e) => {
-            console.log(e);
+            console.log(`ERROR: utils > loadTexture`, e);
         });
 
         if (texture) {
@@ -24,6 +16,8 @@ export const loadTexture = async (
             texture.repeat.set(1, 1);
             texture.colorSpace = SRGBColorSpace;
             return texture;
+        } else {
+            return null;
         }
     }
     return null;

@@ -6,10 +6,29 @@ import { Exploder, IExploderEvent } from './Exploder';
 import { ISelectionEvent, Selection } from './Selection';
 import { IWorldEvent, World } from './World';
 import { IObjectUserData } from './ObjectUserData';
-import { IViewerOptions } from '@/interface';
+
+export interface IViewportOptions {
+    height?: number;
+    width?: number;
+    showAxisHelper: boolean;
+    envUrl?: string;
+    theme: ITheme;
+    cameraZoom?: number;
+    showStats: boolean;
+    isMobile: boolean;
+    showGrid: boolean;
+    showFloor: boolean;
+    restrictOrbit: boolean;
+    showObjectBorders: boolean;
+}
+
+export type ViewportLoadingEvent = {
+    isLoading: boolean;
+    message: string;
+};
 
 export interface IViewportEvent {
-    loading: { type: string; value: boolean };
+    loading: { type: string; value: ViewportLoadingEvent };
     modelChanged: { type: string; model: Object3D | null };
     selectionChanged: { type: string; selection: Object3D | null };
     modelAnimated: {
@@ -29,25 +48,26 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
 
     private _model: Object3D | null = null;
     private _edges: boolean = true;
-    private _options: IViewerOptions;
+    private _options: IViewportOptions;
 
     clock = new Timer();
     animating: boolean = false;
 
-    private defaultOptions: IViewerOptions = {
+    private defaultOptions: IViewportOptions = {
         isMobile: false,
         height: undefined,
         width: undefined,
         showAxisHelper: true,
-        showStats: true,
+        showStats: false,
         theme: DefaultTheme,
+        cameraZoom: 2,
         showGrid: true,
         showFloor: true,
         restrictOrbit: true,
         showObjectBorders: true,
     };
 
-    constructor(canvas: HTMLCanvasElement, options?: Partial<IViewerOptions>) {
+    constructor(canvas: HTMLCanvasElement, options?: Partial<IViewportOptions>) {
         super();
 
         this._options = { ...this.defaultOptions, ...options };
@@ -55,13 +75,7 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         this.world = new World(canvas, this._options);
         this.selection = this._options.isMobile
             ? null
-            : new Selection(
-                  canvas,
-                  this.world.scene,
-                  this.world.camera,
-                  this.world.renderer,
-                  this._options.theme,
-              );
+            : new Selection(canvas, this.world.scene, this.world.camera, this.world.renderer, this._options.theme);
         this.setEvents();
         this.init();
     }
@@ -122,18 +136,14 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
 
         if (model && model.userData.edges) {
             this.exploder = new Exploder(model, model.userData.edges);
-            this.exploder.addEventListener('animated', (e) =>
-                this.handleExploderAnimated(e),
-            );
+            this.exploder.addEventListener('animated', (e) => this.handleExploderAnimated(e));
             this.exploder.animating = false;
         }
     }
 
     private disposeExploder() {
         if (this.exploder) {
-            this.exploder.removeEventListener('animated', (e) =>
-                this.handleExploderAnimated(e),
-            );
+            this.exploder.removeEventListener('animated', (e) => this.handleExploderAnimated(e));
             this.exploder = null;
         }
     }
@@ -160,35 +170,28 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     private disposeModelAnimations() {
         this.animating = false;
         if (this.mixer) {
-            this.mixer.removeEventListener('loop', (e) =>
-                this.handleModelAnimationComplete(e),
-            );
-            this.mixer.removeEventListener('finished', (e) =>
-                this.handleModelAnimationComplete(e),
-            );
+            this.mixer.removeEventListener('loop', (e) => this.handleModelAnimationComplete(e));
+            this.mixer.removeEventListener('finished', (e) => this.handleModelAnimationComplete(e));
         }
 
         this.mixer = null;
     }
 
-    async loadModel(model: IObjectUserData) {
+    async loadModel(modelData: IObjectUserData): Promise<Object3D | null> {
         if (!this.model?.id) {
-            this.dispatchEvent({ type: 'loading', value: true });
-            const obj = await loadModel(model, this, this._options);
+            this.dispatchEvent({ type: 'loading', value: { isLoading: true, message: `Loading ${modelData.name}` } });
+            const obj = await loadModel(modelData, this, this._options);
 
             if (obj) {
-                fitCameraToObject(
-                    this.world.camera,
-                    this.world.orbitControls,
-                    [obj],
-                    1,
-                );
+                fitCameraToObject(this.world.camera, this.world.orbitControls, [obj], this._options.cameraZoom);
             }
 
             this.model = obj;
 
-            this.dispatchEvent({ type: 'loading', value: false });
+            this.dispatchEvent({ type: 'loading', value: { isLoading: false, message: `${modelData.name} Loaded` } });
+            return obj;
         }
+        return null;
     }
 
     async init() {
@@ -201,8 +204,7 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     }
 
     private animate = () => {
-        const { renderer, scene, camera, orbitControls, size, gizmo } =
-            this.world;
+        const { renderer, scene, camera, orbitControls, size, gizmo } = this.world;
 
         renderer.setViewport(0, 0, size.width, size.height);
         renderer.render(scene, camera);
@@ -237,15 +239,9 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     };
 
     private removeEvents = () => {
-        this.selection?.removeEventListener(
-            'change',
-            this.handleSelectionChange,
-        );
+        this.selection?.removeEventListener('change', this.handleSelectionChange);
         this.world.removeEventListener('resize', this.resize);
-        this.selection?.removeEventListener(
-            'change',
-            this.handleSelectionChange,
-        );
+        this.selection?.removeEventListener('change', this.handleSelectionChange);
         this.disposeExploder();
     };
 

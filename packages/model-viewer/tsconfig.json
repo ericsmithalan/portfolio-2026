@@ -29,7 +29,9 @@
             "@/interface": ["./src/interface/index.ts"],
             "@/data": ["./src/data/index.ts"],
             "@/assets": ["./src/assets/*"],
-            "@/models": ["./src/models/*"]
+            "@/models": ["./src/models/*"],
+            "@/hooks": ["./src/hooks/index.ts"],
+            "@/context": ["./src/context/index.ts"]
         }
     },
     "include": ["src/**/*", "default.d.ts"],
