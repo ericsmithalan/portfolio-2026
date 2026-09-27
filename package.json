@@ -8,7 +8,6 @@
         "react-dom": "^19.3.0"
     },
     "devDependencies": {
-        "@types/node": "^22.20.2",
         "@types/react": "^19.3.0",
         "@types/react-dom": "^19.3.0",
         "prettier": "^3.9.6",
@@ -17,8 +16,7 @@
     },
     "packageManager": "pnpm@10.33.4",
     "workspaces": [
-        "apps/*",
-        "lib/*"
+        "packages/*"
     ],
     "scripts": {
         "start": "turbo run start",
@@ -27,7 +25,6 @@
         "format": "turbo run format",
         "clean": "find . -type d \\( -name \"node_modules\" -o -name \"dist\"  -o -name \".turbo\" \\) -prune -exec rm -rf {} +"
     },
-    "framework": "vite",
     "browserslist": {
         "production": [
             ">0.2%",

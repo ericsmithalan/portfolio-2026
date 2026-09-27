@@ -1,0 +1,157 @@
+export const education = {
+    combinedCivilianTranscriptCredits: 80.0,
+    combinedNoteForSixtyCreditPostings:
+        '80.0 credits as printed. An employer could potentially exclude TCCD developmental English (3.0) and/or AIS transfer K credits (6.0). Floor if both are excluded is 71.0 credits.',
+    institutions: [
+        {
+            institutionName: 'Art Institute of Seattle',
+            contact: {
+                phone: '(800) 275-2471',
+                email: 'Not Provided',
+                website: 'www.artinstitutes.edu/seattle',
+                address: {
+                    street: '2323 Elliott Avenue',
+                    city: 'Seattle',
+                    state: 'WA',
+                    zip: '98121',
+                },
+            },
+            startDate: new Date(1998, 9, 5),
+            endDate: new Date(1999, 11, 18),
+            studentId: '315007',
+            programName: 'Computer Animation',
+            credentialConferred:
+                'Associate of Applied Arts program (No degree date listed; degree was not conferred)',
+            honorsList: 'Not Provided',
+            additionalNotes: [
+                'Official transcript earned figure is 57.0 credits, which includes 6.0 transfer credits from Academy of Art College with grades of K.',
+                'Final transcript line attempted/quality metrics state 51.0 credits attempted, 57.0 credits earned, and 6.0 pass/transfer credits.',
+                'Left school after being hired at Microsoft in 2000.',
+            ],
+        },
+        {
+            institutionName: 'Chabot College',
+            contact: {
+                phone: '(510) 723-6700',
+                email: 'Not Provided',
+                website: 'www.chabotcollege.edu',
+                address: {
+                    street: '25555 Hesperian Blvd.',
+                    city: 'Hayward',
+                    state: 'CA',
+                    zip: '94545',
+                },
+            },
+            startDate: new Date(1998, 0, 1),
+            endDate: new Date(1998, 4, 31),
+            studentId: 'W10394611',
+            programName: 'Undergraduate General Studies',
+            credentialConferred: 'No degree (Moved to Seattle)',
+            honorsList: 'Academic Honors List (GPA 3.75; Good Standing)',
+            additionalNotes: [
+                'Official transcript earned: 12.00 semester units.',
+                'Completed coursework comprises HIST 7, MATH 105, PSYC 1, and SOC 1.',
+            ],
+        },
+        {
+            institutionName: 'Tarrant County College District (TCCD / TCCC)',
+            contact: {
+                phone: 'Not Provided',
+                email: 'Not Provided',
+                website: 'Not Provided',
+                address: {
+                    street: 'Not Provided',
+                    city: 'Fort Worth',
+                    state: 'TX',
+                    zip: 'Not Provided',
+                },
+            },
+            startDate: new Date(1992, 7, 1),
+            endDate: new Date(1993, 4, 31),
+            studentId: '0182370',
+            programName: 'DTCCD General',
+            credentialConferred: 'No degree',
+            honorsList: 'Not Provided',
+            additionalNotes: [
+                'Official transcript earned: 11 hours (Cumulative totals: ATT 11, EARN 11).',
+                'Includes 3.0 hours of developmental English (ENG-1203, CR), Drawing I (D), Design I (C), and two 1.0 hour PE courses.',
+                'Several W/F withdrawals are present on the record and were not earned.',
+            ],
+        },
+        {
+            institutionName: 'Tecumseh High School',
+            contact: {
+                phone: 'Not Provided',
+                email: 'Not Provided',
+                website: 'Not Provided',
+                address: {
+                    street: 'Not Provided',
+                    city: 'Tecumseh',
+                    state: 'MI',
+                    zip: 'Not Provided',
+                },
+            },
+            startDate: new Date(1987, 8, 1),
+            endDate: new Date(1991, 5, 1),
+            studentId: 'Parchment Student ID 50673677',
+            programName: 'High School Diploma Curriculum',
+            credentialConferred: 'High School Diploma',
+            honorsList: 'Not Provided',
+            additionalNotes: [
+                'Verified via official Parchment file issued 03/08/2023.',
+                'Document ID tracking number: TWXU1CLN.',
+                'No college-level courses or earned academic hours are tracked on this specific page layer.',
+            ],
+        },
+        {
+            institutionName: 'Joint Services Transcript (JST)',
+            contact: {
+                phone: 'Not Provided',
+                email: 'jst@doded.mil',
+                website: 'doded.mil',
+                address: {
+                    street: '130 West Ave, Suite G, Bldg 603',
+                    city: 'Pensacola',
+                    state: 'FL',
+                    zip: '32508',
+                },
+            },
+            startDate: new Date(1993, 6, 12),
+            endDate: new Date(1997, 7, 6),
+            studentId: 'SMITH, ERIC ALAN (ABF2 E5)',
+            programName: 'U.S. Navy Military Training and Occupation',
+            credentialConferred: 'None (JST Academic Evaluation)',
+            honorsList: 'Not Provided',
+            additionalNotes: [
+                'Counted ACE SH lines on this copy: 59 semester hours.',
+                'American Council on Education (ACE) recommended hours are credit recommendations, not automatically awarded civilian credits, and are kept separate from the civilian transcript total.',
+                'JST fax contact listed: 850-473-6013.',
+                'Other-institution addendum tracks Central Texas College courses listed with grades of F or D (PO Box 1800, Killeen, TX 76540); these are not added to the earned civilian total.',
+            ],
+        },
+        {
+            institutionName: 'Sam Beauford Woodworking Institute',
+            contact: {
+                phone: 'Not Provided',
+                email: 'Not Provided',
+                website: 'Not Provided',
+                address: {
+                    street: 'Not Provided',
+                    city: 'Jackson',
+                    state: 'MI',
+                    zip: 'Not Provided',
+                },
+            },
+            startDate: new Date(2024, 9, 1),
+            endDate: new Date(2025, 5, 1),
+            studentId: 'Not Provided',
+            programName: 'Furniture Making (Wood Design)',
+            credentialConferred:
+                'None (Attended during Vocational Rehabilitation period; overlapping with VTC assignment)',
+            honorsList: 'Not Provided',
+            additionalNotes: [
+                'No civilian college transcript on file in backup records.',
+            ],
+        },
+    ],
+};
