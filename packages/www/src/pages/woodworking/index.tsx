@@ -62,31 +62,33 @@ export const WoodworkingPage = () => {
                         })}
                     </ul>
                 </PanelComp>
-                <PanelComp title="Projects">
-                    <ul className="flex flex-col flex-auto text-gray-700">
-                        {modelObj?.obj?.children.map((item, i) => {
-                            return (
-                                <li key={i} className="flex flex-auto">
-                                    <a
-                                        className={clsx(
-                                            selectedPart?.id === item.id &&
-                                                'bg-amber-600 text-white',
-                                            'p-1 pl-2 pr-3',
-                                            'flex flex-auto rounded-sm',
-                                        )}
-                                        href="#"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            setSelectedPart(item.id);
-                                        }}
-                                    >
-                                        {item.name}
-                                    </a>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </PanelComp>
+                {modelObj?.obj && (
+                    <PanelComp title="Projects">
+                        <ul className="flex flex-col flex-auto text-gray-700">
+                            {modelObj.obj.children.map((item: Obj3D, i: number) => {
+                                return (
+                                    <li key={i} className="flex flex-auto">
+                                        <a
+                                            className={clsx(
+                                                selectedPart?.id === item.id &&
+                                                    'bg-amber-600 text-white',
+                                                'p-1 pl-2 pr-3',
+                                                'flex flex-auto rounded-sm',
+                                            )}
+                                            href="#"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setSelectedPart(item.id);
+                                            }}
+                                        >
+                                            {item.name}
+                                        </a>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </PanelComp>
+                )}
             </div>
         </div>
     );
