@@ -12,3 +12,5 @@ export * from './data/volunteer';
 export * from './data/thinking';
 export * from './data/inovations';
 export * from './data/education';
+export * from './panel';
+export * from './shell';

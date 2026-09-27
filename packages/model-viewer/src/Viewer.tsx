@@ -1,13 +1,18 @@
 import { IObjectUserData, IViewportEvent, IViewportOptions, ViewportLoadingEvent } from '@/lib';
-import { FC, useEffect, useRef } from 'react';
+import { CSSProperties, FC, useEffect, useRef } from 'react';
 
 import { Object3D } from 'three';
 import './style.scss';
 import { useViewport } from './hooks';
+import clsx from 'clsx';
 
 export interface ViewerProps {
     options: Partial<IViewportOptions> | null;
     modelUserData: IObjectUserData | null;
+    className?: string;
+    canvasClassName?: string;
+    style?: CSSProperties;
+    canvasStyle?: CSSProperties;
     onLoaded?: (type: string, value: ViewportLoadingEvent) => void;
     onModelChange?: (type: string, model: Object3D | null) => void;
     onSelectChange?: (type: string, selection: Object3D | null) => void;
@@ -16,9 +21,13 @@ export interface ViewerProps {
 export const Viewer: FC<ViewerProps> = ({
     modelUserData,
     options,
+    className,
+    style,
+    canvasStyle,
     onLoaded,
     onModelChange,
     onSelectChange,
+    canvasClassName,
 }: ViewerProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const viewportContext = useViewport();
@@ -65,10 +74,12 @@ export const Viewer: FC<ViewerProps> = ({
     }, [canvasRef]);
 
     return (
-        <canvas
-            className="canvas"
-            ref={canvasRef}
-            style={{ width: options?.width, height: options?.height }}
-        />
+        <div style={style} className={clsx('model-viewer', className)}>
+            <canvas
+                style={canvasStyle}
+                className={clsx('viewer-canvas', canvasClassName)}
+                ref={canvasRef}
+            />
+        </div>
     );
 };

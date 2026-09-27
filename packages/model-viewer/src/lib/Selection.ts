@@ -2,6 +2,7 @@ import { Camera, EventDispatcher, Object3D, Raycaster, Scene, Vector2, WebGLRend
 
 import { SelectMode } from '@/types';
 import { ObjectUserData, OutlineEffect, ITheme } from '@/lib';
+import { IWorldEvent, World } from './World';
 
 export interface ISelectionEvent {
     change: {
@@ -27,24 +28,18 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
     dragging = false;
     enabled: boolean = true;
 
-    constructor(
-        container: HTMLElement,
-        scene: Scene,
-        camera: Camera,
-        renderer: WebGLRenderer,
-        theme: ITheme,
-    ) {
+    constructor(container: HTMLElement, world: World, theme: ITheme) {
         super();
 
-        this.camera = camera;
+        this.camera = world.camera;
         this.raycaster = new Raycaster();
         this.raycaster.layers.enable(0);
         this.container = container;
-        this.scene = scene;
+        this.scene = world.scene;
         this.raycaster.setFromCamera(this.mouse, this.camera);
 
         this.registerEvents();
-        this.borderEffect = new OutlineEffect(scene, renderer, camera, theme);
+        this.borderEffect = new OutlineEffect(world, theme);
     }
 
     get mode() {
@@ -83,8 +78,8 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
         }
     }
 
-    resize() {
-        this.borderEffect.resize();
+    resize(e: IWorldEvent['resize']) {
+        this.borderEffect.resize(e);
     }
 
     clear() {
@@ -105,8 +100,12 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
 
     private setMouse = (e: MouseEvent) => {
         const rect = this.container.getBoundingClientRect();
-        const x = (e.clientX / rect.width) * 2 - 1;
-        const y = -(e.clientY / rect.height) * 2 + 1;
+
+        const localX = e.clientX - rect.left;
+        const localY = e.clientY - rect.top;
+
+        const x = (localX / rect.width) * 2 - 1;
+        const y = -(localY / rect.height) * 2 + 1;
 
         this.mouse.x = x;
         this.mouse.y = y;
@@ -117,10 +116,8 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
         const self = this;
         if (self.enabled) {
             const objects = self.intersects(self.mouse.x, self.mouse.y);
-            console.log(objects);
             if (objects) {
                 self.object = objects[0]?.object || null;
-                console.log('selecable', objects[0]?.object);
             } else {
                 self.object = null;
             }
@@ -142,7 +139,6 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
         this.scene.traverseVisible((child) => {
             if (child.userData && child.userData instanceof ObjectUserData) {
                 if (child.userData.selectable === true) {
-                    console.log(child.userData.selectable, child.name, child.userData.selectable);
                     sceneChildren.push(child);
                 }
             }

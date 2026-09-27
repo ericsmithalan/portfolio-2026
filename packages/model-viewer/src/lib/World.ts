@@ -21,6 +21,7 @@ import { IViewportOptions } from '@/lib';
 export interface IWorldEvent {
     resize: { type: string; size: IScreenSize };
 }
+
 export interface IScreenSize {
     width: number;
     height: number;
@@ -36,9 +37,9 @@ export class World extends EventDispatcher<IWorldEvent> {
     readonly lights: Lights;
     readonly grid: Grid | null;
     readonly floor: Floor | null;
+    readonly container: HTMLCanvasElement;
+
     private showStats: boolean;
-    private options: IViewportOptions | undefined;
-    private _canvas: HTMLCanvasElement;
     private geometries = 0;
     private textures = 0;
 
@@ -51,17 +52,19 @@ export class World extends EventDispatcher<IWorldEvent> {
     constructor(canvas: HTMLCanvasElement, options: IViewportOptions) {
         super();
 
-        const worldTheme = options.theme.world;
-
-        this._canvas = canvas;
-        this.options = options;
-        this.setSize();
+        this.container = canvas;
         this.showStats = options.showStats;
+
+        this.setSize();
 
         this.scene = new Scene();
         this.scene.name = 'Scene';
-        this.scene.background = new Color(worldTheme.backgroundColor);
-        this.scene.fog = new FogExp2(new Color(worldTheme.fogColor), worldTheme.fogDensity);
+
+        this.scene.background = new Color(options.theme.world.backgroundColor);
+        this.scene.fog = new FogExp2(
+            new Color(options.theme.world.fogColor),
+            options.theme.world.fogDensity,
+        );
 
         this.camera = new PerspectiveCamera(40, this.size.aspect, 1, 50);
         this.camera.name = 'Camera';
@@ -111,11 +114,11 @@ export class World extends EventDispatcher<IWorldEvent> {
         }
         this.orbitControls.update();
 
-        this.gizmo = !this.options.showAxisHelper
+        this.gizmo = !options.showAxisHelper
             ? null
             : new ViewportGizmo(this.camera, this.renderer, {
                   placement: 'bottom-right',
-                  container: this._canvas,
+                  container: this.container,
                   size: 0.7,
               });
 
@@ -126,7 +129,7 @@ export class World extends EventDispatcher<IWorldEvent> {
         this.lights = new Lights(this.scene, options?.envUrl);
 
         if (options.showGrid) {
-            this.grid = new Grid(this.scene, this.options.theme);
+            this.grid = new Grid(this.scene, options.theme);
         } else {
             this.grid = null;
         }
@@ -178,24 +181,16 @@ export class World extends EventDispatcher<IWorldEvent> {
     }
 
     setSize() {
-        let width: number = 0;
-        let height: number = 0;
+        const parentEl = this.container.parentElement?.getBoundingClientRect();
 
-        if (this.options?.height) {
-            height = Number(this.options.height);
-        } else {
-            height = window.innerHeight;
-        }
-
-        if (this.options?.width) {
-            width = Number(this.options.width);
-        } else {
-            width = window.innerWidth;
-        }
+        const height = parentEl?.height || 100;
+        const width = parentEl?.width || 100;
 
         this.size.aspect = width / height;
         this.size.width = width;
         this.size.height = height;
+
+        console.log(parentEl, this.size);
     }
 
     dispose() {

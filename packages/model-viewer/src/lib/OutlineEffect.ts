@@ -20,6 +20,7 @@ import {
 } from 'three/examples/jsm/Addons.js';
 import { disposeObject } from '@/utils';
 import { ITheme } from '@/lib';
+import { IWorldEvent, World } from './World';
 
 export class OutlineEffect {
     private target: WebGLRenderTarget;
@@ -31,41 +32,32 @@ export class OutlineEffect {
 
     enabled: boolean = true;
 
-    constructor(
-        scene: Scene,
-        renderer: WebGLRenderer,
-        camera: Camera,
-        theme: ITheme,
-    ) {
-        this.target = new WebGLRenderTarget(
-            window.innerWidth,
-            window.innerHeight,
-            {
-                minFilter: LinearFilter,
-                magFilter: LinearFilter,
-                format: RGBAFormat,
-                colorSpace: SRGBColorSpace,
-                stencilBuffer: true,
-            },
-        );
+    constructor(world: World, theme: ITheme) {
+        this.target = new WebGLRenderTarget(world.size.width, world.size.height, {
+            minFilter: LinearFilter,
+            magFilter: LinearFilter,
+            format: RGBAFormat,
+            colorSpace: SRGBColorSpace,
+            stencilBuffer: true,
+        });
 
-        this.composer = new EffectComposer(renderer, this.target);
+        this.composer = new EffectComposer(world.renderer, this.target);
         this.composer.setPixelRatio(window.devicePixelRatio);
-        this.composer.setSize(window.innerWidth, window.innerHeight);
+        this.composer.setSize(world.size.width, world.size.height);
         this.composer.renderTarget1.stencilBuffer = true;
         this.composer.renderTarget2.stencilBuffer = true;
 
         const effectScene = new Scene();
-        const renderPass = new RenderPass(effectScene, camera);
+        const renderPass = new RenderPass(effectScene, world.camera);
 
         renderPass.clearColor = new Color(theme.outlineEffect.clearColor);
         renderPass.clearAlpha = 0;
         this.composer.addPass(renderPass);
 
         this.outlinePass = new OutlinePass(
-            new Vector2(window.innerWidth, window.innerHeight),
-            scene,
-            camera,
+            new Vector2(world.size.width, world.size.height),
+            world.scene,
+            world.camera,
         );
 
         this.outlinePass.edgeGlow = theme.outlineEffect.edgeGlow;
@@ -73,12 +65,8 @@ export class OutlineEffect {
         this.outlinePass.edgeStrength = theme.outlineEffect.edgeStrength;
         this.outlinePass.pulsePeriod = theme.outlineEffect.pulsePeriod;
 
-        this.outlinePass.visibleEdgeColor.set(
-            new Color(theme.outlineEffect.visibleEdgeColor),
-        );
-        this.outlinePass.hiddenEdgeColor.set(
-            new Color(theme.outlineEffect.hiddenEdgeColor),
-        );
+        this.outlinePass.visibleEdgeColor.set(new Color(theme.outlineEffect.visibleEdgeColor));
+        this.outlinePass.hiddenEdgeColor.set(new Color(theme.outlineEffect.hiddenEdgeColor));
         this.composer.addPass(this.outlinePass);
 
         const outputPass = new OutputPass();
@@ -86,8 +74,8 @@ export class OutlineEffect {
 
         this.effectFXAA = new ShaderPass(FXAAShader);
         this.effectFXAA.uniforms['resolution'].value.set(
-            1 / window.innerWidth,
-            1 / window.innerHeight,
+            1 / world.size.width,
+            1 / world.size.height,
         );
 
         this.effectFXAA.renderToScreen = true;
@@ -108,9 +96,9 @@ export class OutlineEffect {
         this._objects = objs;
     }
 
-    resize() {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
+    resize(e: IWorldEvent['resize']) {
+        const width = e.size.width;
+        const height = e.size.height;
 
         this.target.setSize(width, height);
         this.composer.setSize(width, height);

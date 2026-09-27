@@ -6,7 +6,6 @@ import { Exploder, IExploderEvent } from './Exploder';
 import { ISelectionEvent, Selection } from './Selection';
 import { IWorldEvent, World } from './World';
 import { IObjectUserData } from './ObjectUserData';
-import { logger } from '..';
 
 export interface IViewportOptions {
     height?: number;
@@ -56,8 +55,6 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
 
     private defaultOptions: IViewportOptions = {
         isMobile: false,
-        height: undefined,
-        width: undefined,
         showAxisHelper: true,
         showStats: false,
         theme: DefaultTheme,
@@ -76,13 +73,7 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         this.world = new World(canvas, this._options);
         this.selection = this._options.isMobile
             ? null
-            : new Selection(
-                  canvas,
-                  this.world.scene,
-                  this.world.camera,
-                  this.world.renderer,
-                  this._options.theme,
-              );
+            : new Selection(canvas, this.world, this._options.theme);
         this.setEvents();
         this.init();
     }
@@ -200,6 +191,9 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
             );
         }
 
+        // this.world.camera.aspect = 4;
+        // this.world.camera.updateProjectionMatrix();
+
         this.model = obj;
 
         this.dispatchEvent({
@@ -216,7 +210,7 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     }
 
     private resize(e: IWorldEvent['resize']) {
-        this.selection?.resize();
+        this.selection?.resize(e);
     }
 
     private animate = () => {
