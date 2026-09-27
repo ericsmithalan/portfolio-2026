@@ -39,7 +39,7 @@ export class ObjectUserData implements IObjectUserData {
         this.objectId = data.objectId || null;
         this.edgeId = data.edgeId || null;
         this.textureId = data.textureId || null;
-        this.selectable = data.selectable || true;
+        this.selectable = data.selectable || false;
         this.images = data.images || [];
         this.edges = data.edges || new Edges();
         this.textures = data.textures || {

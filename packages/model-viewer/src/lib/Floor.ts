@@ -1,5 +1,6 @@
 import { Mesh, PlaneGeometry, Scene, ShadowMaterial } from 'three';
 import { disposeGeometry, disposeMaterial, disposeObject } from '@/utils';
+import { ObjectUserData } from './ObjectUserData';
 
 export class Floor extends Mesh {
     constructor(scene: Scene) {
@@ -22,6 +23,7 @@ export class Floor extends Mesh {
         disposeMaterial(material);
         disposeGeometry(geometry);
 
+        this.userData = new ObjectUserData({ selectable: false });
         scene.add(this);
     }
 

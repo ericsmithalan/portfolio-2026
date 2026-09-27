@@ -1,3 +1,5 @@
+import { CustomLogger, LogLevel } from '@/lib';
+
 export { Viewer, type ViewerProps } from './Viewer';
 export { Viewport3D } from './Viewport3D';
 
@@ -15,3 +17,9 @@ export {
 
 export { useViewport } from '@/hooks';
 export { ViewportProvider } from '@/context';
+
+export const logger = new CustomLogger({
+    isProduction: false,
+    serviceName: 'model-viewer',
+    minLevel: LogLevel.INFO,
+});

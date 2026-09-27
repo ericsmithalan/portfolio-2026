@@ -1,12 +1,4 @@
-import {
-    Camera,
-    EventDispatcher,
-    Object3D,
-    Raycaster,
-    Scene,
-    Vector2,
-    WebGLRenderer,
-} from 'three';
+import { Camera, EventDispatcher, Object3D, Raycaster, Scene, Vector2, WebGLRenderer } from 'three';
 
 import { SelectMode } from '@/types';
 import { ObjectUserData, OutlineEffect, ITheme } from '@/lib';
@@ -100,6 +92,7 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
             this.object = null;
         }
     }
+
     animate = () => {
         // if UI hides object
         if (this.object && !this.object.visible) {
@@ -124,9 +117,10 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
         const self = this;
         if (self.enabled) {
             const objects = self.intersects(self.mouse.x, self.mouse.y);
-
+            console.log(objects);
             if (objects) {
                 self.object = objects[0]?.object || null;
+                console.log('selecable', objects[0]?.object);
             } else {
                 self.object = null;
             }
@@ -146,8 +140,9 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
         const sceneChildren: Array<Object3D> = [];
 
         this.scene.traverseVisible((child) => {
-            if (child.userData instanceof ObjectUserData) {
+            if (child.userData && child.userData instanceof ObjectUserData) {
                 if (child.userData.selectable === true) {
+                    console.log(child.userData.selectable, child.name, child.userData.selectable);
                     sceneChildren.push(child);
                 }
             }
@@ -160,21 +155,13 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
     };
 
     private registerEvents() {
-        this.container.addEventListener('mousedown', (e: MouseEvent) =>
-            this.mouseDwn(e),
-        );
-        this.container.addEventListener('mouseup', (e: MouseEvent) =>
-            this.mouseUp(e),
-        );
+        this.container.addEventListener('mousedown', (e: MouseEvent) => this.mouseDwn(e));
+        this.container.addEventListener('mouseup', (e: MouseEvent) => this.mouseUp(e));
     }
 
     dispose() {
-        this.container.removeEventListener('mousedown', (e: MouseEvent) =>
-            this.mouseDwn(e),
-        );
-        this.container.removeEventListener('mouseup', (e: MouseEvent) =>
-            this.mouseUp(e),
-        );
+        this.container.removeEventListener('mousedown', (e: MouseEvent) => this.mouseDwn(e));
+        this.container.removeEventListener('mouseup', (e: MouseEvent) => this.mouseUp(e));
 
         this.borderEffect.dispose();
     }

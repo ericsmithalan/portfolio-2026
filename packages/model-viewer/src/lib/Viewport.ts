@@ -6,6 +6,7 @@ import { Exploder, IExploderEvent } from './Exploder';
 import { ISelectionEvent, Selection } from './Selection';
 import { IWorldEvent, World } from './World';
 import { IObjectUserData } from './ObjectUserData';
+import { logger } from '..';
 
 export interface IViewportOptions {
     height?: number;
@@ -75,7 +76,13 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         this.world = new World(canvas, this._options);
         this.selection = this._options.isMobile
             ? null
-            : new Selection(canvas, this.world.scene, this.world.camera, this.world.renderer, this._options.theme);
+            : new Selection(
+                  canvas,
+                  this.world.scene,
+                  this.world.camera,
+                  this.world.renderer,
+                  this._options.theme,
+              );
         this.setEvents();
         this.init();
     }
@@ -107,7 +114,7 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
             this._model.userData.edges?.dispose();
         }
 
-        if (obj && obj) {
+        if (obj) {
             this.world.scene.add(obj);
             this.world.lights.alignToModel(obj);
 
@@ -178,20 +185,29 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
     }
 
     async loadModel(modelData: IObjectUserData): Promise<Object3D | null> {
-        if (!this.model?.id) {
-            this.dispatchEvent({ type: 'loading', value: { isLoading: true, message: `Loading ${modelData.name}` } });
-            const obj = await loadModel(modelData, this, this._options);
+        this.dispatchEvent({
+            type: 'loading',
+            value: { isLoading: true, message: `Loading ${modelData.name}` },
+        });
+        const obj = await loadModel(modelData, this, this._options);
 
-            if (obj) {
-                fitCameraToObject(this.world.camera, this.world.orbitControls, [obj], this._options.cameraZoom);
-            }
-
-            this.model = obj;
-
-            this.dispatchEvent({ type: 'loading', value: { isLoading: false, message: `${modelData.name} Loaded` } });
-            return obj;
+        if (obj) {
+            fitCameraToObject(
+                this.world.camera,
+                this.world.orbitControls,
+                [obj],
+                this._options.cameraZoom,
+            );
         }
-        return null;
+
+        this.model = obj;
+
+        this.dispatchEvent({
+            type: 'loading',
+            value: { isLoading: false, message: `${modelData.name} Loaded` },
+        });
+
+        return obj;
     }
 
     async init() {
@@ -217,6 +233,12 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
             this.model.userData.edges.update(this.world.scene);
         }
 
+        if (this.selection) {
+            this.selection.animate();
+        }
+        // if (this.edges){
+        //     this.edges.up
+        // }
         if (gizmo) {
             gizmo.render();
         }

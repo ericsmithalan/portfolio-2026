@@ -1,13 +1,6 @@
-import {
-    BufferGeometry,
-    LineBasicMaterial,
-    LineSegments,
-    Object3D,
-    Scene,
-    Vector3,
-} from 'three';
+import { BufferGeometry, LineBasicMaterial, LineSegments, Object3D, Scene, Vector3 } from 'three';
 import { disposeGeometry, disposeMaterial, disposeObject } from '@/utils';
-import { ITheme } from '@/lib';
+import { ITheme, ObjectUserData } from '@/lib';
 
 export class Grid extends Object3D {
     constructor(scene: Scene, theme: ITheme) {
@@ -53,6 +46,8 @@ export class Grid extends Object3D {
         disposeGeometry(hLine);
         disposeGeometry(vLine);
         disposeMaterial(material);
+
+        this.userData = new ObjectUserData({ selectable: false });
 
         scene.add(this);
     }

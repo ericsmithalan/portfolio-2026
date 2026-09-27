@@ -4,7 +4,8 @@ import { sassPlugin } from 'esbuild-sass-plugin'; // <-- Import the plugin
 export default defineConfig({
     entry: ['src/index.ts'],
     publicDir: false,
-    format: ['cjs', 'esm'], // Emits both formats
+    target: 'es2022',
+    format: ['esm'], // Emits both formats
     clean: true, // Cleans dist before building
     esbuildPlugins: [sassPlugin({ type: 'style' })],
     splitting: false,

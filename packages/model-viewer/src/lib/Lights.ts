@@ -7,6 +7,7 @@ import {
     Object3D,
 } from 'three';
 import { HDRLoader } from 'three/examples/jsm/Addons.js';
+import { ObjectUserData } from '.';
 
 export class Lights {
     public key: DirectionalLight;
@@ -37,21 +38,27 @@ export class Lights {
         this.key.shadow.normalBias = 0.02;
         this.key.shadow.blurSamples = 10;
         this.key.shadow.radius = 2;
+        this.key.userData = new ObjectUserData({ selectable: false });
 
         // 3. Fill Light (Softens shadows from opposite side - cool/neutral tone)
         this.fill = new DirectionalLight(0xddeeff, 0.5);
         this.fill.position.set(-5, 4, 3);
+        this.fill.userData = new ObjectUserData({ selectable: false });
 
         // 4. Back / Rim Light (Separates object from background, highlights edges)
         this.rim = new DirectionalLight(0xffffff, 1);
         this.rim.position.set(0, 5, -5);
+        this.rim.userData = new ObjectUserData({ selectable: false });
 
         scene.add(this.key, this.fill, this.rim);
 
         const size: number = 1;
         this.helperFill = new DirectionalLightHelper(this.fill, size, 0x51e283); //  green
+        this.helperFill.userData = new ObjectUserData({ selectable: false });
         this.helperRim = new DirectionalLightHelper(this.rim, size, 0x70a0ff); //blue
+        this.helperRim.userData = new ObjectUserData({ selectable: false });
         this.helperKey = new DirectionalLightHelper(this.key, size, 0xff6b6b); // red
+        this.helperKey.userData = new ObjectUserData({ selectable: false });
 
         // scene.add(this.helperFill, this.helperRim, this.helperKey);
         this.loadEnvironment(scene, envUrl);

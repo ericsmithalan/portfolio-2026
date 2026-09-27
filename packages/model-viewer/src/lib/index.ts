@@ -7,4 +7,5 @@ export * from './ObjectUserData';
 export * from './OutlineEffect';
 export * from './Transform';
 export * from './Viewport';
+export * from './Logger';
 export * from './Theme';

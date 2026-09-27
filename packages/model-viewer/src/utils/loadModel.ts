@@ -8,7 +8,11 @@ const loader: GLTFLoader = new GLTFLoader();
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
 
-export const loadModel = (userData: IObjectUserData | null, viewport: Viewport, options: IViewportOptions): Promise<Object3D> => {
+export const loadModel = (
+    userData: IObjectUserData | null,
+    viewport: Viewport,
+    options: IViewportOptions,
+): Promise<Object3D> => {
     return new Promise(async (resolve) => {
         if (userData) {
             loader.setDRACOLoader(dracoLoader);
@@ -28,7 +32,8 @@ export const loadModel = (userData: IObjectUserData | null, viewport: Viewport, 
 
                         if (part.material && userData.textures) {
                             const base =
-                                part.material.name?.indexOf('wood') !== -1 || part.material.name?.indexOf('primary') !== -1;
+                                part.material.name?.indexOf('wood') !== -1 ||
+                                part.material.name?.indexOf('primary') !== -1;
                             const alt = part.material.name?.indexOf('contrast') !== -1;
                             const metal = part.material.name?.indexOf('metal') !== -1;
 

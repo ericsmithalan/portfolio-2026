@@ -2,7 +2,6 @@ import {
     EdgesGeometry,
     Group,
     LineBasicMaterial,
-    LineDashedMaterial,
     LineSegments,
     Mesh,
     Object3D,
@@ -12,7 +11,6 @@ import {
 import { disposeGeometry, disposeObject } from '@/utils';
 import { ObjectUserData } from './ObjectUserData';
 import { ITheme } from '@/lib';
-import { LineMaterial } from 'three/examples/jsm/Addons.js';
 
 export class Edges {
     edgeGroup: Group;
@@ -51,15 +49,12 @@ export class Edges {
                 opacity: 0.5,
             }),
         );
+
         line.name = `${mesh.name}__edge`;
         line.userData = new ObjectUserData({
             objectId: mesh.id,
             edgeId: line.id,
-        });
-
-        mesh.userData = new ObjectUserData({
-            objectId: mesh.id,
-            edgeId: line.id,
+            selectable: false,
         });
 
         // line.position.x = wp.x;

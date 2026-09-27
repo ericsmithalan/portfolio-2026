@@ -13,7 +13,13 @@ export interface ViewerProps {
     onSelectChange?: (type: string, selection: Object3D | null) => void;
 }
 
-export const Viewer: FC<ViewerProps> = ({ modelUserData, options, onLoaded, onModelChange, onSelectChange }: ViewerProps) => {
+export const Viewer: FC<ViewerProps> = ({
+    modelUserData,
+    options,
+    onLoaded,
+    onModelChange,
+    onSelectChange,
+}: ViewerProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const viewportContext = useViewport();
 
@@ -58,5 +64,11 @@ export const Viewer: FC<ViewerProps> = ({ modelUserData, options, onLoaded, onMo
         }
     }, [canvasRef]);
 
-    return <canvas className="canvas" ref={canvasRef} style={{ width: options?.width, height: options?.height }} />;
+    return (
+        <canvas
+            className="canvas"
+            ref={canvasRef}
+            style={{ width: options?.width, height: options?.height }}
+        />
+    );
 };
