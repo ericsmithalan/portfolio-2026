@@ -26,3 +26,4 @@ yarn.lock
 dist/
 node_modules/
 .tsup/
+pnpm-lock.yaml

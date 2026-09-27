@@ -3,7 +3,6 @@ import { getTheme } from '../../data/theme';
 import { getModelUserData, modelUserData } from '../../data/modelUserData';
 import { PanelComp } from '../../components';
 import clsx from 'clsx';
-import { useState } from 'react';
 
 export const WoodworkingPage = () => {
     const { loading, selectedPart, setSelectedPart, loadModel, modelObj } = useViewport();
@@ -20,7 +19,7 @@ export const WoodworkingPage = () => {
                     envUrl: '/env/studio1k.hdr',
                     theme: getTheme('light'),
                 }}
-                modelUserData={modelUserData[2]}
+                modelUserData={modelUserData[0]}
                 onModelChange={(type: string, value: Obj3D | null) => {
                     // setModel(value);
                     // console.log('model changed', value);
@@ -29,12 +28,9 @@ export const WoodworkingPage = () => {
                     // setLoading(value);
                     // console.log('model loaded', value);
                 }}
-                onSelectChange={(type: string, value: Obj3D | null) => {
-                    console.log('part selected', value);
-                }}
             />
 
-            <div className="left-region absolute top-0 left-0 w-50">
+            <div className="left-region absolute top-5 left-5 w-50 gap-4">
                 <PanelComp title="Projects">
                     <ul className="flex flex-col flex-auto text-gray-700">
                         {modelUserData.map((item, i) => {
@@ -63,17 +59,20 @@ export const WoodworkingPage = () => {
                     </ul>
                 </PanelComp>
                 {modelObj?.obj && (
-                    <PanelComp title="Projects">
+                    <PanelComp title="Parts" className="mt-5 max-h-70">
                         <ul className="flex flex-col flex-auto text-gray-700">
                             {modelObj.obj.children.map((item: Obj3D, i: number) => {
                                 return (
                                     <li key={i} className="flex flex-auto">
                                         <a
+                                            title={item.name}
                                             className={clsx(
                                                 selectedPart?.id === item.id &&
                                                     'bg-amber-600 text-white',
                                                 'p-1 pl-2 pr-3',
-                                                'flex flex-auto rounded-sm',
+                                                'rounded-sm',
+
+                                                'w-40 truncate',
                                             )}
                                             href="#"
                                             onClick={(e) => {
