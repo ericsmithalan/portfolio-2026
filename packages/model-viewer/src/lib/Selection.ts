@@ -65,7 +65,7 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
     }
 
     set object(value: Object3D | null) {
-        if (value !== this.object) {
+        if (value !== this._object) {
             this._object = value;
 
             if (value !== null) {
@@ -75,6 +75,11 @@ export class Selection extends EventDispatcher<ISelectionEvent> {
             }
 
             this.dispatchEvent({ type: 'change', object: value });
+        } else {
+            if (!value) {
+                this._object = null;
+                this.dispatchEvent({ type: 'change', object: null });
+            }
         }
     }
 

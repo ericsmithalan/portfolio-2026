@@ -104,7 +104,6 @@ export class World extends EventDispatcher<IWorldEvent> {
             this.orbitControls.minAzimuthAngle = -Infinity; // Default: -Infinity (Unlocks full horizontal rotation)
             this.orbitControls.maxAzimuthAngle = Infinity; // Default: Infinity
         } else {
-            this.orbitControls = new OrbitControls(this.camera, canvas);
             this.orbitControls.enableDamping = false; // an animation loop is required when either damping or auto-rotation are enabled
             this.orbitControls.dampingFactor = 0.05;
             this.orbitControls.screenSpacePanning = true;

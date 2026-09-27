@@ -1,5 +1,11 @@
-import { DefaultTheme, IObjectUserData, ViewportLoadingEvent, Viewport, IViewportOptions } from '@/lib';
-import { textureToPBRMaterials, getObjectsById, disposeMaterial } from '@/utils';
+import {
+    IObjectUserData,
+    ViewportLoadingEvent,
+    Viewport,
+    IViewportOptions,
+    IViewportEvent,
+} from '@/lib';
+import { textureToPBRMaterials, getObjectsById, disposeMaterial, getObject } from '@/utils';
 import React, { useEffect, useState } from 'react';
 import { Material, Mesh, Object3D, Object3DEventMap } from 'three';
 
@@ -12,6 +18,8 @@ export interface ViewportState {
     loading: ViewportLoadingEvent;
     viewport: Viewport | null;
     modelObj: ModelObj | null;
+    selectedPart: Object3D | null;
+    setSelectedPart: (id: number | null) => void;
     createViewport: (
         canvasRef: HTMLCanvasElement | null,
         options: Partial<IViewportOptions> | null,
@@ -26,20 +34,6 @@ interface ViewportProviderProps {
     children?: React.ReactNode;
 }
 
-const defaultOptions = {
-    isMobile: false,
-    height: undefined,
-    width: undefined,
-    showAxisHelper: true,
-    showStats: false,
-    theme: DefaultTheme,
-    cameraZoom: 2,
-    showGrid: true,
-    showFloor: true,
-    restrictOrbit: true,
-    showObjectBorders: true,
-};
-
 export const ViewportProvider = ({ children }: ViewportProviderProps) => {
     const [viewport, setViewport] = useState<Viewport | null>(null);
     const [modelObj, setModelObj] = useState<ModelObj | null>(null);
@@ -47,16 +41,17 @@ export const ViewportProvider = ({ children }: ViewportProviderProps) => {
         isLoading: false,
         message: '',
     });
+    const [selectedPart, setSelectedPart] = useState<Object3D | null>(null);
 
     const loadMaterials = async (): Promise<void> => {
+        setLoading({
+            isLoading: true,
+            message: `Loading Textures`,
+        });
+
         if (viewport && viewport.model) {
             const { textures } = viewport.model.userData;
             const { environment } = viewport.world.scene;
-
-            setLoading({
-                isLoading: true,
-                message: `Loading Textures`,
-            });
 
             const [base, alt, metal] = await Promise.all<Material | null>([
                 textureToPBRMaterials(environment, textures.base),
@@ -94,11 +89,16 @@ export const ViewportProvider = ({ children }: ViewportProviderProps) => {
             disposeMaterial(base);
             disposeMaterial(alt);
             disposeMaterial(metal);
-            setLoading({
-                isLoading: false,
-                message: 'materials loaded',
-            });
         }
+
+        setLoading({
+            isLoading: false,
+            message: 'materials loaded',
+        });
+    };
+
+    const handleSelectedChange = (e: IViewportEvent['selectionChanged']) => {
+        setSelectedPart(e.selection);
     };
 
     const createViewport = (
@@ -107,13 +107,8 @@ export const ViewportProvider = ({ children }: ViewportProviderProps) => {
         modelData: IObjectUserData | null,
     ) => {
         if (canvasRef) {
-            const ops = {
-                ...defaultOptions,
-                ...(options || {}),
-            };
-
-            const vp = new Viewport(canvasRef, ops);
-
+            const vp = new Viewport(canvasRef, options);
+            vp.addEventListener('selectionChanged', handleSelectedChange);
             setViewport(vp);
 
             setModelObj({
@@ -122,6 +117,16 @@ export const ViewportProvider = ({ children }: ViewportProviderProps) => {
             });
         } else {
             console.log('ViewwerContext > create > canvaseRef', canvasRef);
+        }
+    };
+
+    const selectPart = (id: number | null) => {
+        if (viewport && id) {
+            const mod = getObject(viewport, id, true);
+
+            setSelectedPart(mod);
+        } else {
+            setSelectedPart(null);
         }
     };
 
@@ -170,6 +175,8 @@ export const ViewportProvider = ({ children }: ViewportProviderProps) => {
     return (
         <ViewportContext.Provider
             value={{
+                setSelectedPart: selectPart,
+                selectedPart: selectedPart,
                 createViewport: createViewport,
                 loadModel: loadModel,
                 loading: loading,

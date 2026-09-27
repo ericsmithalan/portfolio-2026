@@ -8,8 +8,6 @@ import { IWorldEvent, World } from './World';
 import { IObjectUserData } from './ObjectUserData';
 
 export interface IViewportOptions {
-    height?: number;
-    width?: number;
     showAxisHelper: boolean;
     envUrl?: string;
     theme: ITheme;
@@ -48,12 +46,7 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
 
     private _model: Object3D | null = null;
     private _edges: boolean = true;
-    private _options: IViewportOptions;
-
-    clock = new Timer();
-    animating: boolean = false;
-
-    private defaultOptions: IViewportOptions = {
+    private _options: IViewportOptions = {
         isMobile: false,
         showAxisHelper: true,
         showStats: false,
@@ -61,15 +54,20 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         cameraZoom: 2,
         showGrid: true,
         showFloor: true,
-        restrictOrbit: true,
+        restrictOrbit: false,
         showObjectBorders: true,
     };
 
-    constructor(canvas: HTMLCanvasElement, options?: Partial<IViewportOptions>) {
+    clock = new Timer();
+    animating: boolean = false;
+
+    constructor(canvas: HTMLCanvasElement, options?: Partial<IViewportOptions> | null) {
         super();
 
-        this._options = { ...this.defaultOptions, ...options };
+        const ops = options || {};
+        this._options = { ...this._options, ...ops };
 
+        console.log('OPTIONS ', options, ops);
         this.world = new World(canvas, this._options);
         this.selection = this._options.isMobile
             ? null
