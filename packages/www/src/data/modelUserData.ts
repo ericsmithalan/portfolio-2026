@@ -2,10 +2,7 @@ import { IObjectUserData } from '@portfolio/model-viewer';
 import { getWoodTexture, woodTextures } from './woodTextures';
 import { getMetalTexture } from './metalTexture';
 
-const getImagePath = (
-    dir: string,
-    id: number,
-): { path: string; thumb: string; id: number } => {
+const getImagePath = (dir: string, id: number): { path: string; thumb: string; id: number } => {
     return {
         id: id,
         path: `/models/${dir}/images/${id}.png`,
@@ -66,11 +63,7 @@ export const modelUserData: Array<IObjectUserData> = [
     {
         url: '/models/table/model.glb',
         name: 'Table',
-        images: [
-            getImagePath('table', 1),
-            getImagePath('table', 2),
-            getImagePath('table', 3),
-        ],
+        images: [getImagePath('table', 1), getImagePath('table', 2), getImagePath('table', 3)],
         textures: {
             base: getWoodTexture('maple'),
             baseIds: [],
@@ -99,31 +92,9 @@ export const modelUserData: Array<IObjectUserData> = [
         },
     },
     {
-        url: '/models/twin/model.glb',
-        name: 'Twin Bed',
-        images: [
-            getImagePath('twin', 1),
-            getImagePath('twin', 2),
-            getImagePath('twin', 3),
-            getImagePath('twin', 4),
-        ],
-        textures: {
-            base: getWoodTexture('white'),
-            baseIds: [],
-            alt: null,
-            altIds: [],
-            metal: null,
-            metalIds: [],
-        },
-    },
-    {
         url: '/models/desk/model.glb',
         name: 'Desk',
-        images: [
-            getImagePath('desk', 1),
-            getImagePath('desk', 2),
-            getImagePath('desk', 3),
-        ],
+        images: [getImagePath('desk', 1), getImagePath('desk', 2), getImagePath('desk', 3)],
         textures: {
             base: getWoodTexture('maple'),
             baseIds: [],
@@ -152,6 +123,9 @@ export const modelUserData: Array<IObjectUserData> = [
             getImagePath('bunk', 13),
             getImagePath('bunk', 14),
             getImagePath('bunk', 15),
+            getImagePath('bunk', 16),
+            getImagePath('bunk', 17),
+            getImagePath('bunk', 18),
         ],
         textures: {
             base: getWoodTexture('white'),
@@ -165,8 +139,7 @@ export const modelUserData: Array<IObjectUserData> = [
 ];
 
 export const getModelUserData = (name: string): IObjectUserData => {
-    const model =
-        modelUserData.find((item) => item.name === name) || modelUserData[0];
+    const model = modelUserData.find((item) => item.name === name) || modelUserData[0];
 
     return model;
 };

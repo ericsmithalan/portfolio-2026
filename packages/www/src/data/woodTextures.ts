@@ -21,8 +21,6 @@ const getWoodTextures = (): Array<ITexture> => {
         createTextureData(1, 'wood', 'white', 1, URL, {
             ...settings,
             diffuse: true,
-            normal: true,
-            rough: true,
         }),
         createTextureData(2, 'wood', 'ash', 1, URL, {
             ...settings,
@@ -35,12 +33,6 @@ const getWoodTextures = (): Array<ITexture> => {
         createTextureData(4, 'wood', 'cherry', 1, URL, {
             ...settings,
             diffuse: true,
-            ao: true,
-            normal: true,
-            rough: true,
-            coatNormal: true,
-            coat: true,
-            coatRough: true,
         }),
         createTextureData(5, 'wood', 'hickory', 1, URL, {
             ...settings,
