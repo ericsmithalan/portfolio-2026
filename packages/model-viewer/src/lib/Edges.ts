@@ -47,6 +47,7 @@ export class Edges {
                 linewidth: theme.edges.lineWidth,
                 transparent: true,
                 opacity: 0.5,
+                fog: false,
             }),
         );
 

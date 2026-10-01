@@ -7,7 +7,7 @@ export class Floor extends Mesh {
         super();
 
         const material = new ShadowMaterial();
-        material.opacity = 0.2;
+        material.opacity = 0.8;
 
         const geometry = new PlaneGeometry(2000, 2000);
 

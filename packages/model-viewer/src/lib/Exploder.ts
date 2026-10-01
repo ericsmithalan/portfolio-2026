@@ -50,8 +50,7 @@ export class Exploder extends EventDispatcher<IExploderEvent> {
 
     calculateBoxArea(vector: Vector3) {
         const { length, width, thickness } = getLengthWidthThickness(vector);
-        const surfaceArea =
-            2 * (length * width + width * thickness + thickness * length);
+        const surfaceArea = 2 * (length * width + width * thickness + thickness * length);
         return surfaceArea;
     }
 
@@ -59,7 +58,7 @@ export class Exploder extends EventDispatcher<IExploderEvent> {
         const helper = new Box3Helper(box3, 'red');
         const centerRef = new Mesh(
             new BoxGeometry(0.01, 0.01, 0.01),
-            new MeshBasicMaterial({ color: 'blue' }),
+            new MeshBasicMaterial({ color: 'blue', fog: false }),
         );
 
         centerRef.position.copy(this.center);
@@ -123,17 +122,11 @@ export class Exploder extends EventDispatcher<IExploderEvent> {
         // const pos = mesh.getWorldPosition(new Vector3());
 
         mesh.userData.oldPosition =
-            mesh.userData.oldPosition ||
-            mesh.geometry.boundingSphere?.center.clone();
+            mesh.userData.oldPosition || mesh.geometry.boundingSphere?.center.clone();
 
-        let direction = mesh.userData.oldPosition
-            .clone()
-            .sub(this.center)
-            .normalize();
+        let direction = mesh.userData.oldPosition.clone().sub(this.center).normalize();
 
-        let to: Vector3 = direction
-            .clone()
-            .multiplyScalar(this.exploded ? 0 : this.multiplier);
+        let to: Vector3 = direction.clone().multiplyScalar(this.exploded ? 0 : this.multiplier);
 
         const edge = this.edges.get(mesh) || null;
 
@@ -161,13 +154,9 @@ export class Exploder extends EventDispatcher<IExploderEvent> {
         const edge = this.edges.get(mesh) || null;
 
         mesh.userData.oldPosition =
-            mesh.userData.oldPosition ||
-            mesh.geometry.boundingSphere?.center.clone();
+            mesh.userData.oldPosition || mesh.geometry.boundingSphere?.center.clone();
 
-        const direction = mesh.userData.oldPosition
-            .clone()
-            .sub(this.center)
-            .normalize();
+        const direction = mesh.userData.oldPosition.clone().sub(this.center).normalize();
         const moveTo: Vector3 = direction.clone().multiplyScalar(0.3);
 
         return {

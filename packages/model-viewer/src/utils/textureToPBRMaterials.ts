@@ -33,6 +33,7 @@ export const textureToPBRMaterials = async (
 
             material = new MeshPhysicalMaterial({
                 aoMap: pbrs.ao,
+                fog: false,
                 aoMapIntensity: 1.0,
                 envMap: environment,
                 envMapIntensity: 1,
@@ -61,27 +62,18 @@ export const textureToPBRMaterials = async (
 
 const loadPBRs = async (pbr: IPBRTexture | null): Promise<PBRTexture> => {
     if (pbr) {
-        const [
-            ao,
-            diffuse,
-            normal,
-            rough,
-            displace,
-            metal,
-            coat,
-            coatNormal,
-            coatRough,
-        ] = await Promise.all([
-            loadTexture(pbr.ao),
-            loadTexture(pbr.diffuse),
-            loadTexture(pbr.normal),
-            loadTexture(pbr.rough),
-            loadTexture(pbr.displace),
-            loadTexture(pbr.metal),
-            loadTexture(pbr.coat),
-            loadTexture(pbr.coatNormal),
-            loadTexture(pbr.coatRough),
-        ]);
+        const [ao, diffuse, normal, rough, displace, metal, coat, coatNormal, coatRough] =
+            await Promise.all([
+                loadTexture(pbr.ao),
+                loadTexture(pbr.diffuse),
+                loadTexture(pbr.normal),
+                loadTexture(pbr.rough),
+                loadTexture(pbr.displace),
+                loadTexture(pbr.metal),
+                loadTexture(pbr.coat),
+                loadTexture(pbr.coatNormal),
+                loadTexture(pbr.coatRough),
+            ]);
 
         return {
             diffuse: diffuse,

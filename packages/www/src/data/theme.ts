@@ -2,15 +2,15 @@ import { ITheme, ThemeStyle } from '@portfolio/model-viewer';
 
 export const ThemeLight: ITheme = {
     world: {
-        backgroundColor: '#F8F8FF',
-        fogColor: '#F8F8FF',
-        fogDensity: 0.08,
+        backgroundColor: '#ddf5ff',
+        fogColor: '#ddf5ff',
+        fogDensity: 0,
     },
     grid: {
-        lineColor: '#cccccc',
-        opacity: 0.2,
-        size: 100,
-        divisions: 100,
+        lineColor: '#ffffff',
+        opacity: 1,
+        size: 200,
+        divisions: 500,
     },
     outlineEffect: {
         clearColor: 0xc2883d,

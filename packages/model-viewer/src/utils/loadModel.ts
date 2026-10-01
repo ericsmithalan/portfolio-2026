@@ -1,4 +1,4 @@
-import { Mesh, Object3D } from 'three';
+import { Material, Mesh, MeshStandardMaterial, Object3D } from 'three';
 import { GLTFLoader, DRACOLoader } from 'three/examples/jsm/Addons.js';
 import { IStat } from '@/interface';
 import { Edges, IObjectUserData, IViewportOptions, ObjectUserData, Viewport } from '@/lib';
@@ -31,6 +31,10 @@ export const loadModel = (
                         part.receiveShadow = true;
 
                         if (part.material && userData.textures) {
+                            if (part.material instanceof MeshStandardMaterial) {
+                                part.material.fog = false;
+                            }
+
                             const base =
                                 part.material.name?.indexOf('wood') !== -1 ||
                                 part.material.name?.indexOf('primary') !== -1;

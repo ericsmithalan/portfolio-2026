@@ -3,6 +3,7 @@ import {
     Color,
     EventDispatcher,
     FogExp2,
+    NeutralToneMapping,
     PCFShadowMap,
     PerspectiveCamera,
     Scene,
@@ -60,17 +61,23 @@ export class World extends EventDispatcher<IWorldEvent> {
         this.scene = new Scene();
         this.scene.name = 'Scene';
 
-        this.scene.background = new Color(options.theme.world.backgroundColor);
+        // this.scene.background = new Color(options.theme.world.backgroundColor);
+
         this.scene.fog = new FogExp2(
             new Color(options.theme.world.fogColor),
             options.theme.world.fogDensity,
         );
 
-        this.camera = new PerspectiveCamera(40, this.size.aspect, 1, 50);
+        this.camera = new PerspectiveCamera(
+            options.cameraFov,
+            this.size.aspect,
+            options.cameraNear,
+            options.cameraFar,
+        );
         this.camera.name = 'Camera';
-        this.camera.zoom = 1;
+        this.camera.zoom = options.cameraZoom;
         this.camera.updateProjectionMatrix();
-        this.camera.position.set(15, 10, 9);
+        this.camera.position.set(0, 1.5, 0);
         this.camera.updateProjectionMatrix();
 
         this.renderer = new WebGLRenderer({
@@ -80,13 +87,14 @@ export class World extends EventDispatcher<IWorldEvent> {
         });
 
         this.renderer.shadowMap.enabled = true;
-        this.renderer.toneMapping = ACESFilmicToneMapping;
+        this.renderer.toneMapping = NeutralToneMapping;
         this.renderer.toneMappingExposure = 1;
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(this.size.width, this.size.height);
         this.renderer.shadowMap.type = PCFShadowMap;
         this.renderer.outputColorSpace = SRGBColorSpace;
         this.renderer.autoClear = false;
+        this.renderer.setClearColor(0x000000, 0);
 
         this.orbitControls = new OrbitControls(this.camera, canvas);
         if (!options.restrictOrbit) {
@@ -113,16 +121,17 @@ export class World extends EventDispatcher<IWorldEvent> {
         }
         this.orbitControls.update();
 
-        this.gizmo = !options.showAxisHelper
-            ? null
-            : new ViewportGizmo(this.camera, this.renderer, {
+        this.gizmo = options.showAxisHelper
+            ? new ViewportGizmo(this.camera, this.renderer, {
                   placement: 'bottom-right',
                   container: this.container,
-                  size: 0.7,
-              });
+                  size: 1,
+              })
+            : null;
 
         if (this.gizmo) {
             this.gizmo.attachControls(this.orbitControls);
+            this.gizmo.visible = true;
         }
 
         this.lights = new Lights(this.scene, options?.envUrl);
@@ -188,8 +197,6 @@ export class World extends EventDispatcher<IWorldEvent> {
         this.size.aspect = width / height;
         this.size.width = width;
         this.size.height = height;
-
-        console.log(parentEl, this.size);
     }
 
     dispose() {

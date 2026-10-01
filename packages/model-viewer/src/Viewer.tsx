@@ -77,7 +77,7 @@ export const Viewer: FC<ViewerProps> = ({
         <div style={style} className={clsx('model-viewer', className)}>
             <canvas
                 style={canvasStyle}
-                className={clsx('viewer-canvas', canvasClassName)}
+                className={clsx('viewer-canvas z-10', canvasClassName)}
                 ref={canvasRef}
             />
         </div>

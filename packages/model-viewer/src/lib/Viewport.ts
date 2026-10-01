@@ -11,13 +11,16 @@ export interface IViewportOptions {
     showAxisHelper: boolean;
     envUrl?: string;
     theme: ITheme;
-    cameraZoom?: number;
+    cameraZoom: number;
     showStats: boolean;
     isMobile: boolean;
     showGrid: boolean;
     showFloor: boolean;
     restrictOrbit: boolean;
     showObjectBorders: boolean;
+    cameraFar: number;
+    cameraNear: number;
+    cameraFov: number;
 }
 
 export type ViewportLoadingEvent = {
@@ -51,11 +54,14 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         showAxisHelper: true,
         showStats: false,
         theme: DefaultTheme,
-        cameraZoom: 2,
         showGrid: true,
         showFloor: true,
         restrictOrbit: false,
         showObjectBorders: true,
+        cameraZoom: 1.2,
+        cameraFar: 1000,
+        cameraNear: 0.01,
+        cameraFov: 40,
     };
 
     clock = new Timer();
@@ -69,9 +75,11 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
 
         console.log('OPTIONS ', options, ops);
         this.world = new World(canvas, this._options);
+
         this.selection = this._options.isMobile
             ? null
             : new Selection(canvas, this.world, this._options.theme);
+
         this.setEvents();
         this.init();
     }
@@ -105,7 +113,7 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
 
         if (obj) {
             this.world.scene.add(obj);
-            this.world.lights.alignToModel(obj);
+            this.world.lights.alignToModel(this.world.camera, obj.position, [obj]);
 
             if (obj.userData.edges) {
                 this.world.scene.add(obj.userData.edges.edgeGroup);
@@ -181,16 +189,8 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         const obj = await loadModel(modelData, this, this._options);
 
         if (obj) {
-            fitCameraToObject(
-                this.world.camera,
-                this.world.orbitControls,
-                [obj],
-                this._options.cameraZoom,
-            );
+            fitCameraToObject(this.world.camera, this.world.orbitControls, [obj], 2);
         }
-
-        // this.world.camera.aspect = 4;
-        // this.world.camera.updateProjectionMatrix();
 
         this.model = obj;
 
@@ -228,15 +228,18 @@ export class Viewport extends EventDispatcher<IViewportEvent> {
         if (this.selection) {
             this.selection.animate();
         }
-        // if (this.edges){
-        //     this.edges.up
+
+        orbitControls.update();
+
+        // renderer.clear();
+        // if (this.edges) {
+        //     this.edges.up;
         // }
         if (gizmo) {
             gizmo.render();
         }
 
-        orbitControls.update();
-        renderer.clearDepth();
+        // renderer.clearDepth();
         this.dispatchEvent({ type: 'animate', time: this.clock.getDelta() });
         this.world.logStats();
     };

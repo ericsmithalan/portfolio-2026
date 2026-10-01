@@ -14,3 +14,5 @@ export * from './data/inovations';
 export * from './data/education';
 export * from './panel';
 export * from './shell';
+export * from './panel-parts';
+export * from './panel-nav';
